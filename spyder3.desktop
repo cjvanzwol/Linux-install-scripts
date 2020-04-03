@@ -1,0 +1,14 @@
+[Desktop Entry]
+Version=1.0
+Type=Application
+Name=Spyder IDE
+GenericName=Spyder
+Comment=Scientific PYthon Development EnviRonment - Python3
+TryExec=spyder
+Exec=spyder %F
+Categories=Development;Science;IDE;Qt;
+Icon=spyder3
+Terminal=false
+StartupNotify=true
+MimeType=text/x-python;
+
