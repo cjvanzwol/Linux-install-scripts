@@ -1,0 +1,63 @@
+#! /bin/sh
+## Installscript for miniconda
+
+# check running sudo
+if [[ $(/usr/bin/id -u) -ne 0 ]]; then
+    echo "Not running as root, add sudo command"
+    exit
+fi
+
+# check if app already is installed
+if [[ -d /opt/code-server ]]
+then
+    echo "It seems code-server is alreay installed. Pleas update from application."
+    exit
+fi
+
+# update system and install dependendies
+apt update && apt upgrade -y
+apt install wget -y
+
+## Install Miniconda
+# download miniconda
+wget https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86_64.sh
+
+# install miniconda
+bash Miniconda3-latest-Linux-x86_64.sh
+
+echo "Miniconda is geinstalleerd"
+echo "Adding conda init to .bashrc"
+
+# create .desktop
+cat > /home/$(logname)/.bashrc << ENDOFFILE
+
+
+
+
+
+ >>> conda initialize >>>
+ !! Contents within this block are managed by 'conda init' !!
+__conda_setup="$('/opt/miniconda3/bin/conda' 'shell.bash' 'hook' 2> /dev/null)"
+if [ $? -eq 0 ]; then
+    eval "$__conda_setup"
+else
+    if [ -f "/opt/miniconda3/etc/profile.d/conda.sh" ]; then
+        . "/opt/miniconda3/etc/profile.d/conda.sh"
+    else
+        export PATH="/opt/miniconda3/bin:$PATH"
+    fi
+fi
+unset __conda_setup
+ <<< conda initialize <<<
+
+
+
+
+ENDOFFILE
+
+# clean up
+rm Miniconda3-latest-Linux-x86_64.sh
+
+# installing is finisched
+echo "Done installing Miniconda"
+exit

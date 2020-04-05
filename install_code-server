@@ -1,44 +1,45 @@
 #! /bin/sh
-
 ## Install script for code-server
 
-# update system
-sudo apt update && sudo apt upgrade -y
-
-# install dependencies
-sudo apt install wget
-
-# download code-server
-if [[ -f ~/Apps ]]
-then
-    echo "<file> exists on your filesystem."
-else
-    mkdir ~/Apps
+# check running sudo
+if [[ $(/usr/bin/id -u) -ne 0 ]]; then
+    echo "Not running as root, add sudo command"
+    exit
 fi
 
-cd ~/Apps
-wget https://github.com/cdr/code-server/releases/download/3.0.2/code-server-3.0.2-linux-x86_64.tar.gz
+# check if app already is installed
+if [[ -d /opt/code-server ]]
+then
+    echo "It seems code-server is alreay installed. Pleas update from application."
+    exit
+fi
 
+# update system and install dependendies
+apt update && apt upgrade -y
+apt install wget -y
+
+## install code-server
+# download
+cd /opt
+wget https://github.com/cdr/code-server/releases/download/3.0.2/code-server-3.0.2-linux-x86_64.tar.gz
 # extract binary
 tar -xvf code-server-3.0.2-linux-x86_64.tar.gz
-
 # remane folder
 mv code-server-3.0.2-linux-x86_64 code-server
-
 # link binary to /usr/bin
-sudo ln -s ~/Apps/code-server/code-server /usr/bin/
+ln -s /opt/code-server/code-server /usr/bin/
 
 # create .desktop
-cat > /home/simsu/file.txt << ENDOFFILE
+cat > /usr/share/applications/code-server.desktop << ENDOFFILE
 [Desktop Entry]
 Type=Application
-Name=Code-server
+Name=Code-server: start server
 Exec=code-server --auth none
-Icon=code
+Icon=/opt/code-server/src/browser/media/pwa-icon-96.png
 ENDOFFILE
 
 # clean up
-rm ~/Apps/code-server-3.0.2-linux-x86_64.tar.gz
+rm code-server-3.0.2-linux-x86_64.tar.gz
 
 # installing is finisched
 echo "Done"
