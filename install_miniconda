@@ -8,7 +8,7 @@ if [[ $(/usr/bin/id -u) -ne 0 ]]; then
 fi
 
 # check if app already is installed
-if [[ -d /opt/code-server ]]
+if [[ -d /opt/miniconda3 ]]
 then
     echo "It seems code-server is alreay installed. Pleas update from application."
     exit
@@ -28,15 +28,12 @@ bash Miniconda3-latest-Linux-x86_64.sh
 echo "Miniconda is geinstalleerd"
 echo "Adding conda init to .bashrc"
 
-# create .desktop
-cat > /home/$(logname)/.bashrc << ENDOFFILE
+# add init to .bashrc
+echo "
 
 
-
-
-
- >>> conda initialize >>>
- !! Contents within this block are managed by 'conda init' !!
+# >>> conda initialize >>>
+# !! Contents within this block are managed by 'conda init' !!
 __conda_setup="$('/opt/miniconda3/bin/conda' 'shell.bash' 'hook' 2> /dev/null)"
 if [ $? -eq 0 ]; then
     eval "$__conda_setup"
@@ -48,12 +45,7 @@ else
     fi
 fi
 unset __conda_setup
- <<< conda initialize <<<
-
-
-
-
-ENDOFFILE
+# <<< conda initialize <<<" >> /home/$(logname)/.bashrc
 
 # clean up
 rm Miniconda3-latest-Linux-x86_64.sh
