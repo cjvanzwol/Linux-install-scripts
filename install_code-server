@@ -15,8 +15,7 @@ then
 fi
 
 # update system and install dependendies
-apt update && apt upgrade -y
-apt install wget -y
+apt update && apt install wget -y
 
 ## install code-server
 # download
@@ -30,13 +29,13 @@ mv code-server-3.0.2-linux-x86_64 code-server
 ln -s /opt/code-server/code-server /usr/bin/
 
 # create .desktop
-cat > /usr/share/applications/code-server.desktop << ENDOFFILE
+cat > /usr/share/applications/code-server.desktop << EOF
 [Desktop Entry]
 Type=Application
 Name=Code-server: start server
 Exec=code-server --auth none
 Icon=/opt/code-server/src/browser/media/pwa-icon-96.png
-ENDOFFILE
+EOF
 
 # clean up
 rm code-server-3.0.2-linux-x86_64.tar.gz
