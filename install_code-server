@@ -33,7 +33,7 @@ cat > /usr/share/applications/code-server.desktop << EOF
 [Desktop Entry]
 Type=Application
 Name=Code-server: start server
-Exec=code-server --auth none
+Exec=code-server --auth none --disable-telemetry --open
 Icon=/opt/code-server/src/browser/media/pwa-icon-96.png
 EOF
 
