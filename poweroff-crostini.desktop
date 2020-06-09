@@ -1,4 +1,0 @@
-[Desktop Entry]
-Type=Application
-Name=Poweroff Crostini
-Exec=sudo poweroff -pf

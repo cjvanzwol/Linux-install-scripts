@@ -1,4 +1,0 @@
-[Desktop Entry]
-Type=Application
-Name=Halt Crostini
-Exec=sudo poweroff --halt

@@ -15,7 +15,7 @@ then
 fi
 
 # update system and install dependendies
-apt update && apt install wget -y
+apt update && apt install wget -y && apt upgrade wget -y
 
 ## install code-server
 # download
