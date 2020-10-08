@@ -1,0 +1,12 @@
+#!/bin/bash
+
+echo "install packages"
+sudo apt update
+sudo apt-get install nfs-common -y
+
+echo "create mount folder"
+sudo mkdir /mnt/nas
+sudo chown -R pi:pi /mnt/nas
+
+echo "add to fstab"
+sudo echo "xxx.xxx.xxx.xxx:/volume1   /mnt/nas   nfs    rw  0  0" >> /etc/fstab

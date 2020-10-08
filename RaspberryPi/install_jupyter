@@ -1,20 +1,6 @@
 #!/bin/bash
 cd ~
 
-echo "testing sudo"
-echo "apt update"
-apt update
-echo "sudo apt update"
-sudo apt update
-echo "testing sudo 2"
-echo "touch file"
-apt touch file
-echo "sudo touch sudofile"
-sudo touch sudofile
-ls -hal
-rm sudofile
-rm file
-
 echo "NOTA BENE: the proces takes very long"
 echo "start proces"
 sudo apt update

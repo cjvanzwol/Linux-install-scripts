@@ -10,3 +10,4 @@ contains:
 contains:
 * samba (https://pimylifeup.com/raspberry-pi-samba/)
 * Jupyter (https://github.com/kleinee/jns)
+* nfs client (https://www.htpcguides.com/configure-nfs-server-and-nfs-client-raspberry-pi/)
