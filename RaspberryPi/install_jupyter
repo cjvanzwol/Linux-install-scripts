@@ -2,6 +2,7 @@
 cd ~
 
 echo "NOTA BENE: the proces takes very long"
+
 echo "start proces"
 sudo apt update
 sudo apt install -y git
@@ -21,3 +22,5 @@ sudo ./inst_R-3.6.0.sh
 ./inst_sqlite.sh
 echo "skipped ./inst_pi_hardware.sh"
 sudo ./conf_service.sh
+
+echo "Jupyterhub is installed"

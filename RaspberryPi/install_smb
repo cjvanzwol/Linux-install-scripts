@@ -1,12 +1,11 @@
 #!/bin/bash
-
-echo "Install packages"
+echo "Install packages for SMB"
 sudo apt update && sudo apt upgrade -y
 sudo apt install git samba samba-common-bin -y
 
 echo "set up smb"
 echo "[home]
-path = /home/pi
+path = ~
 writeable=Yes
 create mask=0777
 directory mask=0777
@@ -14,7 +13,4 @@ public=no" >> /etc/samba/smb.conf
 echo "set password for smb"
 sudo smbpasswd -a pi
 sudo systemctl restart smbd
-echo "smb is zet"
-
-echo "set up nfs client"
-
+echo "smb is set"
