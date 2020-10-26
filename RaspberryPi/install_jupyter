@@ -1,26 +1,30 @@
 #!/bin/bash
-cd ~
-
-echo "NOTA BENE: the proces takes very long"
-
-echo "start proces"
-sudo apt update
-sudo apt install -y git
-sudo sed -i -e 's/CONF_SWAPSIZE=100/CONF_SWAPSIZE=2048/' /etc/dphys-swapfile
-sudo /etc/init.d/dphys-swapfile stop
-sudo /etc/init.d/dphys-swapfile start
-git clone https://github.com/kleinee/jns
-cd ~/jns/scripts
-sudo ./prep.sh
-./inst_stack.sh
-./conf_jupyter.sh
-./inst_lab_ext.sh
+echo "Installing python, pip and other packages"
+#sudo apt purge -y python*
+#sudo apt autoremove -y
+#sudo apt update && sudo apt upgrade -y
+#sudo apt install -y python3 python3-pip
+#sudo pip3 install setuptools
+#sudo apt install -y libffi-dev
+#sudo pip3 install cffi
+#pip3 install jupyterlab
+#pip3 install voila
+#echo "[Unit]
+#Description=Jupyter Lab
+#[Service]
+#Type=simple
+#PIDFile=/run/jupyter.pid
+#ExecStart=/bin/bash -c "/usr/local/bin/jupyter-lab --ip="0.0.0.0" --no-browser --notebook-dir=/home/pi"
+#User=$USER
+#Group=pi
+#WorkingDirectory=/home/pi
+#Restart=always
+#RestartSec=10
+#
+#[Install]
+#WantedBy=multi-user.target" | sudo tee -a /etc/systemd/system/jupyter.service > /dev/null
+#sudo systemctl enable jupyter.service
+#sudo systemctl daemon-reload
+#jupyter notebook --generate-config
 jupyter notebook password
-sudo ./inst_tex.sh
-sudo ./inst_julia-1.1.0.sh
-sudo ./inst_R-3.6.0.sh
-./inst_sqlite.sh
-echo "skipped ./inst_pi_hardware.sh"
-sudo ./conf_service.sh
-
-echo "Jupyterhub is installed"
+echo "Set up https with instructions on https://jupyter-notebook.readthedocs.io/en/stable/public_server.html#using-ssl-for-encrypted-communication"
