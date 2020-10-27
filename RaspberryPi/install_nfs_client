@@ -1,15 +1,20 @@
 #!/bin/bash
 echo "Install packages for NFS"
-sudo apt update
-sudo apt-get install nfs-common -y
+sudo apt update -qq
+sudo apt-get install nfs-common -qq
 
 echo "Create mount folder"
-read -p "Where schould the NFS-share be mounted? [/folder/name]" mf
+read -p "Where schould the NFS-share be mounted? [/folder/name] " mf
 sudo mkdir $mf
-sudo chown -R pi:pi $mf
+sudo chown -R $USER:pi $mf
 
 echo "Add to fstab"
-read -p "What is the ip of the NFS-server?" ip
-read -p "What is the root folder of the NFS-share? [/foldername]" rf
-sudo echo "$ip:$rf   /mnt/nas   nfs    rw  0  0" >> /etc/fstab
-echo "nfs-server is added to fstab and will be mounted at next boot. Or run command: sudo mount -a"
+read -p "What is the ip of the NFS-server? " ip
+if [[ $(sudo grep -Ril $ip /etc/fstab) == "/etc/fstab" ]]; then
+	echo "mountpoint for nfs-share on $ip already exists: no changes made"
+else
+	read -p "What is the root folder of the NFS-share? [/foldername] " rf
+	echo "$ip:$rf   /mnt/nas   nfs    rw  0  0" | sudo tee /etc/fstab -a
+	echo "nfs-server is added to fstab and will be mounted at next boot. Or run command: sudo mount -a"
+fi
+

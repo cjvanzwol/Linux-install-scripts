@@ -1,31 +1,39 @@
+
 #!/bin/bash
-cho "Installing python, pip and other packages"
-sudo apt purge -y python*
-sudo apt autoremove -y
-sudo apt update && sudo apt upgrade -y
-sudo apt install -y python3 python3-pip
-sudo pip3 install setuptools
-sudo apt install -y libffi-dev
-sudo pip3 install cffi
-pip3 install jupyterlab
-pip3 install voila
-echo "[Unit]
+echo "Installing python, pip and other packages"
+sudo apt purge -qq python*
+sudo apt autoremove -y -q
+sudo apt update -qq && sudo apt upgrade -qq
+sudo apt install -qq python3 python3-pip
+sudo pip3 install -q setuptools
+sudo apt install -qq libffi-dev
+sudo pip3 install -q cffi
+pip3 install -q jupyterlab
+pip3 install -q voila
+
+if [[ $(sudo grep -Ril "\[Unit\]" /etc/systemd/system/jupyter.service) == "/etc/systemd/system/jupyter.service" ]]; then
+	echo "service file exists: no file create"
+else
+	sudo tee -a /etc/systemd/system/jupyter.service > /dev/null <<EOT
+[Unit]
 Description=Jupyter Lab
+
 [Service]
 Type=simple
 PIDFile=/run/jupyter.pid
-ExecStart=/bin/bash -c "/usr/local/bin/jupyter-lab"
+ExecStart=/bin/bash -c "~/.local/bin/jupyter-lab"
 User=$USER
 Group=pi
-WorkingDirectory=/home/pi
+WorkingDirectory=~
 Restart=always
 RestartSec=10
 
 [Install]
-WantedBy=multi-user.target" | sudo tee -a /etc/systemd/system/jupyter.service > /dev/null
+WantedBy=multi-user.target
+EOT
+fi
 sudo systemctl enable jupyter.service
 sudo systemctl daemon-reload
 jupyter notebook --generate-config
 jupyter notebook password
 echo "Set up https with instructions on https://jupyter-notebook.readthedocs.io/en/stable/public_server.html#using-ssl-for-encrypted-communication"
-nano ~/.jupyter/jupyter_notebook_config.py

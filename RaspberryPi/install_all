@@ -3,7 +3,7 @@
 echo "The following packages wil be installed:"
 echo "NFS-client"
 echo "SMB-server"
-#echo "Jupyter"
+echo "Jupyter"
 
 read -p "Do you really want to install all packages? [y/n] " answer
 if [ $answer != "y" ]; then
@@ -15,6 +15,6 @@ source ./install_nfs_client
 echo "NFS DONE"
 source ./install_smb
 echo "SMB DONE"
-#source ./install_jupyter
-#echo "JUPYTER DONE"
+source ./install_jupyter
+echo "JUPYTER DONE"
 exit 0

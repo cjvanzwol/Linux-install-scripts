@@ -1,15 +1,19 @@
 #!/bin/bash
 echo "Install packages for SMB"
-sudo apt update && sudo apt upgrade -y
-sudo apt install git samba samba-common-bin -y
+sudo apt update -qq && sudo apt upgrade -qq
+sudo apt install git samba samba-common-bin -qq
 
 echo "set up smb"
-echo "[home]
-path = ~
-writeable=Yes
-create mask=0777
-directory mask=0777
-public=no" >> /etc/samba/smb.conf
+if [[ $(grep -Ril "\[home\]" /etc/samba/smb.conf) == "/etc/samba/smb.conf" ]]; then
+	echo  "home folder is already set in smb.conf: no changes made"
+else
+	echo "[home]
+	path = ~
+	writeable=Yes
+	create mask=0777
+	directory mask=0777
+	public=no" | sudo tee /etc/samba/smb.conf -a
+fi
 echo "set password for smb"
 sudo smbpasswd -a pi
 sudo systemctl restart smbd
