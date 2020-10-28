@@ -10,7 +10,8 @@ if [ $answer != "y" ]; then
 	echo "nothing installed"
 	exit 1
 fi
-
+cd ~
+cd Linux-install-scripts/RaspberryPi
 source ./install_nfs_client
 echo "NFS DONE"
 source ./install_smb

@@ -1,18 +1,44 @@
-
 #!/bin/bash
-echo "Installing python, pip and other packages"
-sudo apt purge -qq python*
-sudo apt autoremove -y -q
-sudo apt update -qq && sudo apt upgrade -qq
-sudo apt install -qq python3 python3-pip
-sudo pip3 install -q setuptools
-sudo apt install -qq libffi-dev
-sudo pip3 install -q cffi
-pip3 install -q jupyterlab
-pip3 install -q voila
+
+cd ~
+echo "Installing python, pip, Jupyter and related other packages"
+sudo apt update -qq
+sudo apt upgrade -qq
+sudo apt install -q python3 python3-pip python3-venv nodejs libffi-dev software-properties-common -y
+sudo pip3 install -q setuptools cffi
+pip3 install -q -r /Linux-install-scripts/RaspeberryPi/requirements.txt
+
+curl -L https://npmjs.org/install.sh | sudo sh
+
+npm install --save-dev bash-language-server javascript-typescript-langserver unified-language-server vscode-css-languageserver-bin vscode-html-languageserver-bin vscode-json-languageserver-bin
+sudo add-apt-repository ppa:chronitis/jupyter
+sudo apt-get install -qq ijavascript irkernel
+python3 -m bash_kernel.install
+git clone https://github.com/notablemind/jupyter-nodejs.git
+cd jupyter-nodejs
+mkdir -p ~/.ipython/kernels/nodejs/
+npm install && node install.js
+npm run build
+npm run build-ext
+cd ~
+sudo rm -R jupyter-nodejs
+jupyter console --kernel nodejs
+
+pb set-key
+pb list-devices
+read -p "Which devices should receive te notification? [number] " pbd
+echo "Pushbullet-cli is set" | pb push -d $pbd
+
+jupyter labextension install --no-build @jupyterlab/git @jupyterlab/toc @jupyterlab/google-drive @jupyterlab/github @jupyterlab/pullrequests @jupyterlab/debugger@krassowski/jupyterlab-lsp @jupyterlab/shortcutui @jupyterlab/commenting-extension @krassowski/jupyterlab_go_to_definition jupyterlab-code-snippets @jupyter-widgets/jupyterlab-manager @bokeh/jupyter_bokeh jupyterlab-drawio @tableau/query-graphs-jupyterlab-extension @jupyter-widgets/jupyterlab-manager jupyter-leaflet @jupyter-widgets/jupyterlab-manager @ryantam626/jupyterlab_code_formatter jupyterlab-execute-time jupyterlab-topbar-extension jupyterlab-system-monitor @jupyter-voila/jupyterlab-preview jupyterlab-python-file @aquirdturtle/collapsible_headings @ijmbarr/jupyterlab_spellchecker jupyterlab_templates jupyterlab-chart-editor @atoti/jupyterlab-extension jupyterlab-theme-toggle jupyterlab-spreadsheet
+jupyter lab build
+
+echo "check settings for jupyter lab github on github-repo" | pb push -d $pdb
+pb push -d $pdb --link https://github.com/jupyterlab/jupyterlab-github
+echo "check settings for jupyter lab pull-requests on github-repo" | pb push -d $pdb
+pb push -d $pdb --link https://github.com/jupyterlab/pull-requests
 
 if [[ $(sudo grep -Ril "\[Unit\]" /etc/systemd/system/jupyter.service) == "/etc/systemd/system/jupyter.service" ]]; then
-	echo "service file exists: no file create"
+	echo "service file exists: no file created"
 else
 	sudo tee -a /etc/systemd/system/jupyter.service > /dev/null <<EOT
 [Unit]
@@ -34,6 +60,28 @@ EOT
 fi
 sudo systemctl enable jupyter.service
 sudo systemctl daemon-reload
+
+mkdir ~/.certificates
+cd ~/.certificates
+openssl req -x509 -nodes -days 365 -newkey rsa:2048 -keyout jupyter.key -out jupyter.pem
+
+<< COMMENT
+openssl req -new -nodes -out server.csr -newkey rsa:2048 -keyout server.key
+sudo tee -a /etc/systemd/system/jupyter.service > /dev/null <<EOT
+authorityKeyIdentifier=keyid,issuer
+basicConstraints=CA:FALSE
+keyUsage = digitalSignature, nonRepudiation, keyEncipherment, dataEncipherment
+subjectAltName = @alt_names
+
+[alt_names]
+DNS.1 = example.dom
+DNS.2 = ex-ample.dom" >> v3.ext
+openssl x509 -req -in server.csr -CA jupyter.pem -CAkey jupyter.key -CAcreateserial -out server.crt -days 500 -sha256 -extfile v3.ext
+openssl pkcs12 -inkey server.key -in server.crt -export -out server.pfx
+COMMENT
+
+cd ~
 jupyter notebook --generate-config
 jupyter notebook password
+
 echo "Set up https with instructions on https://jupyter-notebook.readthedocs.io/en/stable/public_server.html#using-ssl-for-encrypted-communication"
