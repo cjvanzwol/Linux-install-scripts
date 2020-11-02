@@ -1,41 +1,16 @@
 #!/bin/bash
 
 cd ~
+
+bash Linux-install-scripts/RaspberryPi/pushbullet
+
 echo "Installing python, pip, Jupyter and related other packages"
 sudo apt update -qq
 sudo apt upgrade -qq
-sudo apt install -q python3 python3-pip python3-venv nodejs libffi-dev software-properties-common -y
+sudo curl -sL https://deb.nodesource.com/setup_15.x | bash -
+sudo apt install -q python3 python3-pip python3-venv libffi-dev -y
 sudo pip3 install -q setuptools cffi
-pip3 install -q -r /Linux-install-scripts/RaspeberryPi/requirements.txt
-
-curl -L https://npmjs.org/install.sh | sudo sh
-
-npm install --save-dev bash-language-server javascript-typescript-langserver unified-language-server vscode-css-languageserver-bin vscode-html-languageserver-bin vscode-json-languageserver-bin
-sudo add-apt-repository ppa:chronitis/jupyter
-sudo apt-get install -qq ijavascript irkernel
-python3 -m bash_kernel.install
-git clone https://github.com/notablemind/jupyter-nodejs.git
-cd jupyter-nodejs
-mkdir -p ~/.ipython/kernels/nodejs/
-npm install && node install.js
-npm run build
-npm run build-ext
-cd ~
-sudo rm -R jupyter-nodejs
-jupyter console --kernel nodejs
-
-pb set-key
-pb list-devices
-read -p "Which devices should receive te notification? [number] " pbd
-echo "Pushbullet-cli is set" | pb push -d $pbd
-
-jupyter labextension install --no-build @jupyterlab/git @jupyterlab/toc @jupyterlab/google-drive @jupyterlab/github @jupyterlab/pullrequests @jupyterlab/debugger@krassowski/jupyterlab-lsp @jupyterlab/shortcutui @jupyterlab/commenting-extension @krassowski/jupyterlab_go_to_definition jupyterlab-code-snippets @jupyter-widgets/jupyterlab-manager @bokeh/jupyter_bokeh jupyterlab-drawio @tableau/query-graphs-jupyterlab-extension @jupyter-widgets/jupyterlab-manager jupyter-leaflet @jupyter-widgets/jupyterlab-manager @ryantam626/jupyterlab_code_formatter jupyterlab-execute-time jupyterlab-topbar-extension jupyterlab-system-monitor @jupyter-voila/jupyterlab-preview jupyterlab-python-file @aquirdturtle/collapsible_headings @ijmbarr/jupyterlab_spellchecker jupyterlab_templates jupyterlab-chart-editor @atoti/jupyterlab-extension jupyterlab-theme-toggle jupyterlab-spreadsheet
-jupyter lab build
-
-echo "check settings for jupyter lab github on github-repo" | pb push -d $pdb
-pb push -d $pdb --link https://github.com/jupyterlab/jupyterlab-github
-echo "check settings for jupyter lab pull-requests on github-repo" | pb push -d $pdb
-pb push -d $pdb --link https://github.com/jupyterlab/pull-requests
+pip3 install -q jupyterlab ipywidgets bokeh ipyleaflet atoti voila
 
 if [[ $(sudo grep -Ril "\[Unit\]" /etc/systemd/system/jupyter.service) == "/etc/systemd/system/jupyter.service" ]]; then
 	echo "service file exists: no file created"
