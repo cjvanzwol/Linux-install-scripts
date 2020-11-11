@@ -38,4 +38,52 @@ sudo -u $(logname) /opt/miniconda3/bin/conda init
 
 # instalscript is finisched
 echo "Sricpt is finished installing Miniconda"
+
+echo "Installing Jupyterlab"
+cd /opt/miniconda3
+wget https://upload.wikimedia.org/wikipedia/commons/thumb/3/38/Jupyter_logo.svg/1200px-Jupyter_logo.svg.png
+cd ~
+su - $(logname) -c "source /opt/miniconda3/bin/activate"
+su - $(logname) -c "conda install -c conda-forge jupyterlab"
+su - $(logname) -c "jupyter notebook --generate-config"
+
+if [[ $(sudo grep -Ril "\[Unit\]" /etc/systemd/system/jupyter.service) == "/etc/systemd/system/jupyter.service" ]]; then
+        echo "service file exists: no file created"
+else
+	sudo tee -a /etc/systemd/system/jupyter.service > /dev/null <<EOT
+[Unit]
+Description=Jupyter Lab
+
+[Service]
+Type=simple
+PIDFile=/run/jupyter.pid
+ExecStart=/opt/minicaonda3/bin/jupyter-lab
+User=$(logname)
+Group=$(logname)
+WorkingDirectory=~
+Restart=always
+RestartSec=10
+
+[Install]
+WantedBy=multi-user.target
+EOT
+fi
+
+systemctl enable jupyter.service
+systemctl start jupyter
+systemctl daemon-reload
+
+if [[ $(sudo grep -Ril "\[Desktop\ Entry\]" /usr/share/applications/jupyterlab.desktop) == "/usr/share/applications/jupyterlab.desktop" ]]; then
+        echo "service file exists: no file created"
+else
+	tee -a /usr/share/applications/jupyterlab.desktop > /dev/null << EOT
+[Desktop Entry]
+Type=Application
+Name=Jupyterlab: start server
+Exec=sudo systemctl start jupyter
+Icon=/opt/miniconda3/1200px-Jupyter_logo.svg.png
+EOT
+fi
+
+echo "Jupyterlab is installed"
 exit
