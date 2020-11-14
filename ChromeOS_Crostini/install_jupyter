@@ -87,19 +87,9 @@ Icon=/opt/miniconda3/1200px-Jupyter_logo.svg.png
 EOT
 fi
 
-echo "Jupyterlab is installed"
-
-echo "adding modules"
-conda install pandas matplotlib
 conda install -c conda-forge bash_kernel
 python -m bash_kernel.install
 
-echo "installing extensions"
-conda install -c conda-forge nodejs
-jupyter labextension install @jupyter-widgets/jupyterlab-manager
-jupyter labextension install jupyterlab-execute-time
-conda install -c conda-forge ipympl
-jupyter lab build
-
-echo "Jupyter is ready to use"
+echo "Jupyterlab is installed"
+echo "Extend Jupyter by running 'extend jupyter.ipynb'"
 exit
