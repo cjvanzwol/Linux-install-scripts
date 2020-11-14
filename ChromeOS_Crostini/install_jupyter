@@ -1,14 +1,6 @@
 #! /bin/sh
 ## Installscript for miniconda
 
-# check running sudo
-<< COMMENT
-if [[ $(/usr/bin/id -u) -ne 0 ]]; then
-    echo "Not running as root, add sudo command"
-    exit
-fi
-COMMENT
-
 # check if app already is installed
 if [[ -d /opt/miniconda3 ]]
 then
@@ -46,6 +38,7 @@ cd /opt/miniconda3
 wget https://upload.wikimedia.org/wikipedia/commons/thumb/3/38/Jupyter_logo.svg/1200px-Jupyter_logo.svg.png
 cd ~
 source /opt/miniconda3/bin/activate
+conda config --add channels conda-forge
 conda install -c conda-forge jupyterlab
 jupyter notebook --generate-config
 jupyter notebook password
