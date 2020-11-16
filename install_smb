@@ -18,3 +18,4 @@ echo "set password for smb"
 sudo smbpasswd -a pi
 sudo systemctl restart smbd
 echo "smb is set"
+exit

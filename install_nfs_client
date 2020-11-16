@@ -6,7 +6,7 @@ sudo apt-get install nfs-common -qq
 echo "Create mount folder"
 read -p "Where schould the NFS-share be mounted? [/folder/name] " mf
 sudo mkdir $mf
-sudo chown -R $USER:pi $mf
+sudo chown -R $USER:$USER $mf
 
 echo "Add to fstab"
 read -p "What is the ip of the NFS-server? " ip
@@ -14,7 +14,7 @@ if [[ $(sudo grep -Ril $ip /etc/fstab) == "/etc/fstab" ]]; then
 	echo "mountpoint for nfs-share on $ip already exists: no changes made"
 else
 	read -p "What is the root folder of the NFS-share? [/foldername] " rf
-	echo "$ip:$rf   /mnt/nas   nfs    rw  0  0" | sudo tee /etc/fstab -a
+	echo "$ip:$rf   $mf   nfs    rw  0  0" | sudo tee /etc/fstab -a
 	echo "nfs-server is added to fstab and will be mounted at next boot. Or run command: sudo mount -a"
 fi
-
+exit

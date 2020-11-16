@@ -2,7 +2,7 @@
 
 cd ~
 
-bash Linux-install-scripts/RaspberryPi/pushbullet
+bash Linux-install-scripts/pushbullet
 
 echo "Installing python, pip, Jupyter and related other packages"
 sudo apt update -qq

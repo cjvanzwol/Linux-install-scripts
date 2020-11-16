@@ -1,19 +1,21 @@
 #! /bin/sh
 # This script should be run after fresh install
 
-sudo apt update
+cd ~
+echo "Starting setup"
+sudo apt update -qq
 # check which OS is running
 OS=$(uname -a)
 echo "System: $OS"
 if echo "$OS" | grep -q "penguin"
 then
 	OS="ChromeOS"
-	echo "Setting up Linux for $OS"
+	echo "> Setting up Linux for $OS"
 
-	echo "> Writing list of base-packages to ~/.base-packages"
+	echo ">> Writing list of base-packages to ~/.base-packages"
 	sudo apt list --installed > ~/.base-packages
 	
-	echo "Folowing rules should be added for minimal installation packages"	
+	echo ">> Folowing rules should be added for minimal installation packages"	
 	if [[ $(sudo grep -Ril "APT::" /etc/apt/apt.conf.d/99_norecommends)  == "/etc/apt/apt.conf.d/99_norecommends" ]]; then
 		echo "Rules already in place: no changes made"
 	else
@@ -25,25 +27,54 @@ EOT
 		echo "Rules added to /etc/apt/apt.conf.d/99_norecommends"
 	fi
 	
-	echo "Installing packages"
-	sudo apt install git nano mesa-utils debfoster -y
+	echo ">> Installing packages"
+	sudo apt --fix-broken install -qq
+	sudo apt install git nano mesa-utils debfoster -qq
 	
-	echo "Minimize system with Defoster"
+	echo ">> Minimize system with Defoster"
 	sudo debfoster -q
 	
-	echo "Updating system"
-	sudo apt dist-upgrade -y
-	sudo apt upgrade -y
+	echo ">> Updating system"
+	sudo apt dist-upgrade -qq
+	sudo apt upgrade -qq
 
-	echo "Cleanup"
-	sudo apt autoremove --purge
-	sudo apt clean
-	sudo apt autoclean
+	echo ">> Cleanup"
+	sudo apt autoremove --purge -qq
+	sudo apt clean -qq
+	sudo apt autoclean -qq
 
-	echo "Base setup DONE"
+	echo "> Base setup DONE"
 else
 	# add other OS if it becomes applicable
 	# Raspberry pi OS, ..., ...
-	OS="other"
+	OS="...other..."
 	echo "os is $OS"
 fi
+
+echo "The following packages wil can be installed:"
+echo "NFS-client"
+echo "SMB-server"
+echo "Jupyter"
+
+cd ~/Linux-install-scripts
+read -p "Do you want to install ALL packages? [y/n] " a
+if [ $a != "y" ]; then
+	read -p "Do you want to install NFS-client? [y/n] " n
+	read -p "Do you want to install SMB-server? [y/n] " s
+	read -p "Do you want to install Jupyterlab? [y/n] " j
+fi
+if [ $a == "y" ] || [ $n == "y" ]; then
+	source ./install_nfs_client
+	echo "NFS DONE"
+fi
+if [ $a == "y" ] || [ $s == "y" ]; then
+        source ./install_smb
+	echo "SMB DONE"
+fi
+if [ $a == "y" ] || [ $j == "y" ]; then
+        source ./install_jupyter
+	echo "JUPYTER DONE"
+fi
+
+echo "Setup and installs are DONE. Exitting now."
+exit 0

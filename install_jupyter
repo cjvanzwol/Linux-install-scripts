@@ -83,6 +83,14 @@ fi
 conda install -c conda-forge bash_kernel
 python -m bash_kernel.install
 
+cd ~
 echo "Jupyterlab is installed"
-echo "Extend Jupyter by running 'extend jupyter.ipynb'"
+
+read -p "Do you want to install extensions en languageservers for  Jupyterlab? [y/n] " e
+if [ $e != "y" ]; then
+        echo "Skipping extending Jupyterlab"
+else
+        source ./install_smb
+        echo "Jupyterlab extended"
+fi
 exit
