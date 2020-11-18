@@ -14,4 +14,3 @@ if [[ $pbn == "y" ]]; then
     read -p "[number] " pbd
     pb push -d $pbd "Pushbullet-cli is set"
 fi
-exit

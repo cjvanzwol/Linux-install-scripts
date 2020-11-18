@@ -51,27 +51,26 @@ else
 	echo "os is $OS"
 fi
 
-echo "The following packages wil can be installed:"
-echo "NFS-client"
-echo "SMB-server"
-echo "Jupyter"
-
+echo "Installing packages"
 cd ~/Linux-install-scripts
-read -p "Do you want to install ALL packages? [y/n] " a
-if [ $a != "y" ]; then
+if [ $OS == "ChromeOS" ]
+then
+	echo "no specific CHromeOS packages added" # add ChromeOS specific packages
+else
 	read -p "Do you want to install NFS-client? [y/n] " n
 	read -p "Do you want to install SMB-server? [y/n] " s
-	read -p "Do you want to install Jupyterlab? [y/n] " j
 fi
-if [ $a == "y" ] || [ $n == "y" ]; then
+read -p "Do you want to install Jupyterlab? [y/n] " j
+
+if [[ $n == "y" ]]; then
 	source ./install_nfs_client
 	echo "NFS DONE"
 fi
-if [ $a == "y" ] || [ $s == "y" ]; then
+if [[ $s == "y" ]]; then
         source ./install_smb
 	echo "SMB DONE"
 fi
-if [ $a == "y" ] || [ $j == "y" ]; then
+if [[ $j == "y" ]]; then
         source ./install_jupyter
 	echo "JUPYTER DONE"
 fi

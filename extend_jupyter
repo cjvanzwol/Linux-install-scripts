@@ -1,8 +1,9 @@
 #! /bin/sh 
 cd ~
+conda activate
 echo "CONDA INSTALL MODULES"
+conda install -c conda-forge nodejs">=15"
 conda install -c conda-forge pandas matplotlib ipympl ipywidgets jupyterlab-git nb_conda -y
-conda install -c conda-forge nodejs
 conda install -c conda-forge voila nbresuse -y
 conda install -c conda-forge jupyter-lsp python-language-server jupyterlab_code_formatter black -y
 conda install -c conda-forge xeus-python=0.8.6 ptvsd -y

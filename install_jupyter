@@ -71,7 +71,7 @@ sudo systemctl daemon-reload
 if [[ $(sudo grep -Ril "\[Desktop\ Entry\]" /usr/share/applications/jupyterlab.desktop) == "/usr/share/applications/jupyterlab.desktop" ]]; then
         echo "service file exists: no file created"
 else
-	tee -a /usr/share/applications/jupyterlab.desktop > /dev/null << EOT
+	sudo tee -a /usr/share/applications/jupyterlab.desktop > /dev/null << EOT
 [Desktop Entry]
 Type=Application
 Name=Jupyterlab
@@ -86,11 +86,10 @@ python -m bash_kernel.install
 cd ~
 echo "Jupyterlab is installed"
 
-read -p "Do you want to install extensions en languageservers for  Jupyterlab? [y/n] " e
+read -p "Do you want to install extensions en languageservers for Jupyterlab? [y/n] " e
 if [ $e != "y" ]; then
         echo "Skipping extending Jupyterlab"
 else
-        source ./install_smb
+        source ./Linux-install-scripts/extend_jupyter
         echo "Jupyterlab extended"
 fi
-exit

@@ -15,7 +15,6 @@ else
 	public=no" | sudo tee /etc/samba/smb.conf -a
 fi
 echo "set password for smb"
-sudo smbpasswd -a pi
+sudo smbpasswd -a $USER
 sudo systemctl restart smbd
 echo "smb is set"
-exit
