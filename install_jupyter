@@ -33,12 +33,39 @@ fi
 # instalscript is finisched
 echo "Sricpt is finished installing Miniconda"
 
-echo "Installing Jupyterlab"
+echo "Installing miniconda"
 cd /opt/miniconda3
 wget https://upload.wikimedia.org/wikipedia/commons/thumb/3/38/Jupyter_logo.svg/1200px-Jupyter_logo.svg.png
 cd ~
 source /opt/miniconda3/bin/activate
 conda config --add channels conda-forge
+
+echo "Installing jupyterhub"
+conda install jupyterhub notebook -y
+jupyterhub --generate-config
+
+PathJupServ=/etc/systemd/system/jupyterhub.service
+
+if [[ $(sudo grep -Ril "\[Unit\]" $PathJupServ) == $PathJupServ ]]; then
+    echo "service file exists: no file created"
+else
+        sudo tee -a $PathJupServ > /dev/null <<EOT
+[Unit]
+Description=JupyterHub
+After=syslog.target network.target
+
+[Service]
+User=root
+Environment="PATH=/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/opt/miniconda3/bin"
+ExecStart=/opt/jupyterhub/bin/jupyterhub -f /opt/miniconda3/etc/jupyterhub/jupyterhub_config.py
+
+[Install]
+WantedBy=multi-user.target
+EOT
+fi
+<< COMMENT
+
+echo "Installing Jupyterlab"
 conda install -c conda-forge jupyterlab
 jupyter notebook --generate-config
 jupyter notebook password
@@ -47,25 +74,11 @@ if [[ $(sudo grep -Ril "\[Unit\]" /etc/systemd/system/jupyter.service) == "/etc/
     echo "service file exists: no file created"
 else
 	sudo tee -a /etc/systemd/system/jupyter.service > /dev/null <<EOT
-[Unit]
-Description=Jupyter Lab
 
-[Service]
-Type=simple
-PIDFile=/run/jupyter.pid
-ExecStart=/opt/miniconda3/bin/jupyter-lab
-User=$(logname)
-Group=$(logname)
-WorkingDirectory=~
-Restart=always
-RestartSec=10
-
-[Install]
-WantedBy=multi-user.target
 EOT
 fi
 
-#systemctl enable jupyter.service
+#systemctl enable jupyterhub.service
 sudo systemctl daemon-reload
 
 if [[ $(sudo grep -Ril "\[Desktop\ Entry\]" /usr/share/applications/jupyterlab.desktop) == "/usr/share/applications/jupyterlab.desktop" ]]; then
@@ -80,9 +93,10 @@ Icon=/opt/miniconda3/1200px-Jupyter_logo.svg.png
 EOT
 fi
 
+echo "Installing bash_kernel"
 conda install -c conda-forge bash_kernel
 python -m bash_kernel.install
-
+COMMENT
 cd ~
 echo "Jupyterlab is installed"
 
