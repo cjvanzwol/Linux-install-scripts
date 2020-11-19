@@ -1,5 +1,0 @@
-[Desktop Entry]
-Type=Application
-Name=Jupyterlab
-Exec=systemctl start jupyter
-Icon=/opt/miniconda3/1200px-Jupyter_logo.svg.png

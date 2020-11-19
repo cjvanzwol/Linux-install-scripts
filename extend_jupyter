@@ -1,6 +1,11 @@
 #! /bin/sh 
 cd ~
-conda activate
+source /opt/miniconda3/bin/activate
+
+echo "Installing bash_kernel"
+conda install -c bash_kernel
+python -m bash_kernel.install
+
 echo "CONDA INSTALL MODULES"
 conda install -c conda-forge nodejs">=15"
 conda install -c conda-forge pandas matplotlib ipympl ipywidgets jupyterlab-git nb_conda -y

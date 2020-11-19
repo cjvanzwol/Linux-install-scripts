@@ -1,6 +1,82 @@
 #! /bin/sh
 ## Installscript for miniconda
 
+echo "Part 1: Installing Jupyterhub"
+sudo apt update -qq
+sudo apt install python3 python3-dev git curl python3-venv -qq
+sudo python3 -m venv /opt/jupyterhub/
+sudo /opt/jupyterhub/bin/python3 -m pip install wheel
+sudo /opt/jupyterhub/bin/python3 -m pip install jupyterhub jupyterlab
+sudo /opt/jupyterhub/bin/python3 -m pip install ipywidgets
+#sudo apt install nodejs npm
+curl -sL https://deb.nodesource.com/setup_current.x | sudo -E bash -
+sudo apt install nodejs -qq
+sudo npm install -g configurable-http-proxy
+sudo mkdir -p /opt/jupyterhub/etc/jupyterhub/
+cd /opt/jupyterhub/etc/jupyterhub/
+sudo /opt/jupyterhub/bin/jupyterhub --generate-config
+sudo sed -i s/"# c.Spawner.default_url = ''"/"c.Spawner.default_url = '\/lab'"/g jupyterhub_config.py
+
+sudo mkdir -p /opt/jupyterhub/etc/systemd
+PathJupServ=/opt/jupyterhub/etc/systemd/jupyterhub.service
+if [[ $(sudo grep -Ril "\[Unit\]" $PathJupServ) == $PathJupServ ]]; then
+    echo "service file exists: no file created"
+else
+        sudo tee -a $PathJupServ > /dev/null <<EOT
+[Unit]
+Description=JupyterHub
+After=syslog.target network.target
+
+[Service]
+User=root
+Environment="PATH=/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/opt/jupyterhub/bin"
+ExecStart=/opt/jupyterhub/bin/jupyterhub -f /opt/jupyterhub/etc/jupyterhub/jupyterhub_config.py
+
+[Install]
+WantedBy=multi-user.target
+EOT
+fi
+sudo ln -s /opt/jupyterhub/etc/systemd/jupyterhub.service /etc/systemd/system/jupyterhub.service
+sudo systemctl daemon-reload
+#sudo systemctl enable jupyterhub.service
+sudo systemctl start jupyterhub.service
+sudo systemctl status jupyterhub.service
+sudo systemctl stop jupyterhub.service
+
+PathJupDesk=/usr/share/applications/jupyterhub.desktop
+#cd /opt/jupyterhub
+#wget https://upload.wikimedia.org/wikipedia/commons/thumb/3/38/Jupyter_logo.svg/1200px-Jupyter_logo.svg.png
+if [[ $(sudo grep -Ril "\[Desktop\ Entry\]" $PathJupDesk) == $PathJupDesk ]]; then
+        echo "service file exists: no file created"
+else
+        sudo tee -a $PathJupDesk > /dev/null << EOT
+[Desktop Entry]
+Type=Application
+Name=Jupyterhub
+Exec=systemctl start jupyterhub
+Icon=/opt/jupyterhub/share/jupyterhub/static/images/jupyterhub-80.png
+EOT
+fi
+echo "Jupyterhub is installed"
+
+echo "Part 2: Installing conda for the whole system"
+cd ~
+curl https://repo.anaconda.com/pkgs/misc/gpgkeys/anaconda.asc | gpg --dearmor > conda.gpg
+sudo install -o root -g root -m 644 conda.gpg /etc/apt/trusted.gpg.d/
+echo "deb [arch=amd64] https://repo.anaconda.com/pkgs/misc/debrepo/conda stable main" | sudo tee /etc/apt/sources.list.d/conda.list
+rm conda.gpg
+sudo apt update -q
+sudo apt install conda -qq
+sudo ln -s /opt/conda/etc/profile.d/conda.sh /etc/profile.d/conda.sh
+
+sudo mkdir /opt/conda/envs/
+#sudo /opt/conda/bin/conda create --prefix /opt/conda/envs/python python=3.7 ipykernel
+#sudo /opt/conda/envs/python/bin/python -m ipykernel install --prefix=/opt/jupyterhub/ --name 'python' --display-name "Python (default)"
+sudo chown -r cjvanzwol /opt/conda
+/opt/conda/bin/conda init
+
+<<COMMENT
+echo "Installing miniconda3"
 # check if app already is installed
 if [[ -d /opt/miniconda3 ]]
 then
@@ -30,74 +106,12 @@ fi
 # add init to .bashrc
 /opt/miniconda3/bin/conda init
 
-# instalscript is finisched
-echo "Sricpt is finished installing Miniconda"
-
-echo "Installing miniconda"
-cd /opt/miniconda3
-wget https://upload.wikimedia.org/wikipedia/commons/thumb/3/38/Jupyter_logo.svg/1200px-Jupyter_logo.svg.png
-cd ~
-source /opt/miniconda3/bin/activate
 conda config --add channels conda-forge
 
-echo "Installing jupyterhub"
-conda install jupyterhub notebook -y
-jupyterhub --generate-config
-
-PathJupServ=/etc/systemd/system/jupyterhub.service
-
-if [[ $(sudo grep -Ril "\[Unit\]" $PathJupServ) == $PathJupServ ]]; then
-    echo "service file exists: no file created"
-else
-        sudo tee -a $PathJupServ > /dev/null <<EOT
-[Unit]
-Description=JupyterHub
-After=syslog.target network.target
-
-[Service]
-User=root
-Environment="PATH=/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/opt/miniconda3/bin"
-ExecStart=/opt/jupyterhub/bin/jupyterhub -f /opt/miniconda3/etc/jupyterhub/jupyterhub_config.py
-
-[Install]
-WantedBy=multi-user.target
-EOT
-fi
-<< COMMENT
-
-echo "Installing Jupyterlab"
-conda install -c conda-forge jupyterlab
-jupyter notebook --generate-config
-jupyter notebook password
-
-if [[ $(sudo grep -Ril "\[Unit\]" /etc/systemd/system/jupyter.service) == "/etc/systemd/system/jupyter.service" ]]; then
-    echo "service file exists: no file created"
-else
-	sudo tee -a /etc/systemd/system/jupyter.service > /dev/null <<EOT
-
-EOT
-fi
-
-#systemctl enable jupyterhub.service
-sudo systemctl daemon-reload
-
-if [[ $(sudo grep -Ril "\[Desktop\ Entry\]" /usr/share/applications/jupyterlab.desktop) == "/usr/share/applications/jupyterlab.desktop" ]]; then
-        echo "service file exists: no file created"
-else
-	sudo tee -a /usr/share/applications/jupyterlab.desktop > /dev/null << EOT
-[Desktop Entry]
-Type=Application
-Name=Jupyterlab
-Exec=systemctl start jupyter
-Icon=/opt/miniconda3/1200px-Jupyter_logo.svg.png
-EOT
-fi
-
-echo "Installing bash_kernel"
-conda install -c conda-forge bash_kernel
-python -m bash_kernel.install
+# instalscript is finisched
+echo "Sricpt is finished installing Miniconda"
 COMMENT
-cd ~
+
 echo "Jupyterlab is installed"
 
 read -p "Do you want to install extensions en languageservers for Jupyterlab? [y/n] " e
