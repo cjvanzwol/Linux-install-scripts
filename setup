@@ -33,6 +33,7 @@ EOT
 	
 	echo ">> Minimize system with Defoster"
 	sudo debfoster -q
+	sudo apt install bash-completion -qq
 	
 	echo ">> Updating system"
 	sudo apt dist-upgrade -qq
