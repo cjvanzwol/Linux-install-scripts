@@ -5,7 +5,7 @@ echo "Part 1: Installing Jupyterhub"
 echo ">> INSTALLING DEPENDENCIES"
 curl -sL https://deb.nodesource.com/setup_current.x | sudo -E bash -
 sudo apt update -qq
-sudo apt install -qq python3 python3-dev git curl python3-venv nodejs
+sudo apt install -qq python3 python3-dev git curl python3-venv nodejs gcc g++ make
 sudo python3 -m venv /opt/jupyterhub/
 sudo /opt/jupyterhub/bin/python3 -m pip install -q wheel
 sudo /opt/jupyterhub/bin/python3 -m pip install -q jupyterhub jupyterlab
@@ -72,7 +72,8 @@ if [[ $(am) != "anaconda" ]]; then
         else
                 echo "Installling miniconda"
                 echo "NB choose install location /opt/conda"
-                wget -O - https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86_64.sh | sudo bash
+                wget https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86_64.sh
+                sudo bash miniconda3-latest-Linux-x86_64.sh
                 ls -hal
                 echo "Miniconda is geinstalleerd"     
         fi
