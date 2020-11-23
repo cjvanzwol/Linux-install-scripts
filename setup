@@ -33,7 +33,6 @@ EOT
 	#echo ">> Minimize system with Defoster"
 	#sudo apt install debfoster -qq
 	#sudo debfoster -q
-	#sudo apt install bash-completion -qq
 	
 	echo ">> Updating system"
 	sudo apt dist-upgrade -qq
@@ -43,6 +42,7 @@ EOT
 	sudo apt autoremove --purge -qq
 	sudo apt clean -qq
 	sudo apt autoclean -qq
+	sudo apt install bash-completion -qq
 
 	echo "> Base setup DONE"
 else
