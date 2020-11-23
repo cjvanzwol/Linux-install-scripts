@@ -38,11 +38,11 @@ EOT
 	sudo apt dist-upgrade -qq
 	sudo apt upgrade -qq
 
-	echo ">> Cleanup"
-	sudo apt autoremove --purge -qq
-	sudo apt clean -qq
-	sudo apt autoclean -qq
-	sudo apt install bash-completion -qq
+	# echo ">> Cleanup"
+	# sudo apt autoremove --purge -qq
+	# sudo apt clean -qq
+	# sudo apt autoclean -qq
+	# sudo apt install bash-completion -qq
 
 	echo "> Base setup DONE"
 else
