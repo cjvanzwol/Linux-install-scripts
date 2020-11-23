@@ -11,20 +11,20 @@ then
 	OS="ChromeOS"
 	echo "> Setting up Linux for $OS"
 
-	echo ">> Writing list of base-packages to ~/.base-packages"
-	sudo apt list --installed > ~/.base-packages
+# 	echo ">> Writing list of base-packages to ~/.base-packages"
+# 	sudo apt list --installed > ~/.base-packages
 	
-	echo ">> Folowing rules should be added for minimal installation packages"	
-	if [[ $(sudo grep -Ril "APT::" /etc/apt/apt.conf.d/99_norecommends)  == "/etc/apt/apt.conf.d/99_norecommends" ]]; then
-		echo "Rules already in place: no changes made"
-	else
-		sudo tee -a /etc/apt/apt.conf.d/99_norecommends -a > /dev/null <<EOT
-APT::Install-Recommends "false";
-APT::AutoRemove::RecommendsImportant "false";
-APT::AutoRemove::SuggestsImportant "false";
-EOT
-		echo "Rules added to /etc/apt/apt.conf.d/99_norecommends"
-	fi
+# 	echo ">> Folowing rules should be added for minimal installation packages"	
+# 	if [[ $(sudo grep -Ril "APT::" /etc/apt/apt.conf.d/99_norecommends)  == "/etc/apt/apt.conf.d/99_norecommends" ]]; then
+# 		echo "Rules already in place: no changes made"
+# 	else
+# 		sudo tee -a /etc/apt/apt.conf.d/99_norecommends -a > /dev/null <<EOT
+# APT::Install-Recommends "false";
+# APT::AutoRemove::RecommendsImportant "false";
+# APT::AutoRemove::SuggestsImportant "false";
+# EOT
+# 		echo "Rules added to /etc/apt/apt.conf.d/99_norecommends"
+# 	fi
 	
 	echo ">> Installing packages"
 	sudo apt --fix-broken install -qq
