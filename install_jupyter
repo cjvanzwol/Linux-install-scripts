@@ -72,6 +72,8 @@ if [[ $(am) != "anaconda" ]]; then
         else
                 echo "Installling miniconda"
                 echo "NB choose install location /opt/conda"
+                pwd
+                read -p "pauze"
                 wget https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86_64.sh
                 sudo bash miniconda3-latest-Linux-x86_64.sh
                 ls -hal
