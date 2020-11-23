@@ -1,7 +1,6 @@
 #! /bin/sh
 # This script should be run after fresh install
 
-cd ~
 echo "Starting setup"
 sudo apt update -qq
 # check which OS is running
@@ -29,11 +28,12 @@ EOT
 	
 	echo ">> Installing packages"
 	sudo apt --fix-broken install -qq
-	sudo apt install git nano mesa-utils debfoster -qq
+	sudo apt install git nano mesa-utils -qq
 	
-	echo ">> Minimize system with Defoster"
-	sudo debfoster -q
-	sudo apt install bash-completion -qq
+	#echo ">> Minimize system with Defoster"
+	#sudo apt install debfoster -qq
+	#sudo debfoster -q
+	#sudo apt install bash-completion -qq
 	
 	echo ">> Updating system"
 	sudo apt dist-upgrade -qq
