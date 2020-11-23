@@ -1,51 +1,99 @@
 #! /bin/sh 
-cd ~
-source /opt/miniconda3/bin/activate
+source /opt/jupyterhub/bin/activate
+echo "KERNELS"
+read -p "Install bash_kernel? [y/N]" bk
+if [[ $ == "y" ]]; then
+    sudo /opt/jupyterhub/bin/python3 -m pip install -q bash_kernel
+    sudo /opt/jupyterhub/bin/python3 -m bash_kernel.install
+fi
+read -p "Install Javascript? [y/N]" js 
+if [[ $js == "y" ]]; then
+    sudo npm install -g --unsafe-perm ijavascript
+    sudo ijsinstall --install=global
+fi
+read -p "Install Nodejs? [y/N]" nj 
+if [[ $nj == "y" ]]; then
+    source /opt/jupyterhub/bin/activate
+    cd sudo ~
+    sudo git clone https://github.com/notablemind/jupyter-nodejs.git
+    sudo cd jupyter-nodejs
+    sudo mkdir -p ~/.ipython/kernels/nodejs/
+    sudo npm install && sudo node install.js
+    sudo npm run build
+    sudo npm run build-ext
+    sudo jupyter console --kernel nodejs
+fi
 
-echo "Installing bash_kernel"
-conda install -c bash_kernel
-python -m bash_kernel.install
+echo "EXTENSIONS"
+read -p "DEBUG jupyterlab-manager"
+jupyter labextension install --no-build @jupyter-widgets/jupyterlab-manager
+read -p "DEBUG jupyterlab-execute-time"
+jupyter labextension install --no-build jupyterlab-execute-time
+read -p "DEBUG jupyterlab_go_to_definition"
+jupyter labextension install --no-build @krassowski/jupyterlab_go_to_definition
+read -p "DEBUG google-drive"
+jupyter labextension install --no-build @jupyterlab/google-drive
+read -p "DEBUG table of content"
+jupyter labextension install --no-build @jupyterlab/toc
+read -p "DEBUG variableinspector"
+jupyter labextension install --no-build @lckr/jupyterlab_variableinspector
+read -p "DEBUG topbar"
+jupyter labextension install --no-build jupyterlab-topbar-extension jupyterlab-system-monitor jupyterlab-theme-toggle
+read -p "DEBUG spellchecker"
+jupyter labextension install --no-build @ijmbarr/jupyterlab_spellchecker
 
-echo "CONDA INSTALL MODULES"
-conda install -c conda-forge nodejs">=15"
-conda install -c conda-forge pandas matplotlib ipympl ipywidgets jupyterlab-git nb_conda -y
-conda install -c conda-forge voila nbresuse -y
-#conda install -c conda-forge jupyter-lsp jupyter-lsp-python python-language-server jupyterlab_code_formatter black -y
-conda install -c conda-forge xeus-python=0.8.6 ptvsd -y
-echo "INSTALLING LABEXTENSIONS"
-jupyter labextension install --no-build @jupyter-widgets/jupyterlab-manager -y
-jupyter labextension install --no-build jupyterlab-execute-time -y
-jupyter labextension install --no-build @jupyter-voila/jupyterlab-preview -y
-jupyter labextension install --no-build @krassowski/jupyterlab-lsp -y
-jupyter labextension install --no-build @ryantam626/jupyterlab_code_formatter -y
-jupyter labextension install --no-build jupyterlab-drawio -y
-jupyter labextension install --no-build @krassowski/jupyterlab_go_to_definition -y
-jupyter labextension install --no-build @jupyterlab/google-drive -y
+
+
+
+read -p "Install Voila? [y/N]" vv
+if [[ $vv == "y" ]]; then
+    sudo /opt/jupyterhub/bin/python3 -m pip install -y voila
+    jupyter labextension install --no-build @jupyter-voila/jupyterlab-preview
+fi
+read -p "Install Language server? [y/N]" ls
+if [[ $ls == "y" ]]; then
+    sudo /opt/jupyterhub/bin/python3 -m pip install -y jupyter-lsp 
+    jupyter labextension install --no-build @krassowski/jupyterlab-lsp 
+    sudo /opt/jupyterhub/bin/python3 -m pip install -y python-language-server[all]
+    read -p  "bash lps"
+    sudo pm install --save-dev bash-language-server -y
+    read -p  "javascript lps"
+    sudo npm install --save-dev javascript-typescript-langserver -y
+    read -p  "unified lps"
+    sudo npm install --save-dev unified-language-server -y
+    read -p  "css lps"
+    sudo npm install --save-dev vscode-css-languageserver-bin -y
+    read -p  "html lps"
+    sudo npm install --save-dev vscode-html-languageserver-bin -y
+    read -p  "json lps"
+    sudo npm install --save-dev vscode-json-languageserver-bin -y
+    read -p  "sql lps"
+    sudo npm install --save-dev sql-language-server -y 
+fi
+read -p "Install Code Formatter? [y/N]" cf
+if [[ $cf == "y" ]]; then
+    jupyter labextension install --no-build @ryantam626/jupyterlab_code_formatter
+    sudo /opt/jupyterhub/bin/python3 -m pip install -y jupyterlab_code_formatter
+    jupyter serverextension enable --py jupyterlab_code_formatter black # autopep8 yapf isort
+fi
+read -p "Install Debugger? [y/N]" db
+if [[ $db == "y" ]]; then
+    sudo /opt/jupyterhub/bin/python3 -m pip install -y xeus-python ptvsd
+    jupyter labextension install --no-build @jupyterlab/debugger
+fi
+
+echo "THEMES"
+read -p "DEBUG dracula"
 jupyter labextension install --no-build @telamonian/theme-darcula -y
-jupyter labextension install --no-build @jupyterlab/toc -y
-jupyter labextension install --no-build @lckr/jupyterlab_variableinspector -y
-jupyter labextension install --no-build jupyterlab-topbar-extension -y
-jupyter labextension install --no-build jupyterlab-system-monitor -y
-jupyter labextension install --no-build jupyterlab-theme-toggle -y
-jupyter labextension install --no-build @ijmbarr/jupyterlab_spellchecker -y
-jupyter labextension install --no-build @jupyterlab/debugger -y
-echo "NPM INSTALLING PACKAGES"
-echo "bash lps"
-npm install --save-dev bash-language-server -y
-echo "javascript lps"
-npm install --save-dev javascript-typescript-langserver -y
-#echo "sql lps"
-#npm install --save-dev sql-language-server -y 
-echo "unified lps"
-npm install --save-dev unified-language-server -y
-echo "css lps"
-npm install --save-dev vscode-css-languageserver-bin -y
-echo "html lps"
-npm install --save-dev vscode-html-languageserver-bin -y
-echo "json lps"
-npm install --save-dev vscode-json-languageserver-bin -y
-#echo "serverextension enable
-#jupyter serverextension enable --py jupyterlab_code_formatter
+
+<< COMMENT
+read -p "Install ...? [y/N]" 
+if [[ $ == "y" ]]; then
+    sudo /opt/jupyterhub/bin/python3 -m pip install -y 
+fi
+COMMENT
+
 echo "BUILDING JUPYTER LAB"
 jupyter lab build --dev-build=False --minimize=False
+source /opt/jupyterhub/bin/dectivate
 sudo systemctl restart jupyter

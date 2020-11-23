@@ -2,16 +2,16 @@
 ## Installscript for miniconda
 
 echo "Part 1: Installing Jupyterhub"
-sudo apt update -qq
-sudo apt install python3 python3-dev git curl python3-venv -qq
-sudo python3 -m venv /opt/jupyterhub/
-sudo /opt/jupyterhub/bin/python3 -m pip install wheel
-sudo /opt/jupyterhub/bin/python3 -m pip install jupyterhub jupyterlab
-sudo /opt/jupyterhub/bin/python3 -m pip install ipywidgets
-#sudo apt install nodejs npm
+echo ">> INSTALLING DEPENDENCIES"
 curl -sL https://deb.nodesource.com/setup_current.x | sudo -E bash -
-sudo apt install nodejs -qq
+sudo apt update -qq
+sudo apt install python3 python3-dev git curl python3-venv nodejs -qq
+sudo python3 -m venv /opt/jupyterhub/
+sudo /opt/jupyterhub/bin/python3 -m pip install -q wheel
+sudo /opt/jupyterhub/bin/python3 -m pip install -q jupyterhub jupyterlab
+sudo /opt/jupyterhub/bin/python3 -m pip install -q -r requirements.txt ipywidgets
 sudo npm install -g configurable-http-proxy
+echo ">> INSTALLING JUPYTERHUB"
 sudo mkdir -p /opt/jupyterhub/etc/jupyterhub/
 cd /opt/jupyterhub/etc/jupyterhub/
 sudo /opt/jupyterhub/bin/jupyterhub --generate-config
@@ -38,10 +38,10 @@ EOT
 fi
 sudo ln -s /opt/jupyterhub/etc/systemd/jupyterhub.service /etc/systemd/system/jupyterhub.service
 sudo systemctl daemon-reload
-#sudo systemctl enable jupyterhub.service
-sudo systemctl start jupyterhub.service
-sudo systemctl status jupyterhub.service
-sudo systemctl stop jupyterhub.service
+sudo systemctl enable jupyterhub.service
+#sudo systemctl start jupyterhub.service
+#sudo systemctl status jupyterhub.service
+#sudo systemctl stop jupyterhub.service
 
 PathJupDesk=/usr/share/applications/jupyterhub.desktop
 #cd /opt/jupyterhub
@@ -55,64 +55,47 @@ Type=Application
 Name=Jupyterhub
 Exec=systemctl start jupyterhub
 Icon=/opt/jupyterhub/share/jupyterhub/static/images/jupyterhub-80.png
+User=root
 EOT
 fi
 echo "Jupyterhub is installed"
 
 echo "Part 2: Installing conda for the whole system"
-cd ~
-curl https://repo.anaconda.com/pkgs/misc/gpgkeys/anaconda.asc | gpg --dearmor > conda.gpg
-sudo install -o root -g root -m 644 conda.gpg /etc/apt/trusted.gpg.d/
-echo "deb [arch=amd64] https://repo.anaconda.com/pkgs/misc/debrepo/conda stable main" | sudo tee /etc/apt/sources.list.d/conda.list
-rm conda.gpg
-sudo apt update -q
-sudo apt install conda -qq
-sudo ln -s /opt/conda/etc/profile.d/conda.sh /etc/profile.d/conda.sh
+read -p "Install Anaconda of Miniconda? (miniconda is deafault) [anaconda/miniconda] " am
+if [[ $(am) != "anaconda" ]]; then
+        echo "Installing miniconda3"
+        # check if app already is installed
+        if [[ -d /opt/conda ]]
+        then
+                echo "It seems (mini/ana)conda is alreay installed in /opt. Please update from application."
+                echo "Skipping download and install"
+        else
+                echo "Installling miniconda"
+                echo "NB choose install location /opt/conda"
+                curl -sL https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86_64.sh | sudo -E bash -
+                echo "Miniconda is geinstalleerd"     
+        fi
 
-sudo mkdir /opt/conda/envs/
-#sudo /opt/conda/bin/conda create --prefix /opt/conda/envs/python python=3.7 ipykernel
-#sudo /opt/conda/envs/python/bin/python -m ipykernel install --prefix=/opt/jupyterhub/ --name 'python' --display-name "Python (default)"
-sudo chown -r cjvanzwol /opt/conda
-/opt/conda/bin/conda init
+        conda config --add channels conda-forge
 
-<<COMMENT
-echo "Installing miniconda3"
-# check if app already is installed
-if [[ -d /opt/miniconda3 ]]
-then
-    echo "It seems miniconda3 is alreay installed in /opt. Pleas update from application."
-    echo "Skipping download and install"
+        # instalscript is finisched
+        echo "Sricpt is finished installing Miniconda"
 else
-    echo "Installling miniconda"
-    # update system and install dependendies
-    sudo apt update && sudo apt install wget -y && sudo apt upgrade wget -y
-    
-    # download miniconda
-    cd ~
-    wget https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86_64.sh
-    
-    # install miniconda
-    sudo bash Miniconda3-latest-Linux-x86_64.sh
-    echo "Miniconda is geinstalleerd"
-    # change owner of /opt/miniconda3 fo user
-    sudo chown -R $(logname) /opt/miniconda3
-    
-    # clean up
-    cd ~
-    rm Miniconda3-latest-Linux-x86_64.sh
-        
+        curl https://repo.anaconda.com/pkgs/misc/gpgkeys/anaconda.asc | gpg --dearmor > conda.gpg
+        sudo install -o root -g root -m 644 conda.gpg /etc/apt/trusted.gpg.d/
+        echo "deb [arch=amd64] https://repo.anaconda.com/pkgs/misc/debrepo/conda stable main" | sudo tee /etc/apt/sources.list.d/conda.list
+        rm conda.gpg
+        sudo apt update -qq
+        sudo apt install conda -qq
+        sudo ln -s /opt/conda/etc/profile.d/conda.sh /etc/profile.d/conda.sh
 fi
 
-# add init to .bashrc
-/opt/miniconda3/bin/conda init
-
-conda config --add channels conda-forge
-
-# instalscript is finisched
-echo "Sricpt is finished installing Miniconda"
-COMMENT
-
-echo "Jupyterlab is installed"
+sudo mkdir /opt/conda/envs/
+sudo chown -r @USER /opt/conda
+/opt/conda/bin/conda init # add init to .bashrc for user
+sudo /opt/conda/bin/conda init # add init to .bashrc for root
+fi
+echo "Conda is installed"
 
 read -p "Do you want to install extensions en languageservers for Jupyterlab? [y/n] " e
 if [ $e != "y" ]; then

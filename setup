@@ -33,6 +33,7 @@ EOT
 	
 	echo ">> Minimize system with Defoster"
 	sudo debfoster -q
+	sudo apt install bash-completion -qq
 	
 	echo ">> Updating system"
 	sudo apt dist-upgrade -qq
@@ -55,7 +56,7 @@ echo "Installing packages"
 cd ~/Linux-install-scripts
 if [ $OS == "ChromeOS" ]
 then
-	echo "no specific CHromeOS packages added" # add ChromeOS specific packages
+	read -p "Do you want to install GIMP? [y/n] " g
 else
 	read -p "Do you want to install NFS-client? [y/n] " n
 	read -p "Do you want to install SMB-server? [y/n] " s
@@ -73,6 +74,10 @@ fi
 if [[ $j == "y" ]]; then
         source ./install_jupyter
 	echo "JUPYTER DONE"
+fi
+if [[ $g == "y" ]]; then
+        sudo apt install gimp
+	echo "GIMP DONE"
 fi
 
 echo "Setup and installs are DONE. Exitting now."
