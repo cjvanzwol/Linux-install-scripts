@@ -79,7 +79,7 @@ if [[ $(am) != "anaconda" ]]; then
                 echo "Miniconda is geinstalleerd"     
         fi
 
-        conda config --add channels conda-forge
+        /opt/conda/bin/conda config --add channels conda-forge
 
         # instalscript is finisched
         echo "Sricpt is finished installing Miniconda"
