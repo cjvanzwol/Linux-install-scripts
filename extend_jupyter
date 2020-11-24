@@ -6,23 +6,24 @@ if [[ $ == "y" ]]; then
     sudo /opt/jupyterhub/bin/python3 -m pip install -q bash_kernel
     sudo /opt/jupyterhub/bin/python3 -m bash_kernel.install
 fi
-read -p "Install Javascript? [y/N]" js 
-if [[ $js == "y" ]]; then
-    sudo npm install -g --unsafe-perm ijavascript
-    sudo ijsinstall --install=global
-fi
-read -p "Install Nodejs? [y/N]" nj 
-if [[ $nj == "y" ]]; then
-    source /opt/jupyterhub/bin/activate
-    cd sudo ~
-    sudo git clone https://github.com/notablemind/jupyter-nodejs.git
-    sudo cd jupyter-nodejs
-    sudo mkdir -p ~/.ipython/kernels/nodejs/
-    sudo npm install && sudo node install.js
-    sudo npm run build
-    sudo npm run build-ext
-    sudo jupyter console --kernel nodejs
-fi
+# read -p "Install Javascript? [y/N]" js 
+# if [[ $js == "y" ]]; then
+#     sudo npm install -g --unsafe-perm ijavascript
+#     sudo ijsinstall --install=global
+#fi
+
+# read -p "Install Nodejs? [y/N]" nj 
+# if [[ $nj == "y" ]]; then
+#     source /opt/jupyterhub/bin/activate
+#     cd sudo ~
+#     sudo git clone https://github.com/notablemind/jupyter-nodejs.git
+#     sudo cd jupyter-nodejs
+#     sudo mkdir -p ~/.ipython/kernels/nodejs/
+#     sudo npm install && sudo node install.js
+#     sudo npm run build
+#     sudo npm run build-ext
+#     sudo jupyter console --kernel nodejs
+# fi
 
 echo "EXTENSIONS"
 read -p "DEBUG jupyterlab-manager"
