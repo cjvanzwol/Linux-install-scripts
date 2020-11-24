@@ -11,6 +11,7 @@ if [[ -d /opt/jupyterhub ]]; then
         echo "It seems Jupyterhub is alreay installed in /opt. Please update from application."
         echo "Skipping download and install"
 else
+        echo "INstalling Jupyterhub"
         sudo python3 -m venv /opt/jupyterhub/
         sudo /opt/jupyterhub/bin/python3 -m pip install -q wheel
         sudo /opt/jupyterhub/bin/python3 -m pip install -q jupyterhub jupyterlab
