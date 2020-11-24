@@ -62,6 +62,7 @@ Exec=systemctl start jupyterhub
 Icon=/opt/jupyterhub/share/jupyterhub/static/images/jupyterhub-80.png
 User=root
 EOT
+                sudo chown -R $USER /opt/jupyterhub
                 echo "Jupyterhub is installed"
         fi
 fi
@@ -96,7 +97,7 @@ else
         sudo ln -s /opt/conda/etc/profile.d/conda.sh /etc/profile.d/conda.sh
 fi
 
-sudo chown -R @USER /opt/conda
+sudo chown -R $USER /opt/conda
 mkdir /opt/conda/envs/
 ls -hal /opt/conda/envs
 /opt/conda/bin/conda config --add channels conda-forge

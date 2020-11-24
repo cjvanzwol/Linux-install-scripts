@@ -1,5 +1,7 @@
 #! /bin/sh 
+echo $VIRTUAL_ENV
 source /opt/jupyterhub/bin/activate
+echo $VIRTUAL_ENV
 echo "KERNELS"
 read -p "Install bash_kernel? [y/N]" bk
 if [[ $ == "y" ]]; then
@@ -26,65 +28,50 @@ fi
 # fi
 
 echo "EXTENSIONS"
-read -p "DEBUG jupyterlab-manager"
-jupyter labextension install --no-build @jupyter-widgets/jupyterlab-manager
-read -p "DEBUG jupyterlab-execute-time"
-jupyter labextension install --no-build jupyterlab-execute-time
-read -p "DEBUG jupyterlab_go_to_definition"
-jupyter labextension install --no-build @krassowski/jupyterlab_go_to_definition
-read -p "DEBUG google-drive"
-jupyter labextension install --no-build @jupyterlab/google-drive
-read -p "DEBUG table of content"
-jupyter labextension install --no-build @jupyterlab/toc
-read -p "DEBUG variableinspector"
-jupyter labextension install --no-build @lckr/jupyterlab_variableinspector
-read -p "DEBUG topbar"
-jupyter labextension install --no-build jupyterlab-topbar-extension jupyterlab-system-monitor jupyterlab-theme-toggle
-read -p "DEBUG spellchecker"
-jupyter labextension install --no-build @ijmbarr/jupyterlab_spellchecker
-
-
-
+jupyter labextension install --no-build \
+    @jupyter-widgets/jupyterlab-manager \
+    jupyterlab-execute-time \
+    @krassowski/jupyterlab_go_to_definition \
+    @jupyterlab/google-drive \
+    @jupyterlab/toc \
+    @lckr/jupyterlab_variableinspector \
+    jupyterlab-topbar-extension jupyterlab-system-monitor jupyterlab-theme-toggle \
+    @ijmbarr/jupyterlab_spellchecker
 
 read -p "Install Voila? [y/N]" vv
 if [[ $vv == "y" ]]; then
-    sudo /opt/jupyterhub/bin/python3 -m pip install -y voila
+    sudo /opt/jupyterhub/bin/python3 -m pip install voila
     jupyter labextension install --no-build @jupyter-voila/jupyterlab-preview
 fi
 read -p "Install Language server? [y/N]" ls
 if [[ $ls == "y" ]]; then
-    sudo /opt/jupyterhub/bin/python3 -m pip install -y jupyter-lsp 
+    sudo /opt/jupyterhub/bin/python3 -m pip install jupyter-lsp 
     jupyter labextension install --no-build @krassowski/jupyterlab-lsp 
-    sudo /opt/jupyterhub/bin/python3 -m pip install -y python-language-server[all]
+    sudo /opt/jupyterhub/bin/python3 -m pip install python-language-server[all]
     read -p  "bash lps"
-    sudo pm install --save-dev bash-language-server -y
-    read -p  "javascript lps"
-    sudo npm install --save-dev javascript-typescript-langserver -y
-    read -p  "unified lps"
-    sudo npm install --save-dev unified-language-server -y
-    read -p  "css lps"
-    sudo npm install --save-dev vscode-css-languageserver-bin -y
-    read -p  "html lps"
-    sudo npm install --save-dev vscode-html-languageserver-bin -y
-    read -p  "json lps"
-    sudo npm install --save-dev vscode-json-languageserver-bin -y
-    read -p  "sql lps"
-    sudo npm install --save-dev sql-language-server -y 
+    sudo npm install --save-dev -y \
+        bash-language-server \
+        javascript-typescript-langserver \
+        unified-language-server \
+        vscode-css-languageserver-bin \
+        vscode-html-languageserver-bin \
+        vscode-json-languageserver-bin
 fi
 read -p "Install Code Formatter? [y/N]" cf
 if [[ $cf == "y" ]]; then
-    jupyter labextension install --no-build @ryantam626/jupyterlab_code_formatter
-    sudo /opt/jupyterhub/bin/python3 -m pip install -y jupyterlab_code_formatter
-    jupyter serverextension enable --py jupyterlab_code_formatter black # autopep8 yapf isort
+    jupyter labextension install --no-build @ryantam626/jupyterlab_code_formatter black #autopep8 yapf isort
+    sudo /opt/jupyterhub/bin/python3 -m pip install jupyterlab-code-formatter
+    echo $VIRTUAL_ENV
+    jupyter serverextension enable --py jupyterlab_code_formatter
 fi
 read -p "Install Debugger? [y/N]" db
 if [[ $db == "y" ]]; then
-    sudo /opt/jupyterhub/bin/python3 -m pip install -y xeus-python ptvsd
+    sudo /opt/jupyterhub/bin/python3 -m pip install xeus-python ptvsd
     jupyter labextension install --no-build @jupyterlab/debugger
 fi
 
 echo "THEMES"
-read -p "DEBUG dracula"
+echo "dracula"
 jupyter labextension install --no-build @telamonian/theme-darcula -y
 
 << COMMENT
@@ -96,5 +83,7 @@ COMMENT
 
 echo "BUILDING JUPYTER LAB"
 jupyter lab build --dev-build=False --minimize=False
+echo $VIRTUAL_ENV
 source /opt/jupyterhub/bin/dectivate
+echo $VIRTUAL_ENV
 sudo systemctl restart jupyter
