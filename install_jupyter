@@ -5,7 +5,7 @@ echo "Part 1: Installing Jupyterhub"
 echo ">> INSTALLING DEPENDENCIES"
 curl -sL https://deb.nodesource.com/setup_current.x | sudo -E bash -
 sudo apt update -qq
-sudo apt install -qq python3 python3-dev git curl python3-venv nodejs gcc g++ make
+sudo apt install -y python3 python3-dev git curl python3-venv nodejs gcc g++ make
 echo ">> INSTALLING JUPYTERHUB"
 if [[ -d /opt/jupyterhub ]]; then
         echo "It seems Jupyterhub is alreay installed in /opt. Please update from application."
