@@ -27,7 +27,7 @@ then
 # 	fi
 	
 	echo ">> Installing packages"
-	sudo apt --fix-broken install -qq
+	sudo apt --fix-broken install -y
 	sudo apt install git nano mesa-utils -qq
 	
 	#echo ">> Minimize system with Defoster"
