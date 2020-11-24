@@ -62,7 +62,7 @@ echo "Jupyterhub is installed"
 
 echo "Part 2: Installing conda for the whole system"
 read -p "Install Anaconda of Miniconda? (miniconda is deafault) [anaconda/miniconda] " am
-if [[ $(am) != "anaconda" ]]; then
+if [[ $am != "anaconda" ]]; then
         echo "Installing miniconda3"
         # check if app already is installed
         if [[ -d /opt/conda ]]
@@ -78,9 +78,6 @@ if [[ $(am) != "anaconda" ]]; then
                 ls -hal
                 echo "Miniconda is geinstalleerd"     
         fi
-
-        /opt/conda/bin/conda config --add channels conda-forge
-
         # instalscript is finisched
         echo "Sricpt is finished installing Miniconda"
 else
@@ -93,11 +90,13 @@ else
         sudo ln -s /opt/conda/etc/profile.d/conda.sh /etc/profile.d/conda.sh
 fi
 
-sudo mkdir /opt/conda/envs/
-sudo chown -r @USER /opt/conda
+sudo chown -R @USER /opt/conda
+mkdir /opt/conda/envs/
+ls -hal /opt/conda/envs
+/opt/conda/bin/conda config --add channels conda-forge
 /opt/conda/bin/conda init # add init to .bashrc for user
 sudo /opt/conda/bin/conda init # add init to .bashrc for root
-fi
+
 echo "Conda is installed"
 
 read -p "Do you want to install extensions en languageservers for Jupyterlab? [y/n] " e
