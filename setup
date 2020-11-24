@@ -35,7 +35,7 @@ then
 	#sudo debfoster -q
 	
 	echo ">> Updating system"
-	sudo apt dist-upgrade -qq
+	sudo apt dist-upgrade -y
 	sudo apt upgrade -qq
 
 	# echo ">> Cleanup"
