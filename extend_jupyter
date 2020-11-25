@@ -2,7 +2,7 @@
 source /opt/jupyterhub/bin/activate
 
 echo "KERNELS"
-echo "Installing bash_kerne?"
+echo "Installing bash_kernel"
 sudo /opt/jupyterhub/bin/python3 -m pip install -q bash_kernel
 sudo /opt/jupyterhub/bin/python3 -m bash_kernel.install
 
