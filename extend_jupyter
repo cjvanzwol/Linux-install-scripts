@@ -78,7 +78,5 @@ COMMENT
 
 echo "BUILDING JUPYTER LAB"
 jupyter lab build --dev-build=False --minimize=False
-echo $VIRTUAL_ENV
-source /opt/jupyterhub/bin/deactivate
-echo $VIRTUAL_ENV
+deactivate
 sudo systemctl restart jupyter
