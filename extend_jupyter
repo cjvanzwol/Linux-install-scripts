@@ -28,6 +28,7 @@ sudo /opt/jupyterhub/bin/python3 -m bash_kernel.install
 # fi
 
 echo "EXTENSIONS"
+sudo /opt/jupyterhub/bin/python3 -m pip install -q voila
 jupyter labextension install --no-build \
     @jupyter-widgets/jupyterlab-manager \
     jupyterlab-execute-time \
@@ -36,18 +37,14 @@ jupyter labextension install --no-build \
     @jupyterlab/toc \
     @lckr/jupyterlab_variableinspector \
     jupyterlab-topbar-extension jupyterlab-system-monitor jupyterlab-theme-toggle \
-    @ijmbarr/jupyterlab_spellchecker
-
-echo "Installing Voila"
-sudo /opt/jupyterhub/bin/python3 -m pip install -q voila
-jupyter labextension install --no-build @jupyter-voila/jupyterlab-preview
+    @ijmbarr/jupyterlab_spellchecker \
+    @jupyter-voila/jupyterlab-preview
 
 read -p "Install Language server? [y/N]" ls
 if [[ $ls == "y" ]]; then
     sudo /opt/jupyterhub/bin/python3 -m pip install -q jupyter-lsp 
     jupyter labextension install --no-build @krassowski/jupyterlab-lsp 
     sudo /opt/jupyterhub/bin/python3 -m pip install -q python-language-server[all]
-    read -p  "bash lps"
     sudo npm install --save-dev -y \
         bash-language-server \
         javascript-typescript-langserver \
@@ -58,14 +55,13 @@ if [[ $ls == "y" ]]; then
 fi
 read -p "Install Code Formatter? [y/N]" cf
 if [[ $cf == "y" ]]; then
-    jupyter labextension install --no-build @ryantam626/jupyterlab_code_formatter
+    jupyter labextension install -q --no-build @ryantam626/jupyterlab_code_formatter
     sudo /opt/jupyterhub/bin/python3 -m pip install jupyterlab-code-formatter autopep8 #black yapf isort
-    echo $VIRTUAL_ENV
     sudo /opt/jupyterhub/bin/jupyter serverextension enable --py jupyterlab_code_formatter
 fi
 read -p "Install Debugger? [y/N]" db
 if [[ $db == "y" ]]; then
-    sudo /opt/jupyterhub/bin/python3 -m pip install xeus-python ptvsd
+    sudo /opt/jupyterhub/bin/python3 -m pip install -q ptvsd #xeus-python #10
     jupyter labextension install --no-build @jupyterlab/debugger
 fi
 
