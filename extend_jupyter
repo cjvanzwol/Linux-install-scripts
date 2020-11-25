@@ -38,7 +38,7 @@ jupyter labextension install --no-build \
     jupyterlab-topbar-extension jupyterlab-system-monitor jupyterlab-theme-toggle \
     @ijmbarr/jupyterlab_spellchecker
 
-echo "Install Voila?"
+echo "Installing Voila"
 sudo /opt/jupyterhub/bin/python3 -m pip install -q voila
 jupyter labextension install --no-build @jupyter-voila/jupyterlab-preview
 
@@ -58,8 +58,8 @@ if [[ $ls == "y" ]]; then
 fi
 read -p "Install Code Formatter? [y/N]" cf
 if [[ $cf == "y" ]]; then
-    jupyter labextension install --no-build @ryantam626/jupyterlab_code_formatter autopep8 #black yapf isort
-    sudo /opt/jupyterhub/bin/python3 -m pip install jupyterlab-code-formatter
+    jupyter labextension install --no-build @ryantam626/jupyterlab_code_formatter
+    sudo /opt/jupyterhub/bin/python3 -m pip install jupyterlab-code-formatter autopep8 #black yapf isort
     echo $VIRTUAL_ENV
     sudo /opt/jupyterhub/bin/jupyter serverextension enable --py jupyterlab_code_formatter
 fi
