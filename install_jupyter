@@ -45,7 +45,7 @@ EOT
         sudo ln -s /opt/jupyterhub/etc/systemd/jupyterhub.service /etc/systemd/system/jupyterhub.service
         sudo systemctl daemon-reload
         sudo systemctl enable jupyterhub.service
-        #sudo systemctl start jupyterhub.service
+        sudo systemctl start jupyterhub.service
         #sudo systemctl status jupyterhub.service
         #sudo systemctl stop jupyterhub.service
 
@@ -108,6 +108,8 @@ ls -hal /opt/conda/envs
 sudo /opt/conda/bin/conda init # add init to .bashrc for root
 
 echo "Conda is installed"
+echo "Restarting Jupyterhub"
+sudo systemctl restart jupyterhub.service
 
 read -p "Do you want to install extensions en languageservers for Jupyterlab? [y/n] " e
 if [ $e != "y" ]; then
