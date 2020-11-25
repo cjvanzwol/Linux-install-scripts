@@ -11,7 +11,7 @@ if [[ -d /opt/jupyterhub ]]; then
         echo "It seems Jupyterhub is alreay installed in /opt. Please update from application."
         echo "Skipping download and install"
 else
-        echo "INstalling Jupyterhub"
+        echo "Installing Jupyterhub"
         sudo python3 -m venv /opt/jupyterhub/
         sudo /opt/jupyterhub/bin/python3 -m pip install -q wheel
         sudo /opt/jupyterhub/bin/python3 -m pip install -q jupyterhub jupyterlab
@@ -27,6 +27,7 @@ else
         if [[ $(sudo grep -Ril "\[Unit\]" $PathJupServ) == $PathJupServ ]]; then
                 echo "service file exists: no file created"
         else
+                echo "File will be created at: $PathJupServ"
                 sudo tee -a $PathJupServ > /dev/null <<EOT
 [Unit]
 Description=JupyterHub
@@ -54,6 +55,7 @@ EOT
         if [[ $(sudo grep -Ril "\[Desktop\ Entry\]" $PathJupDesk) == $PathJupDesk ]]; then
                 echo "service file exists: no file created"
         else
+                echo "File will be created at: $PathJupDesk"
                 sudo tee -a $PathJupDesk > /dev/null << EOT
 [Desktop Entry]
 Type=Application
@@ -63,6 +65,7 @@ Icon=/opt/jupyterhub/share/jupyterhub/static/images/jupyterhub-80.png
 User=root
 EOT
                 sudo chown -R $USER /opt/jupyterhub
+                # #2
                 echo "Jupyterhub is installed"
         fi
 fi
@@ -78,7 +81,7 @@ if [[ $am != "anaconda" ]]; then
                 echo "Skipping download and install"
         else
                 echo "Installling miniconda"
-                echo "NB choose install location /opt/conda"
+                echo "NB choose install location /opt/conda" #7 #8
                 cd ~
                 wget https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86_64.sh
                 sudo bash Miniconda3-latest-Linux-x86_64.sh

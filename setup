@@ -76,7 +76,8 @@ if [[ $j == "y" ]]; then
 	echo "JUPYTER DONE"
 fi
 if [[ $g == "y" ]]; then
-        sudo apt install gimp
+	echo "Installing Gimp"
+        sudo apt install -qq gimp
 	echo "GIMP DONE"
 fi
 

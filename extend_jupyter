@@ -1,19 +1,19 @@
 #! /bin/sh 
-echo $VIRTUAL_ENV
 source /opt/jupyterhub/bin/activate
-echo $VIRTUAL_ENV
+
 echo "KERNELS"
-read -p "Install bash_kernel? [y/N]" bk
-if [[ $ == "y" ]]; then
-    sudo /opt/jupyterhub/bin/python3 -m pip install -q bash_kernel
-    sudo /opt/jupyterhub/bin/python3 -m bash_kernel.install
-fi
+echo "Installing bash_kerne?"
+sudo /opt/jupyterhub/bin/python3 -m pip install -q bash_kernel
+sudo /opt/jupyterhub/bin/python3 -m bash_kernel.install
+
+# #4
 # read -p "Install Javascript? [y/N]" js 
 # if [[ $js == "y" ]]; then
 #     sudo npm install -g --unsafe-perm ijavascript
 #     sudo ijsinstall --install=global
 #fi
 
+# #5
 # read -p "Install Nodejs? [y/N]" nj 
 # if [[ $nj == "y" ]]; then
 #     source /opt/jupyterhub/bin/activate
@@ -38,16 +38,15 @@ jupyter labextension install --no-build \
     jupyterlab-topbar-extension jupyterlab-system-monitor jupyterlab-theme-toggle \
     @ijmbarr/jupyterlab_spellchecker
 
-read -p "Install Voila? [y/N]" vv
-if [[ $vv == "y" ]]; then
-    sudo /opt/jupyterhub/bin/python3 -m pip install voila
-    jupyter labextension install --no-build @jupyter-voila/jupyterlab-preview
-fi
+echo "Install Voila?"
+sudo /opt/jupyterhub/bin/python3 -m pip install -q voila
+jupyter labextension install --no-build @jupyter-voila/jupyterlab-preview
+
 read -p "Install Language server? [y/N]" ls
 if [[ $ls == "y" ]]; then
-    sudo /opt/jupyterhub/bin/python3 -m pip install jupyter-lsp 
+    sudo /opt/jupyterhub/bin/python3 -m pip install -q jupyter-lsp 
     jupyter labextension install --no-build @krassowski/jupyterlab-lsp 
-    sudo /opt/jupyterhub/bin/python3 -m pip install python-language-server[all]
+    sudo /opt/jupyterhub/bin/python3 -m pip install -q python-language-server[all]
     read -p  "bash lps"
     sudo npm install --save-dev -y \
         bash-language-server \
@@ -59,10 +58,10 @@ if [[ $ls == "y" ]]; then
 fi
 read -p "Install Code Formatter? [y/N]" cf
 if [[ $cf == "y" ]]; then
-    jupyter labextension install --no-build @ryantam626/jupyterlab_code_formatter black #autopep8 yapf isort
+    jupyter labextension install --no-build @ryantam626/jupyterlab_code_formatter autopep8 #black yapf isort
     sudo /opt/jupyterhub/bin/python3 -m pip install jupyterlab-code-formatter
     echo $VIRTUAL_ENV
-    jupyter serverextension enable --py jupyterlab_code_formatter
+    sudo /opt/jupyterhub/bin/jupyter serverextension enable --py jupyterlab_code_formatter
 fi
 read -p "Install Debugger? [y/N]" db
 if [[ $db == "y" ]]; then
