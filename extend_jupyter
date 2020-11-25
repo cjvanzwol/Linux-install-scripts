@@ -79,4 +79,4 @@ COMMENT
 echo "BUILDING JUPYTER LAB"
 jupyter lab build --dev-build=False --minimize=False
 deactivate
-sudo systemctl restart jupyter
+sudo systemctl restart jupyterhub
