@@ -1,6 +1,8 @@
 #! /bin/sh
 ## Installscript for miniconda
 
+PathScripts=~/Linux-install-scripts
+
 echo "Part 1: Installing Jupyterhub"
 echo ">> INSTALLING DEPENDENCIES"
 curl -sL https://deb.nodesource.com/setup_current.x | sudo -E bash -
@@ -15,7 +17,7 @@ else
         sudo python3 -m venv /opt/jupyterhub/
         sudo /opt/jupyterhub/bin/python3 -m pip install -q wheel
         sudo /opt/jupyterhub/bin/python3 -m pip install -q jupyterhub jupyterlab
-        sudo /opt/jupyterhub/bin/python3 -m pip install -q -r requirements.txt ipywidgets
+        sudo /opt/jupyterhub/bin/python3 -m pip install -q -r $PathScripts/requirements.txt
         sudo npm install -g configurable-http-proxy
         sudo mkdir -p /opt/jupyterhub/etc/jupyterhub/
         cd /opt/jupyterhub/etc/jupyterhub/
@@ -65,6 +67,8 @@ Icon=/opt/jupyterhub/share/jupyterhub/static/images/jupyterhub-80.png
 User=root
 EOT
                 sudo chown -R $USER /opt/jupyterhub
+                sudo mkdir -p /usr/local/share/jupyter/kernels
+                sudo chown -R $USER /usr/local/share/jupyter/kernels
                 # #2
                 echo "Jupyterhub is installed"
         fi
