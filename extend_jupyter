@@ -55,8 +55,9 @@ if [[ $ls == "y" ]]; then
 fi
 read -p "Install Code Formatter? [y/N]" cf
 if [[ $cf == "y" ]]; then
+    sudo /opt/jupyterhub/bin/python3 -m pip install -q jupyterlab-code-formatter 
     jupyter labextension install -y --no-build @ryantam626/jupyterlab_code_formatter
-    sudo /opt/jupyterhub/bin/python3 -m pip install -q jupyterlab-code-formatter autopep8 #black yapf isort
+    sudo /opt/jupyterhub/bin/python3 -m pip install -q autopep8 #black yapf isort
     sudo /opt/jupyterhub/bin/jupyter serverextension enable --py jupyterlab_code_formatter
 fi
 read -p "Install Debugger? [y/N]" db
