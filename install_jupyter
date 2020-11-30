@@ -22,6 +22,7 @@ else
         sudo mkdir -p /opt/jupyterhub/etc/jupyterhub/
         cd /opt/jupyterhub/etc/jupyterhub/
         sudo /opt/jupyterhub/bin/jupyterhub --generate-config
+        cd /opt/jupyterhub/bin/jupyterhub
         sudo sed -i s/"# c.Spawner.default_url = ''"/"c.Spawner.default_url = '\/lab'"/g jupyterhub_config.py
 
         sudo mkdir -p /opt/jupyterhub/etc/systemd
@@ -73,6 +74,7 @@ EOT
                 echo "Jupyterhub is installed"
         fi
 fi
+
 
 echo "Part 2: Installing conda for the whole system"
 read -p "Install Anaconda of Miniconda? (miniconda is deafault) [anaconda/miniconda] " am

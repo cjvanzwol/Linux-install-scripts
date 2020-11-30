@@ -2,7 +2,7 @@
 # This script should be run after fresh install
 
 echo "Starting setup"
-sudo apt update -qq
+#sudo apt update -qq
 # check which OS is running
 OS=$(uname -a)
 echo "System: $OS"
@@ -26,6 +26,9 @@ then
 # 		echo "Rules added to /etc/apt/apt.conf.d/99_norecommends"
 # 	fi
 	
+    echo "Upgrade container"
+    sudo bash /opt/google/cros-containers/bin/upgrade_container
+    
 	echo ">> Installing packages"
 	sudo apt --fix-broken install -y
 	sudo apt install git nano mesa-utils -qq
@@ -62,23 +65,42 @@ else
 	read -p "Do you want to install SMB-server? [y/n] " s
 fi
 read -p "Do you want to install Jupyterlab? [y/n] " j
+read -p "Do you want to install Firefox? [y/n] " f
+read -p "Do you want to install VSCode (or variant)? [y/n] " c
 
 if [[ $n == "y" ]]; then
-	source ./install_nfs_client
-	echo "NFS DONE"
+    source ./install_nfs_client
+    echo "NFS DONE"
 fi
 if [[ $s == "y" ]]; then
-        source ./install_smb
-	echo "SMB DONE"
+    source ./install_smb
+    echo "SMB DONE"
 fi
 if [[ $j == "y" ]]; then
-        source ./install_jupyter
-	echo "JUPYTER DONE"
+    source ./install_jupyter
+    echo "JUPYTER DONE"
 fi
 if [[ $g == "y" ]]; then
-	echo "Installing Gimp"
-        sudo apt install -qq gimp
-	echo "GIMP DONE"
+    echo "Installing Gimp"
+    sudo apt install -qq gimp
+    echo "GIMP DONE"
+fi
+if [[ $f == "y" ]]; then
+    echo "Installing Firefox"
+    sudo apt install flatpak
+    flatpak --user remote-add --if-not-exists flathub https://flathub.org/repo/flathub.flatpakrepo
+    flatpak install firefox
+    echo "FIREFOX DONE"
+fi
+if [[ $c == "y" ]]; then
+    if [[ $OS == "ChromeOS" ]]; then
+        echo "Installing Codile"
+        wget -q https://github.com/dimkr/codile/releases/download/0.0.1-862ea6d/codile_0.0.1_amd64.deb
+        sudo apt install ./codile_0.0.1_amd64.deb
+        rm codile_0.0.1_amd64.deb
+    else
+        sudo apt install -qq codium
+    echo "GIMP DONE"
 fi
 
 echo "Setup and installs are DONE. Exitting now."
