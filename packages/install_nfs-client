@@ -48,3 +48,4 @@ if [ $an == "y"]; then
         echo "NAS is added to fstab and mounted (or wil be mounted at next boot)"
         fi
 fi
+echo "NFS DONE"
