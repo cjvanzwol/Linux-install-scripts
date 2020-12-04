@@ -4,6 +4,7 @@
 #################################################
 # variables
 PREFIX_=$( cd "$( dirname "$0" )" >/dev/null 2>&1 && pwd )
+toInstall=()
 
 # functions
 title() { echo "------------------"; echo $1; }
@@ -11,11 +12,35 @@ subtitle() { echo; echo ">> $1"; }
 subsubtitle() { echo; echo ">>>> $1"; }
 
 cpfile() {
+    mkdir -p $2 || echo "retrying with sudo" && sudo mkdir -p $2 && echo "it worked! continuing now"
     local FILE=$PREFIX_/assets/$FASE/$1
-    [[ ! -f $2/$1 ]] && \
-        $([[ $(echo $(ls -dlG $2) | cut -d' ' -f 3) == "root" ]] && echo "sudo") \
-        cp $FILE $2 && \
-        echo "Copied $1 to $2"
+
+    #local OWNER="$(echo $(sudo ls -dl $2) | cut -d' ' -f 3)"
+    #echo $OWNER
+    #local GROUP="$(echo $(sudo ls -dl $2) | cut -d' ' -f 4)"
+    #echo $GROUP
+    #read
+#    $([[ $(echo $(sudo ls -dlG $2) | cut -d' ' -f 3) == "root" ]] && echo "sudo")
+    #echo $2
+
+    read
+    #sudo mkdir -p $3
+    #ls -hal ~
+    #read
+    # read
+    # [[ ! -f $2/$1 ]] \
+    # && s \ 
+    # cp $FILE $2 \
+    # && echo "Copied $1 to $2"
+}
+FASE="base"
+cpfile 99_norecommends /root/t/tt
+read
+question() {
+    read -p "Do you want to install $1 [y/n] " a
+    if [[ $a == "y" ]]; then
+        toInstall+=( ${1} )
+    fi
 }
 
 #############################
@@ -44,6 +69,9 @@ title "Starting base setup"
 FASE="base"
 if [[ $OS != "NAS" ]]; then
     # For Debian(-like) systems
+    subtitle "Change password for $USER"
+    sudo passwd $USER
+
     if [[ $OS != "ChromeOS" ]]; then
         subtitle "Upgrade container"
         sudo bash /opt/google/cros-containers/bin/upgrade_container
@@ -79,18 +107,12 @@ echo "--- Base setup DONE ---"
 # PACKGES #
 ###########
 title "Choose additional packages to install"
-toInstall=()
-question() {
-    read -p "Do you want to install $1 [y/n] " a
-    if [[ $a == "y" ]]; then
-        toInstall+=( ${1} )
-    fi
-}
 
 case $OS in
   ChromeOS)
+    question thefuck
     question gimp
-    question jupyterlab
+    question jupyter
     question vscode
     question firefox
     question google-chrome
@@ -109,7 +131,7 @@ esac
 
 << COMMENT
 
-install() { echo "$PREFIX_/packages/install_$1"; source $PREFIX_/packages/install_$1 }
+install() { FASE=$1; echo "$PREFIX_/packages/install_$1"; source $PREFIX_/packages/install_$1 }
 
 title "Installing packages"
 echo "array: ${toInstall[@]}"

@@ -25,27 +25,11 @@ else
         cd /opt/jupyterhub/bin/jupyterhub
         sudo sed -i s/"# c.Spawner.default_url = ''"/"c.Spawner.default_url = '\/lab'"/g jupyterhub_config.py
 
-        sudo mkdir -p /opt/jupyterhub/etc/systemd
-        PathJupServ=/opt/jupyterhub/etc/systemd/jupyterhub.service
-        if [[ $(sudo grep -Ril "\[Unit\]" $PathJupServ) == $PathJupServ ]]; then
-                echo "service file exists: no file created"
-        else
-                echo "File will be created at: $PathJupServ"
-                sudo tee -a $PathJupServ > /dev/null <<EOT
-[Unit]
-Description=JupyterHub
-After=syslog.target network.target
+        PathJupServ=/opt/jupyterhub/etc/systemd
+        sudo mkdir -p $PathJupServ
+        cpfile jupyterhub.service $PathJupServ
 
-[Service]
-User=root
-Environment="PATH=/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/opt/jupyterhub/bin"
-ExecStart=/opt/jupyterhub/bin/jupyterhub -f /opt/jupyterhub/etc/jupyterhub/jupyterhub_config.py
-
-[Install]
-WantedBy=multi-user.target
-EOT
-        fi
-        sudo ln -s /opt/jupyterhub/etc/systemd/jupyterhub.service /etc/systemd/system/jupyterhub.service
+        sudo ln -s $PathJupServ/jupyterhub.service /etc/systemd/system/jupyterhub.service
         sudo systemctl daemon-reload
         sudo systemctl enable jupyterhub.service
         sudo systemctl start jupyterhub.service
@@ -121,6 +105,6 @@ read -p "Do you want to install extensions en languageservers for Jupyterlab? [y
 if [ $e != "y" ]; then
         echo "Skipping extending Jupyterlab"
 else
-        source ./Linux-install-scripts/extend_jupyter
+        source ./Linux-install-scripts/extend_jupyter.sh
         echo "Jupyterlab extended"
 fi
