@@ -51,7 +51,7 @@ case $(uname -n) in
     OS="NAS"
     ;;
   *)
-    echo "other OS"
+    OS="other OS"
     ;;
 esac
 title "Setting up Linux for $OS"
@@ -64,7 +64,7 @@ FASE="base"
 if [[ $OS != "NAS" ]]; then
     # For Debian(-like) systems
     subtitle "Change password for $USER"
-    sudo passwd $USER
+    #sudo passwd $USER
 
     if [[ $OS != "ChromeOS" ]]; then
         subtitle "Upgrade container"
@@ -87,7 +87,7 @@ if [[ $OS != "NAS" ]]; then
     #sudo apt --fix-broken install -y
     sudo apt install -qq nano #git
     if [[ $OS != "ChromeOS" ]]; then
-        sudo apt install -qq mesa-utils
+        sudo apt -y -qq install mesa-utils
     elif [[ $OS != "OSMC" ]]; then
         echo "No specific additional packages specified for $OS packages"
     fi
