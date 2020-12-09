@@ -10,37 +10,31 @@ toInstall=()
 title() { echo "------------------"; echo $1; }
 subtitle() { echo; echo ">> $1"; }
 subsubtitle() { echo; echo ">>>> $1"; }
-
 cpfile() {
     mkdir -p $2 || echo "retrying with sudo" && sudo mkdir -p $2 && echo "it worked! continuing now"
     local FILE=$PREFIX_/assets/$FASE/$1
-
-    #local OWNER="$(echo $(sudo ls -dl $2) | cut -d' ' -f 3)"
-    #echo $OWNER
-    #local GROUP="$(echo $(sudo ls -dl $2) | cut -d' ' -f 4)"
-    #echo $GROUP
-    #read
-#    $([[ $(echo $(sudo ls -dlG $2) | cut -d' ' -f 3) == "root" ]] && echo "sudo")
-    #echo $2
-
-    read
-    #sudo mkdir -p $3
-    #ls -hal ~
-    #read
-    # read
-    # [[ ! -f $2/$1 ]] \
-    # && s \ 
-    # cp $FILE $2 \
-    # && echo "Copied $1 to $2"
 }
-FASE="base"
-cpfile 99_norecommends /root/t/tt
-read
-question() {
-    read -p "Do you want to install $1 [y/n] " a
+
+install() {
+  toInstall=()
+  for app in $@; do
+    read -p "Do you want to install $app [y/n] " a
     if [[ $a == "y" ]]; then
-        toInstall+=( ${1} )
+      toInstall+=( $app )
+      echo "${toInstall[@]}"
     fi
+  done
+
+  for app in "${toInstall[@]}"; do
+    FASE=$app
+    echo $FASE
+    source $PREFIX_/packages/install_$app.sh
+  done
+}
+get() {
+  wget -q -O i.deb $1
+        sudo apt install ./i.deb
+        rm i.deb
 }
 
 #############################
@@ -77,6 +71,7 @@ if [[ $OS != "NAS" ]]; then
         sudo bash /opt/google/cros-containers/bin/upgrade_container
     else
         subsubtitle "Updating system"
+        sudo apt update -q
         sudo apt upgrade -qq
         sudo apt dist-upgrade -y
     fi
@@ -89,9 +84,8 @@ if [[ $OS != "NAS" ]]; then
     cpfile 99_norecommends /etc/apt/apt.conf.d
     
     subtitle "Installing base-packages"
-    sudo apt update -qq
-    sudo apt --fix-broken install -y
-    sudo apt install -qq git nano
+    #sudo apt --fix-broken install -y
+    sudo apt install -qq nano #git
     if [[ $OS != "ChromeOS" ]]; then
         sudo apt install -qq mesa-utils
     elif [[ $OS != "OSMC" ]]; then
@@ -110,74 +104,18 @@ title "Choose additional packages to install"
 
 case $OS in
   ChromeOS)
-    question thefuck
-    question gimp
-    question jupyter
-    question vscode
-    question firefox
-    question google-chrome
+    install thefuck gimp jupyter vscode firefox google-chrome
     ;;
   OSMC)
-    question pihole
+    install pihole
     ;;
   synology_monaco_ds216play | nas)
-    echo "nothing to install"
+    install sickbeard couchpotato headphones
     ;;
   *)
-    question nfs-client
-    question smb-server
+    install nfs-client smb-server
     ;;
 esac
 
-<< COMMENT
-
-install() { FASE=$1; echo "$PREFIX_/packages/install_$1"; source $PREFIX_/packages/install_$1 }
-
-title "Installing packages"
-echo "array: ${toInstall[@]}"
-for app in "${toInstall[@]}; do
-    echo "Installing $app"
-    install $app
-done
-
-if [[ $smb == "y" ]]; then
-    source ./install_smb
-    echo "SMB DONE"
-fi
-if [[ $j == "y" ]]; then
-    source ./install_jupyter
-    echo "JUPYTER DONE"
-fi
-if [[ $g == "y" ]]; then
-    echo "Installing Gimp"
-    sudo apt install -qq gimp
-    echo "GIMP DONE"
-fi
-if [[ $ff == "y" ]]; then
-    echo "Installing Firefox"
-    sudo apt install flatpak
-    flatpak --user remote-add --if-not-exists flathub https://flathub.org/repo/flathub.flatpakrepo
-    flatpak install firefox
-    echo "FIREFOX DONE"
-fi
-if [[ $vsc == "y" ]]; then
-    if [[ $OS == "ChromeOS" ]]; then
-        echo "Installing Codile"
-        wget -q https://github.com/dimkr/codile/releases/download/0.0.1-862ea6d/codile_0.0.1_amd64.deb
-        sudo apt install ./codile_0.0.1_amd64.deb
-        rm codile_0.0.1_amd64.deb
-    else
-        sudo apt install -qq codium
-    echo "GIMP DONE"
-fi
-if [[ $ph == "y" ]]; then
-    if [[ $OS == "OSMC" ]]; then
-        echo "Installing Pi-hole"
-        curl -sSL https://install.pi-hole.net | bash
-    echo "PIHOLE DONE"
-fi
-
-
 title "Setup and installs are DONE. Exitting now."
 exit 0
-COMMENT
