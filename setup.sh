@@ -32,7 +32,7 @@ install() {
 }
 get() {
   wget -q -O i.deb $1
-        sudo apt install ./i.deb
+        sudo apt-get install ./i.deb
         rm i.deb
 }
 
@@ -70,9 +70,9 @@ if [[ $OS != "NAS" ]]; then
         sudo bash /opt/google/cros-containers/bin/upgrade_container
     else
         subsubtitle "Updating system"
-        sudo apt update -q
-        sudo apt upgrade -qq
-        sudo apt dist-upgrade -y
+        sudo apt-get update -q
+        sudo apt-get upgrade -qq
+        sudo apt-get dist-upgrade -y
     fi
     #sudo apt autoremove --purge -qq
     
@@ -84,9 +84,9 @@ if [[ $OS != "NAS" ]]; then
     
     subtitle "Installing base-packages"
     #sudo apt --fix-broken install -y
-    sudo apt install -qq nano #git
+    sudo apt-get install -qq nano #git
     if [[ $OS != "ChromeOS" ]]; then
-        sudo apt -y -qq install mesa-utils
+        sudo apt-get -qq install mesa-utils
     elif [[ $OS != "OSMC" ]]; then
         echo "No specific additional packages specified for $OS packages"
     fi

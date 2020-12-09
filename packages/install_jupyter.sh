@@ -6,8 +6,8 @@ PathScripts=~/Linux-install-scripts
 echo "Part 1: Installing Jupyterhub"
 echo ">> INSTALLING DEPENDENCIES"
 curl -sL https://deb.nodesource.com/setup_current.x | sudo -E bash -
-sudo apt update -qq
-sudo apt install -y python3 python3-dev git curl python3-venv nodejs gcc g++ make
+sudo apt-get update -qq
+sudo apt-get install -yqq python3 python3-dev git curl python3-venv nodejs gcc g++ make
 echo ">> INSTALLING JUPYTERHUB"
 if [[ -d /opt/jupyterhub ]]; then
         echo "It seems Jupyterhub is alreay installed in /opt. Please update from application."
@@ -85,8 +85,8 @@ else
         sudo install -o root -g root -m 644 conda.gpg /etc/apt/trusted.gpg.d/
         echo "deb [arch=amd64] https://repo.anaconda.com/pkgs/misc/debrepo/conda stable main" | sudo tee /etc/apt/sources.list.d/conda.list
         rm conda.gpg
-        sudo apt update -qq
-        sudo apt install conda -qq
+        sudo apt-get update -q
+        sudo apt-get install -qqconda
         sudo ln -s /opt/conda/etc/profile.d/conda.sh /etc/profile.d/conda.sh
 fi
 

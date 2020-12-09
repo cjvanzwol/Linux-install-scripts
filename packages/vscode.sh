@@ -4,6 +4,6 @@ if [[ $OS == "ChromeOS" ]]; then
 
         echo "Codile DONE"
     else
-        sudo apt install -qq codium
+        sudo apt-get install -qq codium
         echo "VSCODIUM DONE"
 fi
