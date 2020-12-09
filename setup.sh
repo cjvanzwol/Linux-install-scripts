@@ -21,7 +21,6 @@ install() {
     read -p "Do you want to install $app [y/n] " a
     if [[ $a == "y" ]]; then
       toInstall+=( $app )
-      echo "${toInstall[@]}"
     fi
   done
 
