@@ -1,7 +1,7 @@
 #!/bin/bash
 echo "Install packages for NFS"
-sudo apt update -qq
-sudo apt-get install nfs-common -qq
+sudo apt-get update -qq
+sudo apt-get install -qq nfs-common
 
 read -p  "Mount NAS to /mnt/nas? [y/n] " mn
 if [ $mn == "y" ]; then
@@ -48,3 +48,4 @@ if [ $an == "y"]; then
         echo "NAS is added to fstab and mounted (or wil be mounted at next boot)"
         fi
 fi
+echo "NFS DONE"

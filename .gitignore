@@ -1,1 +1,3 @@
 *.ipynb_checkpoints/
+/pythonenv3.8
+/.vscode
