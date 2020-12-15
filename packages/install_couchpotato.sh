@@ -1,4 +1,6 @@
-#! /bin/share
+#! /bin/sh
+source PREFIX_/functions.sh
+
 echo "Couchpotato"
 if [[ $OS == "NAS" ]]; then
     local dir=/volume1/@appstore/couchpotatoserver-custom

@@ -1,4 +1,7 @@
-#! /bin/sh 
+#! /bin/sh
+
+source PREFIX_/functions.sh
+
 source /opt/jupyterhub/bin/activate
 
 echo "KERNELS"

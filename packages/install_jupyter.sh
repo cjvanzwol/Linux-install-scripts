@@ -1,4 +1,6 @@
 #! /bin/sh
+source PREFIX_/functions.sh
+
 ## Installscript for miniconda
 
 PathScripts=~/Linux-install-scripts

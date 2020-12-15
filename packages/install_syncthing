@@ -1,4 +1,6 @@
 #! /bin/sh
+source PREFIX_/functions.sh
+
 ## Script to make syncthing autostart
 echo "Installing Syncthing"
 sudo apt-get update -q

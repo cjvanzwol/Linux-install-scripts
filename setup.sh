@@ -1,4 +1,4 @@
-#! /bin/bash
+#! /bin/sh
 #################################################
 # This script should be run after fresh install #
 #################################################
@@ -6,35 +6,8 @@
 PREFIX_=$( cd "$( dirname "$0" )" >/dev/null 2>&1 && pwd )
 toInstall=()
 
-# functions
-title() { echo "------------------"; echo $1; }
-subtitle() { echo; echo ">> $1"; }
-subsubtitle() { echo; echo ">>>> $1"; }
-cpfile() {
-    mkdir -p $2 || echo "retrying with sudo" && sudo mkdir -p $2 && echo "it worked! continuing now"
-    local FILE=$PREFIX_/assets/$FASE/$1
-}
-
-install() {
-  toInstall=()
-  for app in $@; do
-    read -p "Do you want to install $app [y/n] " a
-    if [[ $a == "y" ]]; then
-      toInstall+=( $app )
-    fi
-  done
-
-  for app in "${toInstall[@]}"; do
-    FASE=$app
-    echo $FASE
-    source $PREFIX_/packages/install_$app.sh
-  done
-}
-get() {
-  wget -q -O i.deb $1
-        sudo apt-get install ./i.deb
-        rm i.deb
-}
+#functions
+source PREFIX_/functions.sh
 
 #############################
 # check which OS is running #
@@ -63,7 +36,7 @@ FASE="base"
 if [[ $OS != "NAS" ]]; then
     # For Debian(-like) systems
     subtitle "Change password for $USER"
-    #sudo passwd $USER
+    sudo passwd $USER
 
     if [[ $OS != "ChromeOS" ]]; then
         subtitle "Upgrade container"
@@ -103,7 +76,7 @@ title "Choose additional packages to install"
 
 case $OS in
   ChromeOS)
-    install thefuck gimp jupyter vscode firefox google-chrome
+    install thefuck gimp jupyter vscode firefox google-chrome pushbullet
     ;;
   OSMC)
     install pihole

@@ -1,3 +1,6 @@
+#! /bin/sh
+source PREFIX_/functions.sh
+
 if [[ $OS == "ChromeOS" ]]; then
         echo "Installing Codile"
         get https://github.com/dimkr/codile/releases/download/latest/codile_0.0.1_amd64.deb
