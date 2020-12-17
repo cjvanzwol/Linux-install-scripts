@@ -3,7 +3,9 @@ source PREFIX_/functions.sh
 
 echo "installing pushbullet-cli"
 sudo apt-get update -qq
-sudo apt-get install -qq python3
+sudo apt-get install -qq python3 python3-pip
+sudo ln -s /usr/bin/python3 /usr/bin/python
+sudo ln -s /usr/bin/pip3 /usr/bin/pip
 pip3 install -Uq pushbullet-cli
 if [ $(pb list-devices) == "" ]; then
     pb set-key
