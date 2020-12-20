@@ -1,7 +1,7 @@
 #! /bin/sh
 source PREFIX_/functions.sh
 
-echo "Sickbeard"
+echo "Installing Sickbeard"
 if [[ $OS == "OSMC" ]]; then
     sudo apt-get update -q
     sudo apt-get install -qq git-core python python-cheetah
@@ -19,6 +19,8 @@ elif [[ $OS == "NAS" ]]; then
         if [[ $s == "y" ]]; then
             cpfile config.ini $dir/var
         fi
-elif [[ $OS == "OSMC" ]]
+  fi
+fi
+$OS == "OSMC" ]]
     echo "if you want to install sickbeard op pi, please creat scipt: nothing is done now"
 fi
