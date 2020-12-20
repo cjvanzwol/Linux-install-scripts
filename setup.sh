@@ -9,23 +9,6 @@ toInstall=()
 #functions
 source PREFIX_/functions.sh
 
-#############################
-# check which OS is running #
-#############################
-case $(uname -n) in
-  penguin)
-    OS="ChromeOS"
-    ;;
-  osmc)
-    OS="OSMC"
-    ;;
-  synology_monaco_ds216play | nas)
-    OS="NAS"
-    ;;
-  *)
-    OS="other OS"
-    ;;
-esac
 title "Setting up Linux for $OS"
 
 ##########################
@@ -83,6 +66,21 @@ title "Choose additional packages to install"
 case $OS in
   ChromeOS)
     install thefuck gimp jupyter vscode firefox google-chrome pushbullet
+    ;;
+  OSMC)
+    install pihole
+    ;;
+  synology_monaco_ds216play | nas)
+    install sickbeard couchpotato headphones
+    ;;
+  *)
+    install nfs-client smb-server
+    ;;
+esac
+
+title "Setup and installs are DONE. Exitting now."
+exit 0
+x google-chrome pushbullet
     ;;
   OSMC)
     install pihole

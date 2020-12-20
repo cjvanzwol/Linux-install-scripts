@@ -35,3 +35,21 @@ if [[ $functionsSet != True ]]; then
     functionsSet=True
     echo "done"
 fi
+
+#############################
+# check which OS is running #
+#############################
+case $(uname -n) in
+  penguin)
+    OS="ChromeOS"
+    ;;
+  osmc)
+    OS="OSMC"
+    ;;
+  synology_monaco_ds216play | nas)
+    OS="NAS"
+    ;;
+  *)
+    OS="other OS"
+    ;;
+esac
