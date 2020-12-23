@@ -62,7 +62,7 @@ title "Choose additional packages to install"
 
 case $OS in
   ChromeOS)
-    install thefuck gimp jupyter vscode firefox google-chrome pushbullet edex-ui
+    install thefuck gimp jupyter vscode firefox google-chrome pushbullet edex-ui docker
     ;;
   OSMC)
     install pi-hole
