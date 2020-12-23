@@ -22,8 +22,12 @@ if [[ $functionsSet != True ]]; then
     fi
   done
   for app in "${toInstall[@]}"; do
-    FASE=$app
-    source $PREFIX_/packages/install_$app.sh
+    if [[ $(which $app) != ""]]; then
+      FASE=$app
+      source $PREFIX_/packages/install_$app.sh
+    else
+      echo "$app is already installed"
+    fi
   done
   read -p "PAUZE FOR DEBUG"
   }

@@ -7,8 +7,8 @@ cd $PREFIX_
 
 # Installing package
 echo "Installing Docker"
-sudo apt-get update
-sudo apt-get install \
+sudo apt-get update -y
+sudo apt-get install -qq \
     apt-transport-https \
     ca-certificates \
     curl \
