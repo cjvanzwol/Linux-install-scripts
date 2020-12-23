@@ -68,22 +68,7 @@ case $OS in
     install thefuck gimp jupyter vscode firefox google-chrome pushbullet edex-ui
     ;;
   OSMC)
-    install pihole
-    ;;
-  synology_monaco_ds216play | nas)
-    install sickbeard couchpotato headphones
-    ;;
-  *)
-    install nfs-client smb-server
-    ;;
-esac
-
-title "Setup and installs are DONE. Exitting now."
-exit 0
-x google-chrome pushbullet
-    ;;
-  OSMC)
-    install pihole
+    install pi-hole
     ;;
   synology_monaco_ds216play | nas)
     install sickbeard couchpotato headphones

@@ -1,8 +1,12 @@
 #! /bin/sh
-source PREFIX_/functions.sh
+# preload functions
+PREFIX_=$( cd "$( dirname "$0" )" >/dev/null 2>&1 && pwd )
+cd $PREFIX_ && cd ..
+source ../functions.sh
+cd $PREFIX_
 
+# Installing package
 ## Installscript for miniconda
-
 PathScripts=~/Linux-install-scripts
 
 echo "Part 1: Installing Jupyterhub"
