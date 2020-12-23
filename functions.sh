@@ -23,7 +23,6 @@ if [[ $functionsSet != True ]]; then
   done
   for app in "${toInstall[@]}"; do
     FASE=$app
-    echo $FASE
     source $PREFIX_/packages/install_$app.sh
   done
   read -p "PAUZE FOR DEBUG"
