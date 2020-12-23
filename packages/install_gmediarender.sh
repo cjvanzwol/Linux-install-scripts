@@ -8,8 +8,9 @@ source ../functions.sh
 # installing package
 echo "Installing gmrender-resurrect"
 sudo apt-get update -y
-sudo apt-get install -qq git build-essential autoconf automake libtool pkg-config
-sudo apt-get install -qq libupnp-dev libgstreamer1.0-dev gstreamer1.0-plugins-base gstreamer1.0-plugins-good gstreamer1.0-plugins-bad gstreamer1.0-plugins-ugly gstreamer1.0-libav gstreamer1.0-alsa
+sudo apt-get install -qq libupnp6 gmediarender
+sudo systemctl enable gmediarender
+echo "GMRENDER-RESURRECT DONE"-qq libupnp-dev libgstreamer1.0-dev gstreamer1.0-plugins-base gstreamer1.0-plugins-good gstreamer1.0-plugins-bad gstreamer1.0-plugins-ugly gstreamer1.0-libav gstreamer1.0-alsa
 git clone https://github.com/hzeller/gmrender-resurrect.git
 cd gmrender-resurrect
 ./autogen.sh

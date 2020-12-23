@@ -68,7 +68,7 @@ case $OS in
     install thefuck gimp jupyter vscode firefox google-chrome pushbullet edex-ui
     ;;
   OSMC)
-    install pi-hole gmrender-resurrect
+    install pi-hole gmrender
     ;;
   synology_monaco_ds216play | nas)
     install sickbeard couchpotato headphones
@@ -79,4 +79,6 @@ case $OS in
 esac
 
 title "Setup and installs are DONE. Exitting now."
+exit 0
+."
 exit 0
