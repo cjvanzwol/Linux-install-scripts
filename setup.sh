@@ -68,7 +68,7 @@ case $OS in
     install thefuck gimp jupyter vscode firefox google-chrome pushbullet edex-ui
     ;;
   OSMC)
-    install pi-hole
+    install pi-hole gmrender-resurrect
     ;;
   synology_monaco_ds216play | nas)
     install sickbeard couchpotato headphones
