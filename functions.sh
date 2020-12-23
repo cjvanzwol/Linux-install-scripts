@@ -27,9 +27,9 @@ if [[ $functionsSet != True ]]; then
     done
     }
     get() {
-    wget -q -O i.deb $1
-            sudo apt-get install ./i.deb
-            rm i.deb
+        wget -q -O i.deb $1
+        sudo apt-get install ./i.deb
+        rm i.deb
     }
 
     functionsSet=True
@@ -53,3 +53,4 @@ case $(uname -n) in
     OS="other OS"
     ;;
 esac
+sac

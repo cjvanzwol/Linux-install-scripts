@@ -21,7 +21,7 @@ if [[ $OS != "NAS" ]]; then
     subtitle "Change password for $USER"
     sudo passwd $USER
 
-    if [[ $OS != "ChromeOS" ]]; then
+    if [[ $OS == "ChromeOS" ]]; then
         subtitle "Upgrade container"
         sudo bash /opt/google/cros-containers/bin/upgrade_container
     else
@@ -41,9 +41,9 @@ if [[ $OS != "NAS" ]]; then
     subtitle "Installing base-packages"
     #sudo apt --fix-broken install -y
     sudo apt-get install -qq nano #git
-    if [[ $OS != "ChromeOS" ]]; then
+    if [[ $OS == "ChromeOS" ]]; then
         sudo apt-get -qq install mesa-utils
-    elif [[ $OS != "OSMC" ]]; then
+    elif [[ $OS == "OSMC" ]]; then
         echo "No specific additional packages specified for $OS packages"
     fi
 elif $OS == "NAS"; then
@@ -65,7 +65,7 @@ title "Choose additional packages to install"
 
 case $OS in
   ChromeOS)
-    install thefuck gimp jupyter vscode firefox google-chrome pushbullet
+    install thefuck gimp jupyter vscode firefox google-chrome pushbullet edex-ui
     ;;
   OSMC)
     install pihole
