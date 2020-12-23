@@ -1,7 +1,7 @@
 #! /bin/sh
 if [[ $functionsSet != True ]]; then
   PREFIX_=$( cd "$( dirname "$0" )" >/dev/null 2>&1 && pwd )
-
+  echo $PREFIX_
   ######################
   # defining functions #
   ######################
