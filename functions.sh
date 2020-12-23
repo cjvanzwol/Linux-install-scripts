@@ -22,7 +22,7 @@ if [[ $functionsSet != True ]]; then
     fi
   done
   for app in "${toInstall[@]}"; do
-    if [[ $(which $app) != ""]]; then
+    if [[ $(which $app) != "" ]]; then
       FASE=$app
       source $PREFIX_/packages/install_$app.sh
     else
@@ -59,5 +59,5 @@ if [[ $functionsSet != True ]]; then
       OS="other OS"
       ;;
   esac
-  echo "OS is set as install variable"    
+  echo "OS is set as install variable"
 fi
