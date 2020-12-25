@@ -10,7 +10,6 @@ DEFAULTS=/etc/default
 echo "Installing gmrender-resurrect"
 sudo apt-get update -y
 sudo apt-get install -qq libupnp6 gmediarender
-sudo rm $DEFAULTS/gmediarender
-cp gmediarender $DEFAULTS
+sudo rm $DEFAULTS/gmediarender && cp gmediarender $DEFAULTS
 sudo systemctl enable gmediarender
 echo "GMRENDER-RESURRECT DONE"
