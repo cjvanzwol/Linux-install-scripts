@@ -16,27 +16,26 @@ if [[ $functionsSet != True ]]; then
   install() {
   toInstall=()
   for app in $@; do
-    read -p "Do you want to install $app [y/n] " a
-    if [[ $a == "y" ]]; then
-      toInstall+=( $app )
-    fi
-  done
-  for app in "${toInstall[@]}"; do
-    if [[ $(which $app) != "" ]]; then
-      FASE=$app
-      source $PREFIX_/packages/install_$app.sh
+    if [[ $(which $app) == "" ]]; then
+      read -p "Do you want to install $app [y/n] " a
+      if [[ $a == "y" ]]; then
+        toInstall+=( $app )
+      fi
     else
       echo "$app is already installed"
     fi
   done
-  read -p "PAUZE FOR DEBUG"
+  for app in "${toInstall[@]}"; do
+      FASE=$app
+      source $PREFIX_/packages/install_$app.sh
+  done
+  read -p "INSTALLING ONE PACKAGE DONE: PAUZING FOR DEBUG"
   }
 
   get() {
     wget -q -O i.deb $1
     sudo apt-get install ./i.deb
     rm i.deb
-    read -p "PAUZE FOR DEBUG"
   }
 
   functionsSet=True

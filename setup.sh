@@ -47,12 +47,10 @@ elif $OS == "NAS"; then
     # For Synology DSM
     echo "no initial setup defined for $OS: nothing to do"
 fi
-if [[ $(which git) != "" ]]; then
-    read -p "Enter e-mail adres for git [you@example.com]: " gite
-    git config --global user.email "$gite"
-    read -p "Enter name adres for git [Your Name]: " gitn
-    git config --global user.name "$gitn"
-fi
+
+# setting up git
+[[ $(git config --get user.email) == "" ]] && read -p "Enter e-mail adres for git [you@example.com]: " gite && git config --global user.email "$gite"
+[[ $(git config --get user.email) == "" ]] && read -p "Enter name for git [John Doe]: " gitn && git config --global user.name "$gitn"
 echo "--- Base setup DONE ---"
 
 ###########
