@@ -7,16 +7,10 @@ if [[ $functionsSet != True ]]; then
   subtitle() { echo; echo ">> $1"; }
   subsubtitle() { echo; echo ">>>> $1"; }
   cpfile() {
-    ls -hal $2
     mkdir -p $2 || echo "Retrying with sudo" && sudo mkdir -p $2 && echo "sudo worked, continuing"
-    ls -hal $2
-    read -p "debug3"
     local FILE=$PREFIX_/assets/$FASE/$1
     echo $FILE
-    read -p "debug2"
-    cp $FILE $2 || echo "Retrying with sudo" && sudo cp $FILE $2 && echo "sudo worked, continuing"
-    ls -hal $2
-    read -p "debug1"
+    cp $FILE $2/ || echo "Retrying with sudo" && sudo cp $FILE $2 && echo "sudo worked, continuing"
   }
 
   install() {

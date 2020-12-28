@@ -27,7 +27,6 @@ else
         sudo mkdir -p /opt/jupyterhub/etc/jupyterhub/
         cd /opt/jupyterhub/etc/jupyterhub/
         sudo /opt/jupyterhub/bin/jupyterhub --generate-config
-        cd /opt/jupyterhub/bin/jupyterhub
         sudo sed -i s/"# c.Spawner.default_url = ''"/"c.Spawner.default_url = '\/lab'"/g jupyterhub_config.py
 
         PathJupServ=/opt/jupyterhub/etc/systemd
