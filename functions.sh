@@ -7,7 +7,6 @@ if [[ $functionsSet != True ]]; then
   subtitle() { echo; echo ">> $1"; }
   subsubtitle() { echo; echo ">>>> $1"; }
   cpfile() {
-    read -p "debug"
     mkdir -p $2 || local RETRY_MKDIR=true
     [[ $RETRY ]] && echo "Retrying with sudo" && sudo mkdir -p $2 && echo "sudo worked, continuing"
     local FILE=$PREFIX_/assets/$FASE/$1
