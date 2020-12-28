@@ -50,7 +50,7 @@ fi
 
 # setting up git
 [[ $(git config --get user.email) == "" ]] && read -p "Enter e-mail adres for git [you@example.com]: " gite && git config --global user.email "$gite"
-[[ $(git config --get user.email) == "" ]] && read -p "Enter name for git [John Doe]: " gitn && git config --global user.name "$gitn"
+[[ $(git config --get user.name) == "" ]] && read -p "Enter name for git [John Doe]: " gitn && git config --global user.name "$gitn"
 echo "--- Base setup DONE ---"
 
 ###########
