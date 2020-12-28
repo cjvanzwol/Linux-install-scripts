@@ -28,8 +28,8 @@ if [[ $functionsSet != True ]]; then
   for app in "${toInstall[@]}"; do
       FASE=$app
       source $PREFIX_/packages/install_$app.sh
+      read -p "INSTALLING ONE PACKAGE DONE: PAUZING FOR DEBUG"
   done
-  read -p "INSTALLING ONE PACKAGE DONE: PAUZING FOR DEBUG"
   }
 
   get() {

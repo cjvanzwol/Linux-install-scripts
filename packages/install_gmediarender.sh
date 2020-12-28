@@ -1,9 +1,7 @@
 #! /bin/sh
 # preload functions
-PREFIX_=$( cd "$( dirname "$0" )" >/dev/null 2>&1 && pwd )
-cd $PREFIX_ && cd ..
-source ../functions.sh
-#cd $PREFIX_
+cd $( cd "$( dirname "$0" )" >/dev/null 2>&1 && pwd ) && cd .. && source ./functions.sh
+# variables
 DEFAULTS=/etc/default
 
 # installing package

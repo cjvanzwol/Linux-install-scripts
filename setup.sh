@@ -3,9 +3,8 @@
 # This script should be run after fresh install #
 #################################################
 # variables & functions
-PREFIX_=$( cd "$( dirname "$0" )" >/dev/null 2>&1 && pwd )
 toInstall=()
-source $PREFIX_/functions.sh
+source $( cd "$( dirname "$0" )" >/dev/null 2>&1 && pwd )/functions.sh
 
 title "Setting up Linux for $OS"
 ##########################
