@@ -66,33 +66,32 @@ fi
 
 
 echo "Part 2: Installing conda for the whole system"
-read -p "Install Anaconda of Miniconda? (miniconda is deafault) [anaconda/miniconda] " am
-if [[ $am != "anaconda" ]]; then
-        echo "Installing miniconda3"
-        # check if app already is installed
-        if [[ -d /opt/conda ]]
+# check if app already is installed
+if [[ -d /opt/conda ]]
         then
                 echo "It seems (mini/ana)conda is alreay installed in /opt. Please update from application."
                 echo "Skipping download and install"
         else
-                echo "Installling miniconda"
-                echo "NB choose install location /opt/conda" #7 #8
-                cd ~
-                wget https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86_64.sh
-                sudo bash Miniconda3-latest-Linux-x86_64.sh
-                rm Miniconda3-latest-Linux-x86_64.sh
-                echo "Miniconda is geinstalleerd"     
-        fi
-        # instalscript is finisched
-        echo "Sricpt is finished installing Miniconda"
-else
-        curl https://repo.anaconda.com/pkgs/misc/gpgkeys/anaconda.asc | gpg --dearmor > conda.gpg
-        sudo install -o root -g root -m 644 conda.gpg /etc/apt/trusted.gpg.d/
-        echo "deb [arch=amd64] https://repo.anaconda.com/pkgs/misc/debrepo/conda stable main" | sudo tee /etc/apt/sources.list.d/conda.list
-        rm conda.gpg
-        sudo apt-get update -q
-        sudo apt-get install -qqconda
-        sudo ln -s /opt/conda/etc/profile.d/conda.sh /etc/profile.d/conda.sh
+                read -p "Install Anaconda of Miniconda? (miniconda is deafault) [anaconda/miniconda] " am
+                if [[ $am != "anaconda" ]]; then
+                        echo "Installling miniconda3"
+                        echo "NB choose install location /opt/conda" #7 #8
+                        wget https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86_64.sh
+                        # sed inplace folder /opt/conda
+                        sudo bash Miniconda3-latest-Linux-x86_64.sh
+                        rm Miniconda3-latest-Linux-x86_64.sh
+                        echo "Miniconda is geinstalleerd"     
+                else
+                        echo "Installling Anaconda"
+                        curl https://repo.anaconda.com/pkgs/misc/gpgkeys/anaconda.asc | gpg --dearmor > conda.gpg
+                        sudo install -o root -g root -m 644 conda.gpg /etc/apt/trusted.gpg.d/
+                        echo "deb [arch=amd64] https://repo.anaconda.com/pkgs/misc/debrepo/conda stable main" | sudo tee /etc/apt/sources.list.d/conda.list
+                        rm conda.gpg
+                        sudo apt-get update -q
+                        sudo apt-get install -qqconda
+                        sudo ln -s /opt/conda/etc/profile.d/conda.sh /etc/profile.d/conda.sh
+                        echo "Anaconda is geinstalleerd"     
+                fi
 fi
 
 sudo chown -R $USER /opt/conda

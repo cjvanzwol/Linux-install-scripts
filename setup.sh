@@ -61,7 +61,7 @@ title "Choose additional packages to install"
 
 case $OS in
   ChromeOS)
-    install thefuck gimp inkscape jupyter vscode firefox google-chrome pushbullet edex-ui docker adb fastboot
+    install thefuck gimp inkscape jupyterhub vscode firefox google-chrome pushbullet edex-ui docker adb fastboot
     ;;
   OSMC)
     install pi-hole gmrender
