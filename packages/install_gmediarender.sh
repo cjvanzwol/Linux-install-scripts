@@ -1,6 +1,7 @@
 #! /bin/sh
 # preload functions
-cd $( cd "$( dirname "$0" )" >/dev/null 2>&1 && pwd ) && cd .. && source ./functions.sh
+source $( cd "$( dirname "$0" )" >/dev/null 2>&1 && pwd )/.recall_functions
+
 # variables
 DEFAULTS=/etc/default
 
