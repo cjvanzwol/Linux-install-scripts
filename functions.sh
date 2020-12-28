@@ -7,10 +7,12 @@ if [[ $functionsSet != True ]]; then
   subtitle() { echo; echo ">> $1"; }
   subsubtitle() { echo; echo ">>>> $1"; }
   cpfile() {
-    mkdir -p $2 || echo "Retrying with sudo" && sudo mkdir -p $2 && echo "sudo worked, continuing"
+    read -p "debug"
+    mkdir -p $2 || local RETRY_MKDIR=true
+    [[ $RETRY ]] && echo "Retrying with sudo" && sudo mkdir -p $2 && echo "sudo worked, continuing"
     local FILE=$PREFIX_/assets/$FASE/$1
-    echo $FILE
-    cp $FILE $2/ || echo "Retrying with sudo" && sudo cp $FILE $2 && echo "sudo worked, continuing"
+    cp $FILE $2 || local RETRY_CP=true
+    [[ $RETRY_CP ]] && echo "Retrying with sudo" && sudo cp $FILE $2 && echo "sudo worked, continuing"
   }
 
   install() {
