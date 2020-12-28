@@ -2,14 +2,16 @@
 #################################################
 # This script should be run after fresh install #
 #################################################
-# variables & functions
+# variables
+PREFIX_=$( cd "$( dirname "$0" )" >/dev/null 2>&1 && pwd )
 toInstall=()
-source $( cd "$( dirname "$0" )" >/dev/null 2>&1 && pwd )/functions.sh
+# functions
+source $PREFIX_/functions.sh
 
-title "Setting up Linux for $OS"
 ##########################
 # Start installing stuff #
 ##########################
+title "Setting up Linux for $OS"
 title "Starting base setup"
 FASE="base"
 if [[ $OS != "NAS" ]]; then
