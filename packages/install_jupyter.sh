@@ -1,9 +1,7 @@
 #! /bin/sh
 # preload functions
-pwd
-cd $( cd "$( dirname "$0" )" >/dev/null 2>&1 && pwd ) && pwd
-source ./.recall_functions
-echo $PREFIX_
+source $( cd "$( dirname "$0" )" >/dev/null 2>&1 && pwd )/.recall_functions
+echo "back in installfile"
 read -p "pauze"
 # Installing package
 ## Installscript for miniconda
