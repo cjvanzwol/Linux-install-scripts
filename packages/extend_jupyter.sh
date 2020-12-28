@@ -36,7 +36,6 @@ echo ">> installing"
 sudo /opt/jupyterhub/bin/python3 -m pip install -q voila
 jupyter labextension install -y --no-build \
     @jupyter-widgets/jupyterlab-manager \
-    jupyterlab-execute-time \
     @krassowski/jupyterlab_go_to_definition \
     @jupyterlab/google-drive \
     @jupyterlab/toc \
@@ -44,12 +43,11 @@ jupyter labextension install -y --no-build \
     jupyterlab-topbar-extension jupyterlab-system-monitor jupyterlab-theme-toggle \
     @ijmbarr/jupyterlab_spellchecker \
     @jupyter-voila/jupyterlab-preview
+# gave error
+jupyter labextension install -y --no-build \
+    jupyterlab-execute-time \ # jupyterlab-execute-time: https://github.com/deshaw/jupyterlab-execute-time"
 echo ">> CUnstimozing settings"
-PathSettingsNb=~/.jupyter/lab/user-settings/@jupyterlab/notebook-extension/
-mkdir -p $PathSettingsNb
-cp ~/Linux-install-scripts/assets/tracker.jupyterlab-settings $PathSettingsNb
-
-jupyterlab-execute-time: https://github.com/deshaw/jupyterlab-execute-time"
+cpfile tracker.jupyterlab-settings ~/.jupyter/lab/user-settings/@jupyterlab/notebook-extension
 
 read -p "Install Language server? [y/N]" ls
 if [[ $ls == "y" ]]; then
