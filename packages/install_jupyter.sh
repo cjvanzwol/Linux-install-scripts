@@ -1,5 +1,6 @@
 #! /bin/sh
 # preload functions
+pwd
 cd $( cd "$( dirname "$0" )" >/dev/null 2>&1 && pwd ) && pwd
 source ./.recall_functions
 echo $PREFIX_
