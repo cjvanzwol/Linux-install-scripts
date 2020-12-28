@@ -1,7 +1,9 @@
 #! /bin/sh
 # preload functions
-cd $( cd "$( dirname "$0" )" >/dev/null 2>&1 && pwd ) && cd .. && source ./functions.sh
-
+cd $( cd "$( dirname "$0" )" >/dev/null 2>&1 && pwd ) && pwd
+source ./.recall_functions
+echo $PREFIX_
+read -p "pauze"
 # Installing package
 ## Installscript for miniconda
 PathScripts=~/Linux-install-scripts
@@ -110,6 +112,6 @@ read -p "Do you want to install extensions en languageservers for Jupyterlab? [y
 if [ $e != "y" ]; then
         echo "Skipping extending Jupyterlab"
 else
-        source ./Linux-install-scripts/extend_jupyter.sh
+        source $PREFIX_/packages/extend_jupyter.sh
         echo "Jupyterlab extended"
 fi
