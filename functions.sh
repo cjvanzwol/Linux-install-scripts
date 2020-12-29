@@ -44,7 +44,7 @@ if [[ $functionsSet != True ]]; then
       sudo bash ~/i.sh
       rm ~/i.sh
     else
-      echo "GET ERROR: filetype could nog be recovered. please debug code"
+      read -p "GET ERROR: filetype could nog be recovered. package is nog installed. CONTINUE?"
     fi
   }
 
