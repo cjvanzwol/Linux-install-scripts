@@ -5,6 +5,7 @@
 # variables
 PREFIX_=$( cd "$( dirname "$0" )" >/dev/null 2>&1 && pwd )
 toInstall=()
+
 # functions
 source $PREFIX_/functions.sh
 
@@ -39,6 +40,7 @@ if [[ $OS != "NAS" ]]; then
     subtitle "Installing base-packages"
     #sudo apt --fix-broken install -y
     sudo apt-get install -qq nano #git
+    
     if [[ $OS == "ChromeOS" ]]; then
         sudo apt-get -qq install mesa-utils
     elif [[ $OS == "OSMC" ]]; then
@@ -52,6 +54,7 @@ fi
 # setting up git
 [[ $(git config --get user.email) == "" ]] && read -p "Enter e-mail adres for git [you@example.com]: " gite && git config --global user.email "$gite"
 [[ $(git config --get user.name) == "" ]] && read -p "Enter name for git [John Doe]: " gitn && git config --global user.name "$gitn"
+
 echo "--- Base setup DONE ---"
 
 ###########
@@ -64,7 +67,7 @@ case $OS in
     install thefuck gimp inkscape jupyterhub vscode firefox google-chrome pushbullet edex-ui docker adb fastboot
     ;;
   OSMC)
-    install pi-hole gmrender
+    install pi-hole gmediarender
     ;;
   synology_monaco_ds216play | nas)
     install sickbeard couchpotato headphones
@@ -75,6 +78,4 @@ case $OS in
 esac
 
 title "Setup and installs are DONE. Exitting now."
-exit 0
-."
 exit 0

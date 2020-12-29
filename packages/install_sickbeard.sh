@@ -1,4 +1,4 @@
-    #! /bin/sh
+#! /bin/sh
 # preload functions
 source $( cd "$( dirname "$0" )" >/dev/null 2>&1 && pwd )/packages/.recall_functions
 
