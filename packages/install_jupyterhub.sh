@@ -1,4 +1,7 @@
 #! /bin/sh
+# DEBUG
+sudo rm /usr/bin/python /usr/bin/pip /etc/systemd/system/jupyterhub.service /usr/share/applications/jupyterhub.desktop /etc/profile.d/conda.sh
+sudo rm -r /opt/jupyterhub /opt/conda /usr/local/share/jupyter/kernels
 # preload functions
 source $( cd "$( dirname "$0" )" >/dev/null 2>&1 && pwd )/packages/.recall_functions
 
@@ -32,7 +35,6 @@ else
         PathJupServ=/opt/jupyterhub/etc/systemd
         sudo mkdir -p $PathJupServ
         cpfile jupyterhub.service $PathJupServ
-
         sudo ln -s $PathJupServ/jupyterhub.service /etc/systemd/system/jupyterhub.service
         sudo systemctl daemon-reload
         sudo systemctl enable jupyterhub.service
@@ -40,57 +42,39 @@ else
         #sudo systemctl status jupyterhub.service
         #sudo systemctl stop jupyterhub.service
 
-        PathJupDesk=/usr/share/applications/jupyterhub.desktop
         #cd /opt/jupyterhub
         #wget https://upload.wikimedia.org/wikipedia/commons/thumb/3/38/Jupyter_logo.svg/1200px-Jupyter_logo.svg.png
-        if [[ $(sudo grep -Ril "\[Desktop\ Entry\]" $PathJupDesk) == $PathJupDesk ]]; then
-                echo "service file exists: no file created"
-        else
-                echo "File will be created at: $PathJupDesk"
-                sudo tee -a $PathJupDesk > /dev/null << EOT
-[Desktop Entry]
-Type=Application
-Name=Jupyterhub
-Exec=systemctl start jupyterhub
-Icon=/opt/jupyterhub/share/jupyterhub/static/images/jupyterhub-80.png
-User=root
-EOT
-                sudo chown -R $USER /opt/jupyterhub
-                sudo mkdir -p /usr/local/share/jupyter/kernels
-                sudo chown -R $USER /usr/local/share/jupyter/kernels
-                # #2
-                echo "Jupyterhub is installed"
-        fi
+        cpfile jupyterhub.desktop /usr/share/applications
+        sudo chown -R $USER /opt/jupyterhub
+        sudo mkdir -p /usr/local/share/jupyter/kernels
+        sudo chown -R $USER /usr/local/share/jupyter/kernels
+        # #2
+        echo "Jupyterhub is installed"
 fi
-
 
 echo "Part 2: Installing conda for the whole system"
 # check if app already is installed
-if [[ -d /opt/conda ]]
-        then
-                echo "It seems (mini/ana)conda is alreay installed in /opt. Please update from application."
-                echo "Skipping download and install"
+if [[ -d /opt/conda ]]; then
+        echo "It seems (mini/ana)conda is alreay installed in /opt. Please update from application."
+        echo "Skipping download and install"
+else
+        read -p "Install Anaconda of Miniconda? (miniconda is deafault) [anaconda/miniconda] " am
+        if [[ $am != "anaconda" ]]; then
+                echo "Installling miniconda3"
+                echo "NB choose install location /opt/conda" #7 #8
+                get https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86_64.sh
+                echo "Miniconda is geinstalleerd"     
         else
-                read -p "Install Anaconda of Miniconda? (miniconda is deafault) [anaconda/miniconda] " am
-                if [[ $am != "anaconda" ]]; then
-                        echo "Installling miniconda3"
-                        echo "NB choose install location /opt/conda" #7 #8
-                        wget https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86_64.sh
-                        # sed inplace folder /opt/conda
-                        sudo bash Miniconda3-latest-Linux-x86_64.sh
-                        rm Miniconda3-latest-Linux-x86_64.sh
-                        echo "Miniconda is geinstalleerd"     
-                else
-                        echo "Installling Anaconda"
-                        curl https://repo.anaconda.com/pkgs/misc/gpgkeys/anaconda.asc | gpg --dearmor > conda.gpg
-                        sudo install -o root -g root -m 644 conda.gpg /etc/apt/trusted.gpg.d/
-                        echo "deb [arch=amd64] https://repo.anaconda.com/pkgs/misc/debrepo/conda stable main" | sudo tee /etc/apt/sources.list.d/conda.list
-                        rm conda.gpg
-                        sudo apt-get update -q
-                        sudo apt-get install -qqconda
-                        sudo ln -s /opt/conda/etc/profile.d/conda.sh /etc/profile.d/conda.sh
-                        echo "Anaconda is geinstalleerd"     
-                fi
+                echo "Installling Anaconda"
+                curl https://repo.anaconda.com/pkgs/misc/gpgkeys/anaconda.asc | gpg --dearmor > conda.gpg
+                sudo install -o root -g root -m 644 conda.gpg /etc/apt/trusted.gpg.d/
+                echo "deb [arch=amd64] https://repo.anaconda.com/pkgs/misc/debrepo/conda stable main" | sudo tee /etc/apt/sources.list.d/conda.list
+                rm conda.gpg
+                sudo apt-get update -q
+                sudo apt-get install -qq conda
+                sudo ln -s /opt/conda/etc/profile.d/conda.sh /etc/profile.d/conda.sh
+                echo "Anaconda is geinstalleerd"     
+        fi
 fi
 
 sudo chown -R $USER /opt/conda

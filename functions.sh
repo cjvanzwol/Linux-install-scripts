@@ -34,9 +34,18 @@ if [[ $functionsSet != True ]]; then
   }
 
   get() {
-    wget -q -O i.deb $1
-    sudo apt-get install ./i.deb
-    rm i.deb
+    [[ $(which wget) != "" ]] && sudo apt-get update -q && sudo apt-get install -qq wget
+    if [[ $1 == *deb ]]; then
+      wget -q -O ~/i.deb $1
+      sudo apt-get install ./i.deb
+      rm i.deb
+    elif [[ $1 == *sh ]]; then
+      wget -q -O ~/i.sh $1
+      sudo bash ~/i.sh
+      rm ~/i.sh
+    else
+      echo "GET ERROR: filetype could nog be recovered. please debug code"
+    fi
   }
 
   functionsSet=True
