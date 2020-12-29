@@ -1,4 +1,8 @@
-#! /bin/share
+#! /bin/sh
+# preload functions
+source $( cd "$( dirname "$0" )" >/dev/null 2>&1 && pwd )/packages/.recall_functions
+
+# Installing package
 echo "Headphones"
 if [[ $OS == "NAS" ]]; then
     local dir=/volume1/@appstore/headphones

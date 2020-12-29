@@ -1,4 +1,4 @@
-#! /bin/bash
+#! /bin/sh
 #################################################
 # This script should be run after fresh install #
 #################################################
@@ -7,65 +7,20 @@ PREFIX_=$( cd "$( dirname "$0" )" >/dev/null 2>&1 && pwd )
 toInstall=()
 
 # functions
-title() { echo "------------------"; echo $1; }
-subtitle() { echo; echo ">> $1"; }
-subsubtitle() { echo; echo ">>>> $1"; }
-cpfile() {
-    mkdir -p $2 || echo "retrying with sudo" && sudo mkdir -p $2 && echo "it worked! continuing now"
-    local FILE=$PREFIX_/assets/$FASE/$1
-}
-
-install() {
-  toInstall=()
-  for app in $@; do
-    read -p "Do you want to install $app [y/n] " a
-    if [[ $a == "y" ]]; then
-      toInstall+=( $app )
-    fi
-  done
-
-  for app in "${toInstall[@]}"; do
-    FASE=$app
-    echo $FASE
-    source $PREFIX_/packages/install_$app.sh
-  done
-}
-get() {
-  wget -q -O i.deb $1
-        sudo apt-get install ./i.deb
-        rm i.deb
-}
-
-#############################
-# check which OS is running #
-#############################
-case $(uname -n) in
-  penguin)
-    OS="ChromeOS"
-    ;;
-  osmc)
-    OS="OSMC"
-    ;;
-  synology_monaco_ds216play | nas)
-    OS="NAS"
-    ;;
-  *)
-    OS="other OS"
-    ;;
-esac
-title "Setting up Linux for $OS"
+source $PREFIX_/functions.sh
 
 ##########################
 # Start installing stuff #
 ##########################
+title "Setting up Linux for $OS"
 title "Starting base setup"
 FASE="base"
 if [[ $OS != "NAS" ]]; then
     # For Debian(-like) systems
     subtitle "Change password for $USER"
-    #sudo passwd $USER
+    sudo passwd $USER
 
-    if [[ $OS != "ChromeOS" ]]; then
+    if [[ $OS == "ChromeOS" ]]; then
         subtitle "Upgrade container"
         sudo bash /opt/google/cros-containers/bin/upgrade_container
     else
@@ -85,15 +40,21 @@ if [[ $OS != "NAS" ]]; then
     subtitle "Installing base-packages"
     #sudo apt --fix-broken install -y
     sudo apt-get install -qq nano #git
-    if [[ $OS != "ChromeOS" ]]; then
+    
+    if [[ $OS == "ChromeOS" ]]; then
         sudo apt-get -qq install mesa-utils
-    elif [[ $OS != "OSMC" ]]; then
+    elif [[ $OS == "OSMC" ]]; then
         echo "No specific additional packages specified for $OS packages"
     fi
 elif $OS == "NAS"; then
     # For Synology DSM
     echo "no initial setup defined for $OS: nothing to do"
 fi
+
+# setting up git
+[[ $(git config --get user.email) == "" ]] && read -p "Enter e-mail adres for git [you@example.com]: " gite && git config --global user.email "$gite"
+[[ $(git config --get user.name) == "" ]] && read -p "Enter name for git [John Doe]: " gitn && git config --global user.name "$gitn"
+
 echo "--- Base setup DONE ---"
 
 ###########
@@ -103,10 +64,10 @@ title "Choose additional packages to install"
 
 case $OS in
   ChromeOS)
-    install thefuck gimp jupyter vscode firefox google-chrome
+    install thefuck gimp inkscape jupyterhub vscode firefox google-chrome pushbullet edex-ui docker adb fastboot
     ;;
   OSMC)
-    install pihole
+    install pi-hole gmediarender
     ;;
   synology_monaco_ds216play | nas)
     install sickbeard couchpotato headphones

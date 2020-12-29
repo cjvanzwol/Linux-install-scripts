@@ -1,9 +1,14 @@
+#! /bin/sh
+# preload functions
+source $( cd "$( dirname "$0" )" >/dev/null 2>&1 && pwd )/packages/.recall_functions
+
+# Installing package
 if [[ $OS == "ChromeOS" ]]; then
         echo "Installing Codile"
-        get https://github.com/dimkr/codile/releases/download/latest/codile_0.0.1_amd64.deb
-
-        echo "Codile DONE"
-    else
+        get https://github.com/dimkr/codile/releases/download/0.0.1-862ea6d/codile_0.0.1_amd64.deb
+	INSTALLED_APP="Codile"
+else
         sudo apt-get install -qq codium
-        echo "VSCODIUM DONE"
+	INSTALLED_APP="Codium"
 fi
+echo "$INSTALLED_APP DONE"

@@ -1,4 +1,9 @@
-#! /bin/share
+#! /bin/sh
+# preload functions
+source $( cd "$( dirname "$0" )" >/dev/null 2>&1 && pwd )/packages/.recall_functions
+
+# Installing package
+
 echo "Couchpotato"
 if [[ $OS == "NAS" ]]; then
     local dir=/volume1/@appstore/couchpotatoserver-custom
@@ -7,6 +12,7 @@ if [[ $OS == "NAS" ]]; then
         if [[ $s == "y" ]]; then
             cpfile settings.conf $dir/var
         fi
+    fi
 elif [[ $OS == "OSMC" ]]
     echo "if you want to install couchpotato op pi, please creat scipt: nothing is done now"
 fi

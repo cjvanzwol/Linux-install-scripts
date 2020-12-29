@@ -1,3 +1,5 @@
-*.ipynb_checkpoints/
-/pythonenv3.8
+*ipynb_checkpoints*
 /.vscode
+
+# Weird Codespaces behaviour
+/pythonenv3.8
