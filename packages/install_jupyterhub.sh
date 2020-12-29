@@ -137,8 +137,8 @@ else
         jupyter labextension install -y --no-build jupyterlab-execute-time # jupyterlab-execute-time: https://github.com/deshaw/jupyterlab-execute-time"
         jupyter labextension install -y --no-build @jupyterlab/google-drive
         jupyter labextension install -y --no-build @ijmbarr/jupyterlab_spellchecker
-        jupyter labextension install -y --no-build f@jupyter-voila/jupyterlab-preview
-        echo ">> CUnstimozing settings"
+        jupyter labextension install -y --no-build @jupyter-voila/jupyterlab-preview
+        echo ">> Custimozing settings"
         cpfile tracker.jupyterlab-settings ~/.jupyter/lab/user-settings/@jupyterlab/notebook-extension
 
         read -p "Install Language server? [y/N]" ls
@@ -154,14 +154,14 @@ else
                 vscode-html-languageserver-bin \
                 vscode-json-languageserver-bin
         fi
-        read -p "Install Code Formatter? [y/N]" cf
+        read -p "Install Code Formatter? [y/N] " cf
         if [[ $cf == "y" ]]; then
         sudo /opt/jupyterhub/bin/python3 -m pip install -q jupyterlab-code-formatter 
         jupyter labextension install -y --no-build @ryantam626/jupyterlab_code_formatter
         sudo /opt/jupyterhub/bin/python3 -m pip install -q autopep8 #black yapf isort
         sudo /opt/jupyterhub/bin/jupyter serverextension enable --py jupyterlab_code_formatter
         fi
-        read -p "Install Debugger? [y/N]" db
+        read -p "Install Debugger? [y/N] " db
         if [[ $db == "y" ]]; then
         sudo /opt/jupyterhub/bin/python3 -m pip install -q ptvsd #xeus-python #10
         jupyter labextension install --no-build @jupyterlab/debugger
