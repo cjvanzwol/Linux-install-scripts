@@ -128,15 +128,15 @@ else
         jupyter labextension install -y --no-build \
         @jupyter-widgets/jupyterlab-manager \
         @krassowski/jupyterlab_go_to_definition \
-        @jupyterlab/google-drive \
         @jupyterlab/toc \
         @lckr/jupyterlab_variableinspector \
         jupyterlab-topbar-extension jupyterlab-system-monitor jupyterlab-theme-toggle \
         @ijmbarr/jupyterlab_spellchecker \
         @jupyter-voila/jupyterlab-preview
         # gave error
-        jupyter labextension install -y --no-build \
-        jupyterlab-execute-time \ # jupyterlab-execute-time: https://github.com/deshaw/jupyterlab-execute-time"
+        read -p "trying te install which gave error"
+        jupyter labextension install -y --no-build jupyterlab-execute-time # jupyterlab-execute-time: https://github.com/deshaw/jupyterlab-execute-time"
+        jupyter labextension install -y --no-build @jupyterlab/google-drive
         echo ">> CUnstimozing settings"
         cpfile tracker.jupyterlab-settings ~/.jupyter/lab/user-settings/@jupyterlab/notebook-extension
 
