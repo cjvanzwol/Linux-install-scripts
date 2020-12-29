@@ -131,12 +131,13 @@ else
         @jupyterlab/toc \
         @lckr/jupyterlab_variableinspector \
         jupyterlab-topbar-extension jupyterlab-system-monitor jupyterlab-theme-toggle \
-        @jupyter-voila/jupyterlab-preview
+
         # gave error
         read -p "trying te install which gave error"
         jupyter labextension install -y --no-build jupyterlab-execute-time # jupyterlab-execute-time: https://github.com/deshaw/jupyterlab-execute-time"
         jupyter labextension install -y --no-build @jupyterlab/google-drive
         jupyter labextension install -y --no-build @ijmbarr/jupyterlab_spellchecker
+        jupyter labextension install -y --no-build f@jupyter-voila/jupyterlab-preview
         echo ">> CUnstimozing settings"
         cpfile tracker.jupyterlab-settings ~/.jupyter/lab/user-settings/@jupyterlab/notebook-extension
 
