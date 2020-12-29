@@ -170,13 +170,6 @@ else
         echo "dracula"
         jupyter labextension install --no-build @telamonian/theme-darcula -y
 
-        << COMMENT
-        read -p "Install ...? [y/N]" 
-        if [[ $ == "y" ]]; then
-        sudo /opt/jupyterhub/bin/python3 -m pip install -y 
-        fi
-        COMMENT
-
         echo "BUILDING JUPYTER LAB"
         jupyter lab build --dev-build=False --minimize=False
         deactivate
