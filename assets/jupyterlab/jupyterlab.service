@@ -1,0 +1,9 @@
+[Unit]
+Description=JupyterLab
+After=syslog.target network.target
+
+[Service]
+ExecStart=jupyter lab
+
+[Install]
+WantedBy=multi-user.target
