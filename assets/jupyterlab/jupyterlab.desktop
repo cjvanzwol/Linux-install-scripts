@@ -1,5 +1,5 @@
 [Desktop Entry]
 Type=Application
-Name=JupyterLab
-Exec=/usr/share/jupyterlab/cli.sh
-Icon=/opt/conda/lib/python3.8/site-packages/notebook/static/base/images/favicon-notebook.ico
+Name=JupyterLab Start
+Exec=bash /usr/share/jupyterlab/cli.sh
+Icon=

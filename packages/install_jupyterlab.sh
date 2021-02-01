@@ -2,32 +2,35 @@
 ## Installscript for Jupyterlab
 
 # preload functions
-source $( cd "$( dirname "$0" )" >/dev/null 2>&1 && pwd )/packages/.recall_functions
+source $(find / -name Linux-install-scripts 2>/dev/null)/functions.sh
+[[ $FASE == "" ]] && FASE=jupyterlab
 
-# Installing dependencies
+subtitle "Installing Jupyterlab"
+subsubtitle ">> INSTALLING DEPENDENCIES"
+install --dep $1 conda
+subsubtitle ">> INSTALLING JUPYTERHUB"
+if [[ $(which jupyter) == "" ]]; then
+    /opt/conda/bin/conda install jupyterlab">=3" jupyterlab-git ipywidgets pandas matplotlib ipympl
+    jupyter lab --generate-config
+    jupyter lab password
+    #sed -i s/.../.../g ~/.jupyter/jupyterlab_config.py
 
-echo "Installing Jupyterlab"
-echo ">> INSTALLING DEPENDENCIES"
-install conda
-echo ">> INSTALLING JUPYTERHUB"
-conda activate base
-conda install jupyterlab jupyterlab-git ipywidgets pandas matplotlib ipympl
-#cd /opt/conda
-jupyter lab --generate-config
-#sed -i s/"# c.Spawner.default_url = ''"/"c.Spawner.default_url = '\/lab'"/g jupyterhub_config.py
-cpfile jupyterlab.service /etc/systemd/system/jupyterlab.service
-sudo systemctl daemon-reload
-sudo systemctl enable jupyterlab
-sudo systemctl start jupyterlab
-#sudo systemctl status jupyterhub
-#sudo systemctl stop jupyterhub
+    cpfile jupyterlab.service /usr/lib/systemd/user
+    sudo systemctl daemon-reload
+    cpfile cli.sh /usr/share/jupyterlab
+    cpfile jupyterlab.desktop /usr/share/applications
+    py_path=$(python -c "import sys; print(sys.path)" | cut -d " " -f 5 | cut -d "'" -f 2)
+    #wget https://raw.githubusercontent.com/jupyter/notebook/master/notebook/static/favicon.ico
+    sudo sed -i s_Icon=_Icon=$py_path\/notebook\/static\/favicon.ico_g /usr/share/applications/jupyterlab.desktop
+    sudo sed -i s/User=/User=$USER/g /etc/systemd/system/jupyterlab.service
+    sudo mkdir -p /usr/local/share/jupyter/kernels
+    sudo chown -R $USER /usr/local/share/jupyter/kernels    
+    echo "Jupyterlab is installed"
 
-cpfile jupyterlab.desktop /usr/share/applications/jupyterhub.desktop
-
-sudo mkdir -p /usr/local/share/jupyter/kernels
-sudo chown -R $USER /usr/local/share/jupyter/kernels
+else
+    echo "Jupyterlab is already installed"
+fi
 # #2
-echo "Jupyterlab is installed"
 
 read -p "Do you want to install extensions en languageservers for Jupyterlab? [y/n] " e
 if [ $e != "y" ]; then
