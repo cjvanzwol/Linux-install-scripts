@@ -48,6 +48,16 @@ if [[ $functionsSet != True ]]; then
     fi
   }
 
+#   cloneRepo() {
+#     xdg-open "https://github.com/$ghu?tab=repositories"
+#     read -p "Name of repo to clone: " repo
+#     if [[ -f $(/home/linuxbrew/.linuxbrew/bin/gh) ]]; then
+#         /home/linuxbrew/.linuxbrew/bin/gh repo clone $repo ~
+#     else
+#         git clone $repo
+#     fi
+#   }
+
   functionsSet=True
   echo "functions are defined"
 

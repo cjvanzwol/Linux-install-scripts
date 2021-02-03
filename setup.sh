@@ -46,6 +46,13 @@ else
         
         if [[ $OS == "ChromeOS" ]]; then
             sudo apt-get -qq install mesa-utils
+            install --dep gh
+            # setting up git
+            #ghcli=/home/linuxbrew/.linuxbrew/bin/gh
+            #read -p "Enter Github username: " ghu
+            [[ -z $(git config --get user.email) ]] && read -p "Enter e-mail adres for git [you@example.com]: " gite && git config --global user.email "$gite"
+            [[ -z $(git config --get user.name) ]] && read -p "Enter name for git [John Doe]: " gitn && git config --global user.name "$gitn"
+            #cloneRepo $ghu
         elif [[ $OS == "OSMC" ]]; then
             echo "No specific additional packages specified for $OS packages"
         fi
@@ -54,14 +61,11 @@ else
         echo "no initial setup defined for $OS: nothing to do"
     fi
 
-    # setting up git
-    [[ $(git config --get user.email) == "" ]] && read -p "Enter e-mail adres for git [you@example.com]: " gite && git config --global user.email "$gite"
-    [[ $(git config --get user.name) == "" ]] && read -p "Enter name for git [John Doe]: " gitn && git config --global user.name "$gitn"
-
     # flagging base is done with empty file
     touch $PREFIX_/.base_done
     echo "--- Base setup DONE ---"
 fi
+
 ###########
 # PACKGES #
 ###########
