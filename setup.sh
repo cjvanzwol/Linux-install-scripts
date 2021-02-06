@@ -2,18 +2,15 @@
 #################################################
 # This script should be run after fresh install #
 #################################################
-# variables
-PREFIX_=$( cd "$( dirname "$0" )" >/dev/null 2>&1 && pwd )
-toInstall=()
-
-# functions
-source $PREFIX_/functions.sh
+# variables & functions
+source $( cd "$( dirname "$0" )" >/dev/null 2>&1 && pwd )/functions.sh
 
 ##########################
 # Start installing stuff #
 ##########################
 title "Setting up Linux for $OS"
 title "Starting base setup"
+
 if [ -f $PREFIX_/.base_done ]; then
     echo "Base-install has already been run. (remove .base_done to rerun)"
 else
@@ -46,6 +43,7 @@ else
         
         if [[ $OS == "ChromeOS" ]]; then
             sudo apt-get -qq install mesa-utils
+
             install --dep gh
             # setting up git
             #ghcli=/home/linuxbrew/.linuxbrew/bin/gh
@@ -53,6 +51,7 @@ else
             [[ -z $(git config --get user.email) ]] && read -p "Enter e-mail adres for git [you@example.com]: " gite && git config --global user.email "$gite"
             [[ -z $(git config --get user.name) ]] && read -p "Enter name for git [John Doe]: " gitn && git config --global user.name "$gitn"
             #cloneRepo $ghu
+
         elif [[ $OS == "OSMC" ]]; then
             echo "No specific additional packages specified for $OS packages"
         fi

@@ -1,57 +1,42 @@
-#! /bin/sh 
-source /opt/jupyterhub/bin/activate
+#! /bin/sh
+CONDA_BIN=/opt/conda/bin
+source $(find / -name Linux-install-scripts 2>/dev/null)/functions.sh
 
-echo "KERNELS"
-echo "Installing bash_kernel"
-sudo /opt/jupyterhub/bin/python3 -m pip install -q bash_kernel
-sudo /opt/jupyterhub/bin/python3 -m bash_kernel.install
+#subtitel "KERNELS"
+#subsubtitle "Installing bash_kernel"
+#$CONDA_BIN/conda install -q bash_kernel
+#$CONDA_BIN/python -m bash_kernel.install
 
-# #4
-# read -p "Install Javascript? [y/N]" js 
-# if [[ $js == "y" ]]; then
-#     sudo npm install -g --unsafe-perm ijavascript
-#     sudo ijsinstall --install=global
-#fi
-
-# #5
-# read -p "Install Nodejs? [y/N]" nj 
-# if [[ $nj == "y" ]]; then
-#     source /opt/jupyterhub/bin/activate
-#     cd sudo ~
-#     sudo git clone https://github.com/notablemind/jupyter-nodejs.git
-#     sudo cd jupyter-nodejs
-#     sudo mkdir -p ~/.ipython/kernels/nodejs/
-#     sudo npm install && sudo node install.js
-#     sudo npm run build
-#     sudo npm run build-ext
-#     sudo jupyter console --kernel nodejs
-# fi
-
-echo "EXTENSIONS"
-echo ">> installing"
-sudo /opt/jupyterhub/bin/python3 -m pip install -q voila
-jupyter labextension install -y --no-build \
+subtitel "EXTENSIONS"
+subsubtitle ">> installing"
+$CONDA_BIN/jupyter labextension install -y --no-build \
     @jupyter-widgets/jupyterlab-manager \
-    jupyterlab-execute-time \
+    @lckr/jupyterlab_variableinspector
+
+dev $1
+$CONDA_BIN/conda install -q voila
+$CONDA_BIN/jupyter labextension install -y --no-build \
+    jupyterlab-execute-time \ #https://github.com/deshaw/jupyterlab-execute-time"
     @krassowski/jupyterlab_go_to_definition \
     @jupyterlab/google-drive \
     @jupyterlab/toc \
-    @lckr/jupyterlab_variableinspector \
     jupyterlab-topbar-extension jupyterlab-system-monitor jupyterlab-theme-toggle \
     @ijmbarr/jupyterlab_spellchecker \
     @jupyter-voila/jupyterlab-preview
-echo ">> CUnstimozing settings"
+dev $1
+subsubtitle ">> CUnstimozing settings"
 PathSettingsNb=~/.jupyter/lab/user-settings/@jupyterlab/notebook-extension/
 mkdir -p $PathSettingsNb
 cp ~/Linux-install-scripts/assets/tracker.jupyterlab-settings $PathSettingsNb
 
-jupyterlab-execute-time: https://github.com/deshaw/jupyterlab-execute-time"
 
+
+dev $1
 read -p "Install Language server? [y/N]" ls
 if [[ $ls == "y" ]]; then
-    sudo /opt/jupyterhub/bin/python3 -m pip install -q jupyter-lsp 
-    jupyter labextension install --no-build @krassowski/jupyterlab-lsp 
-    sudo /opt/jupyterhub/bin/python3 -m pip install -q python-language-server[all]
+    $CONDA_BIN/conda install -q jupyter-lsp 
+    $CONDA_BIN/jupyter labextension install --no-build @krassowski/jupyterlab-lsp 
+    $CONDA_BIN/conda install -q python-language-server[all]
     sudo npm install --save-dev -y \
         bash-language-server \
         javascript-typescript-langserver \
@@ -60,31 +45,26 @@ if [[ $ls == "y" ]]; then
         vscode-html-languageserver-bin \
         vscode-json-languageserver-bin
 fi
+
+dev $1
 read -p "Install Code Formatter? [y/N]" cf
 if [[ $cf == "y" ]]; then
-    sudo /opt/jupyterhub/bin/python3 -m pip install -q jupyterlab-code-formatter 
-    jupyter labextension install -y --no-build @ryantam626/jupyterlab_code_formatter
-    sudo /opt/jupyterhub/bin/python3 -m pip install -q autopep8 #black yapf isort
-    sudo /opt/jupyterhub/bin/jupyter serverextension enable --py jupyterlab_code_formatter
+    $CONDA_BIN/conda install -q jupyterlab-code-formatter 
+    $CONDA_BIN/jupyter labextension install -y --no-build @ryantam626/jupyterlab_code_formatter
+    $CONDA_BIN/conda install -q autopep8 #black yapf isort
+    $CONDA_BIN/jupyter serverextension enable --py jupyterlab_code_formatter
 fi
 read -p "Install Debugger? [y/N]" db
 if [[ $db == "y" ]]; then
-    sudo /opt/jupyterhub/bin/python3 -m pip install -q ptvsd #xeus-python #10
-    jupyter labextension install --no-build @jupyterlab/debugger
+    $CONDA_BIN/conda install -q ptvsd xeus-python #10
+    $CONDA_BIN/jupyter labextension install --no-build @jupyterlab/debugger
 fi
 
+dev $1
 echo "THEMES"
 echo "dracula"
-jupyter labextension install --no-build @telamonian/theme-darcula -y
+$CONDA_BIN/jupyter labextension install --no-build @telamonian/theme-darcula -y
 
-<< COMMENT
-read -p "Install ...? [y/N]" 
-if [[ $ == "y" ]]; then
-    sudo /opt/jupyterhub/bin/python3 -m pip install -y 
-fi
-COMMENT
-
+dev $1
 echo "BUILDING JUPYTER LAB"
-jupyter lab build --dev-build=False --minimize=False
-deactivate
-sudo systemctl restart jupyterhub
+$CONDA_BIN/jupyter lab build --dev-build=False --minimize=False

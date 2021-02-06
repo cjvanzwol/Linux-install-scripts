@@ -1,5 +1,5 @@
 [Desktop Entry]
 Type=Application
-Name=JupyterLab
-Exec=systemctl start jupyterlab
-Icon=/opt/jupyterhub/share/jupyterhub/static/images/jupyterhub-80.png
+Name=JupyterLab Start
+Exec=bash /usr/share/jupyterlab/cli.sh
+Icon=
