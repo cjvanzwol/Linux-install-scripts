@@ -1,6 +1,8 @@
 #! /bin/sh
+echo "loading functions"
+echo $functionsSet
 if [[ $functionsSet != True ]]; then
-    PREFIX_=$(find / -name Linux-install-scripts 2>/dev/null)
+    PREFIX_=$(find ~ -name Linux-install-scripts 2>/dev/null)
 
     ######################
     # defining functions #
@@ -8,7 +10,7 @@ if [[ $functionsSet != True ]]; then
     title() { echo "------------------"; echo $1; }
     subtitle() { echo; echo ">> $1"; }
     subsubtitle() { echo; echo ">>>> $1"; }
-    
+
     dev() {
         [[ $1 == "--dev" ]] && read -p "PAUZING FOR DEBUGGING"
     }

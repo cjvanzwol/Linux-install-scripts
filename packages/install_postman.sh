@@ -1,10 +1,10 @@
 #! /bin/sh
 # preload functions
 source $(find ~ -name Linux-install-scripts 2>/dev/null)/functions.sh
-[[ $FASE == "" ]] && FASE=firefox
+[[ $FASE == "" ]] && FASE=postman
 
 # Installing package
-echo "Installing Firefox"
+echo "Installing Postman"
 install --dep $1 flatpak
-flatpak install -y firefox
-echo "FIREFOX DONE"
+flatpak install -y com.getpostman.Postman
+echo "POSTMAN DONE"

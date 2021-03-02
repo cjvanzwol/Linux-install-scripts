@@ -2,6 +2,7 @@
 #################################################
 # This script should be run after fresh install #
 #################################################
+echo "starting"
 # variables & functions
 source $( cd "$( dirname "$0" )" >/dev/null 2>&1 && pwd )/functions.sh
 
@@ -72,7 +73,7 @@ title "Choose additional packages to install"
 
 case $OS in
   ChromeOS)
-    install thefuck gimp inkscape jupyterlab jupyterhub vscode firefox google-chrome pushbullet edex-ui docker adb fastboot
+    install thefuck gimp inkscape jupyterlab jupyterhub vscode postman firefox google-chrome pushbullet edex-ui docker adb fastboot
     ;;
   OSMC)
     install pi-hole gmediarender
