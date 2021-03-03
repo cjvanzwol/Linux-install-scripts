@@ -2,14 +2,12 @@
 #################################################
 # This script should be run after fresh install #
 #################################################
-echo "starting"
 # variables & functions
 source $( cd "$( dirname "$0" )" >/dev/null 2>&1 && pwd )/functions.sh
 
 ##########################
 # Start installing stuff #
 ##########################
-title "Setting up Linux for $OS"
 title "Starting base setup"
 
 if [ -f $PREFIX_/.base_done ]; then

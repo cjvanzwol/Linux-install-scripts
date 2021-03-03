@@ -1,6 +1,5 @@
 #! /bin/sh
-echo "loading functions"
-echo $functionsSet
+#echo "loading functions"
 if [[ $functionsSet != True ]]; then
     PREFIX_=$(find ~ -name Linux-install-scripts 2>/dev/null)
 
@@ -57,18 +56,25 @@ if [[ $functionsSet != True ]]; then
     }
 
     get() {
-    [[ $(which wget) != "" ]] && sudo apt-get update -q && sudo apt-get -qq install wget
-    if [[ $1 == *deb ]]; then
-        wget -q -O ~/i.deb $1
-        sudo apt-get install -qq ~/i.deb
-        rm ~/i.deb
-    elif [[ $1 == *sh ]]; then
-        wget -q -O ~/i.sh $1
-        sudo bash ~/i.sh
-        rm ~/i.sh
+    [[ $(which wget) != "" ]] || echo "installing wget" && sudo apt-get update -qq && sudo apt-get -qq install wget
+    WGET_TEMP=~/.wget_temp
+    mkdir $WGET_TEMP
+    wget -q --show-progress -P $WGET_TEMP --content-disposition $1 #OLD CODE: wget -q -O $WGET_TEMP/i.deb $1
+    DL=$(ls $WGET_TEMP)
+    if [[ $DL == *.deb ]]; then
+        sudo apt-get install -qq $WGET_TEMP/*.deb
+    elif [[ $DL == *.sh ]]; then
+        sudo bash $WGET_TEMP/*.deb
+    elif [[ $DL == *tar.gz ]]; then
+        touch $2/.permission_granted && rm $2/.permission_granted || local RETRY_TAR=true
+        [[ $RETRY_TAR ]] || tar -xzf $WGET_TEMP/$DL -C $2
+        [[ $RETRY_TAR ]] && echo "Retrying with sudo" && sudo tar -xzf $WGET_TEMP/$DL -C $2 && sudo chown root:root -R /opt/Postman && echo "sudo worked, continuing"
     else
-        read -p "GET ERROR: filetype could nog be recovered. package is nog installed. CONTINUE?"
+        echo "GET ERROR: filetype could nog be recovered. package is downloaded but not installed."
+        ls $WGET_TEMP
+        read -p "CONTINUE?"
     fi
+    sudo rm -r $WGET_TEMP
     }
 
 #   cloneRepo() {
@@ -101,5 +107,5 @@ if [[ $functionsSet != True ]]; then
         OS="other OS"
         ;;
     esac
-    echo "OS is set as install variable"
+    title "Setting up Linux for $OS"
 fi
