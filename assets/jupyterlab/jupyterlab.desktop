@@ -1,5 +1,4 @@
 [Desktop Entry]
 Type=Application
 Name=JupyterLab Start
-Exec=bash /usr/share/jupyterlab/cli.sh
-Icon=
+Exec=source /usr/share/jupyterlab/cli.sh

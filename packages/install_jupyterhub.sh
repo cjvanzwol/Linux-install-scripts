@@ -4,7 +4,8 @@
 #sudo rm -r /opt/jupyterhub /opt/conda /usr/local/share/jupyter/kernels
 
 # preload functions
-source $( cd "$( dirname "$0" )" >/dev/null 2>&1 && pwd )/.recall_functions
+source $(find ~ -name Linux-install-scripts 2>/dev/null)/functions.sh
+[[ $FASE == "" ]] && FASE=jupyterhub
 
 # Installing package
 ## Installscript for miniconda

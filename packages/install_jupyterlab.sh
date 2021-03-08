@@ -2,20 +2,20 @@
 ## Installscript for Jupyterlab
 
 # preload functions
-source $(find / -name Linux-install-scripts 2>/dev/null)/functions.sh
+source $(find ~ -name Linux-install-scripts 2>/dev/null)/functions.sh
 [[ $FASE == "" ]] && FASE=jupyterlab
 
 subtitle "Installing Jupyterlab"
 subsubtitle ">> INSTALLING DEPENDENCIES"
 install --dep $1 conda
-subsubtitle ">> INSTALLING JUPYTERHUB"
+subsubtitle ">> INSTALLING JUPYTERLAB"
 if [[ $(which jupyter) == "" ]]; then
     /opt/conda/bin/conda install jupyterlab">=3" jupyterlab-git ipywidgets pandas matplotlib ipympl
-    jupyter lab --generate-config
-    jupyter lab password
+    /opt/conda/bin/jupyter lab --generate-config
+    /opt/conda/bin/jupyter lab password
     #sed -i s/.../.../g ~/.jupyter/jupyterlab_config.py
 
-    cpfile jupyterlab.service /usr/lib/systemd/user
+    cpfile jupyterlab.service /etc/systemd/system #/usr/lib/systemd/user
     sudo systemctl daemon-reload
     cpfile cli.sh /usr/share/jupyterlab
     cpfile jupyterlab.desktop /usr/share/applications
@@ -24,7 +24,8 @@ if [[ $(which jupyter) == "" ]]; then
     sudo sed -i s_Icon=_Icon=$py_path\/notebook\/static\/favicon.ico_g /usr/share/applications/jupyterlab.desktop
     sudo sed -i s/User=/User=$USER/g /etc/systemd/system/jupyterlab.service
     sudo mkdir -p /usr/local/share/jupyter/kernels
-    sudo chown -R $USER /usr/local/share/jupyter/kernels    
+    sudo chown -R $USER /usr/local/share/jupyter/kernels
+    cpfile jupyterlab /usr/bin 
     echo "Jupyterlab is installed"
 
 else

@@ -4,7 +4,8 @@
 CONDA_ROOT=/opt/conda
 CONDA_BIN=$CONDA_ROOT/bin
 # preload functions
-source $(find / -name Linux-install-scripts 2>/dev/null)/functions.sh
+source $(find ~ -name Linux-install-scripts 2>/dev/null)/functions.sh
+[[ $FASE == "" ]] && FASE=conda
 
 # check if app already is installed
 if [[ -d $CONDA_ROOT ]]; then

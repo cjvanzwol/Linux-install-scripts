@@ -1,6 +1,7 @@
 #! /bin/sh
 # preload functions
-source $( cd "$( dirname "$0" )" >/dev/null 2>&1 && pwd )/packages/.recall_functions
+source $(find ~ -name Linux-install-scripts 2>/dev/null)/functions.sh
+[[ $FASE == "" ]] && FASE=headphones
 
 # Installing package
 echo "Headphones"

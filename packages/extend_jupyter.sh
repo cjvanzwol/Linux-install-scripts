@@ -1,6 +1,6 @@
 #! /bin/sh
 CONDA_BIN=/opt/conda/bin
-source $(find / -name Linux-install-scripts 2>/dev/null)/functions.sh
+source $(find ~ -name Linux-install-scripts 2>/dev/null)/functions.sh
 
 #subtitel "KERNELS"
 #subsubtitle "Installing bash_kernel"

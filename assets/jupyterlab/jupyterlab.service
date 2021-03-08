@@ -5,7 +5,7 @@
 [Service]
     Environment="PATH=/opt/conda/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"
     ExecStart=/opt/conda/bin/jupyter lab
-    User=
+    User=$USER
 
 [Install]
     WantedBy=multi-user.target
