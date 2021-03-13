@@ -25,9 +25,10 @@ if [[ $(which jupyter) == "" ]]; then
     sudo sed -i s/User=/User=$USER/g /etc/systemd/system/jupyterlab.service
     sudo mkdir -p /usr/local/share/jupyter/kernels
     sudo chown -R $USER /usr/local/share/jupyter/kernels
-    cpfile jupyterlab /usr/bin 
+    read -p "DEBUG"
+    echo "creating bin record" && cpfile jupyterlab /usr/bin 
     echo "Jupyterlab is installed"
-
+    read -p "DEBUG 2"
 else
     echo "Jupyterlab is already installed"
 fi
