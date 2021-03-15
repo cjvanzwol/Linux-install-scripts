@@ -21,6 +21,7 @@ else
         wget https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86_64.sh
         sudo bash Miniconda3-latest-Linux-x86_64.sh
         # edit install script with sed to not prompt for values, but my values are pre inputted
+        #sed -i s/.../.../g ~/.jupyter/jupyterlab_config.py
         rm Miniconda3-latest-Linux-x86_64.sh
         echo "Miniconda is installed"
     else
