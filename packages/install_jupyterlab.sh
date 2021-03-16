@@ -7,7 +7,7 @@ source $(find ~ -name Linux-install-scripts 2>/dev/null)/functions.sh
 
 subtitle "Installing Jupyterlab"
 subsubtitle ">> INSTALLING DEPENDENCIES"
-install --dep $1 conda
+install --dep $1 conda java
 subsubtitle ">> INSTALLING JUPYTERLAB"
 
 /opt/conda/bin/conda install -y jupyterlab">=3" jupyterlab-git ipywidgets pandas matplotlib ipympl
