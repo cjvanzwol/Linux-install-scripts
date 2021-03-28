@@ -1,1 +1,2 @@
-source /usr/share/jupyterlab/cli.sh
+#!/bin/bash
+~/miniconda3/bin/jupyter-lab

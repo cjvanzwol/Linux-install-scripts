@@ -1,11 +1,13 @@
 [Unit]
-    Description=JupyterLab
-    After=syslog.target network.target
+Description=JupyterLab
 
 [Service]
-    Environment="PATH=/opt/conda/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"
-    ExecStart=/opt/conda/bin/jupyter lab
-    User=
+User=USER
+Group=USER
+ExecStart=/home/USER/miniconda3/bin/jupyter lab
 
 [Install]
-    WantedBy=multi-user.target
+WantedBy=default.target
+
+[Install]
+WantedBy=multi-user.target

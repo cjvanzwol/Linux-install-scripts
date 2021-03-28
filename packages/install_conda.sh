@@ -1,11 +1,11 @@
 #! /bin/bash
 # Installscript for anaconda/miniconda.
 
-CONDA_ROOT=/opt/conda
-CONDA_BIN=$CONDA_ROOT/bin
 # preload functions
 source $(find ~ -name Linux-install-scripts 2>/dev/null)/functions.sh
 [[ $FASE == "" ]] && FASE=conda
+
+CONDA_ROOT="/home/$USER/miniconda3"
 
 # check if app already is installed
 if [[ -d $CONDA_ROOT ]]; then
@@ -13,13 +13,18 @@ if [[ -d $CONDA_ROOT ]]; then
     echo "Skipping download and install"
 else
     subtitle "Installing conda"
-    read -p "Install Anaconda of Miniconda? (miniconda is deafault) [anaconda/miniconda] " am
+    if [[ $OS != "ChromeOS" ]]; then
+        read -p "Install Anaconda of Miniconda? (miniconda is deafault) [anaconda/miniconda] " am
+    else
+        am="miniconda"        
+    fi
+
     if [[ $am != "anaconda" ]]; then
         subsubtitle "Installling miniconda3"
         echo "NB choose install location $CONDA_ROOT" #7 #8
         cd ~
         wget https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86_64.sh
-        sudo bash Miniconda3-latest-Linux-x86_64.sh
+        bash Miniconda3-latest-Linux-x86_64.sh
         # edit install script with sed to not prompt for values, but my values are pre inputted
         #sed -i s/.../.../g ~/.jupyter/jupyterlab_config.py
         rm Miniconda3-latest-Linux-x86_64.sh
@@ -35,15 +40,13 @@ else
         sudo ln -s /opt/conda/etc/profile.d/conda.sh /etc/profile.d/conda.sh
         echo "Anaconda is installed"
     fi
-fi
 
-sudo chown -R $USER /opt/conda
-mkdir $CONDA_ROOT/envs/
-ls -hal $CONDA_ROOT/envs
-$CONDA_BIN/conda config --add channels conda-forge
-#conda init # add init to .bashrc for user
-$CONDA_BIN/conda init # add init to .bashrc for root
-$CONDA_BIN/conda install -y nodejs">=15"
-$CONDA_BIN/conda update -y --all
+    [[ ! -d $CONDA_ROOT ]] && read -p "What path was conda installed? " CONDA_ROOT
+    mkdir $CONDA_ROOT/envs/
+    $CONDA_ROOT/bin/conda config --add channels conda-forge
+    #$CONDA_ROOT/bin/conda init # add init to .bashrc for root
+    $CONDA_ROOT/bin/conda install -y nodejs">=15"
+    $CONDA_ROOT/bin/conda update -y --all
+fi
 
 echo "Conda is installed"

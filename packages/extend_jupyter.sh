@@ -1,11 +1,9 @@
 #! /bin/sh
-CONDA_BIN=/opt/conda/bin
+CONDA_BIN=~/miniconda3/bin
 source $(find ~ -name Linux-install-scripts 2>/dev/null)/functions.sh
 
 #subtitel "KERNELS"
 #subsubtitle "Installing bash_kernel"
-#$CONDA_BIN/conda install -q bash_kernel
-#$CONDA_BIN/python -m bash_kernel.install
 
 subtitel "EXTENSIONS"
 subsubtitle ">> installing"
@@ -23,13 +21,10 @@ $CONDA_BIN/jupyter labextension install -y --no-build \
     jupyterlab-topbar-extension jupyterlab-system-monitor jupyterlab-theme-toggle \
     @ijmbarr/jupyterlab_spellchecker \
     @jupyter-voila/jupyterlab-preview
+
 dev $1
-subsubtitle ">> CUnstimozing settings"
-PathSettingsNb=~/.jupyter/lab/user-settings/@jupyterlab/notebook-extension/
-mkdir -p $PathSettingsNb
-cp ~/Linux-install-scripts/assets/tracker.jupyterlab-settings $PathSettingsNb
-
-
+subsubtitle ">> Custimozing settings"
+cpfile tracker.jupyterlab-settings ~/.jupyter/lab/user-settings/@jupyterlab/notebook-extension
 
 dev $1
 read -p "Install Language server? [y/N]" ls
@@ -54,11 +49,7 @@ if [[ $cf == "y" ]]; then
     $CONDA_BIN/conda install -q autopep8 #black yapf isort
     $CONDA_BIN/jupyter serverextension enable --py jupyterlab_code_formatter
 fi
-read -p "Install Debugger? [y/N]" db
-if [[ $db == "y" ]]; then
-    $CONDA_BIN/conda install -q ptvsd xeus-python #10
-    $CONDA_BIN/jupyter labextension install --no-build @jupyterlab/debugger
-fi
+
 
 dev $1
 echo "THEMES"

@@ -10,24 +10,30 @@ subsubtitle ">> INSTALLING DEPENDENCIES"
 install --dep $1 conda java
 subsubtitle ">> INSTALLING JUPYTERLAB"
 
-/opt/conda/bin/conda install -y jupyterlab">=3" jupyterlab-git ipywidgets pandas matplotlib ipympl
-/opt/conda/bin/jupyter lab --generate-config
-/opt/conda/bin/jupyter lab password
+echo $CONDA_ROOT
+CONDA_BIN="$CONDA_ROOT/bin"
+
+$CONDA_BIN/conda install -y jupyterlab">=3" jupyterlab-git ipywidgets pandas matplotlib ipympl
+$CONDA_BIN/jupyter lab --generate-config
+$CONDA_BIN/jupyter lab password
 
 cpfile jupyterlab.service /etc/systemd/system
-sudo sed -i s/User=/User=$USER/g /etc/systemd/system/jupyterlab.service
+sudo sed -i s_"USER"_"$USER"_g /etc/systemd/system/jupyterlab.service
 sudo systemctl daemon-reload
+sudo systemctl enable jupyterlab.service
 
-cpfile cli.sh /usr/share/jupyterlab
-cpfile jupyterlab.desktop /usr/share/applications
-py_path=$(python -c "import sys; print(sys.path)" | cut -d " " -f 5 | cut -d "'" -f 2)
-#wget https://raw.githubusercontent.com/jupyter/notebook/master/notebook/static/favicon.ico
-sudo sed -i s_Icon=_Icon=$py_path\/notebook\/static\/favicon.ico_g /usr/share/applications/jupyterlab.desktop
-sudo mkdir -p /usr/local/share/jupyter/kernels
-sudo chown -R $USER /usr/local/share/jupyter/kernels
+mkdir -p ~.local/share/jupyter/kernels
+# sudo mkdir -p /usr/local/share/jupyter/kernels
+# sudo chown -R $USER /usr/local/share/jupyter/kernels
+
 cpfile jupyterlab /usr/bin 
+
 echo "Jupyterlab is installed"
 # #2
+
+echo "Cloning my notebook repo's"
+git clone https://github.com/cjvanzwol/notebooks.git ~
+git clone https://github.com/cjvanzwol/Risk-Machine-Learning.git ~
 
 read -p "Do you want to install extensions en languageservers for Jupyterlab? [y/n] " e
 if [ $e != "y" ]; then
