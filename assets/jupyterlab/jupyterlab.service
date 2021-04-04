@@ -4,10 +4,7 @@ Description=JupyterLab
 [Service]
 User=USER
 Group=USER
-ExecStart=/home/USER/miniconda3/bin/jupyter lab
+ExecStart=/home/USER/miniconda3/bin/jupyter lab --notebook-dir="~"
 
 [Install]
 WantedBy=default.target
-
-[Install]
-WantedBy=multi-user.target

@@ -32,8 +32,12 @@ echo "Jupyterlab is installed"
 # #2
 
 echo "Cloning my notebook repo's"
-git clone https://github.com/cjvanzwol/notebooks.git ~
-git clone https://github.com/cjvanzwol/Risk-Machine-Learning.git ~
+PWD=$(pwd)
+cd ~
+git clone https://github.com/cjvanzwol/notebooks.git
+source notebooks/create_env_with_ipykernel.sh
+
+git clone https://github.com/cjvanzwol/Risk-Machine-Learning.git ~/Risk-Machine-Learning
 
 read -p "Do you want to install extensions en languageservers for Jupyterlab? [y/n] " e
 if [ $e != "y" ]; then

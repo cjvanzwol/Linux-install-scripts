@@ -1,2 +1,1 @@
-#!/bin/bash
-~/miniconda3/bin/jupyter-lab
+# proof of installing jupyterlab by Linux-install-scripts repo
