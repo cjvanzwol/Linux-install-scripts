@@ -6,7 +6,8 @@ source $(find ~ -name Linux-install-scripts 2>/dev/null)/functions.sh
 # Installing package
 if [[ $OS == "ChromeOS" ]]; then
     echo "Installing Codile"
-    get https://github.com/dimkr/codile/releases/download/0.0.1-862ea6d/codile_0.0.1_amd64.deb
+    #get https://github.com/dimkr/codile/releases/download/0.0.1-862ea6d/codile_0.0.1_amd64.deb #release
+    get https://github.com/dimkr/codile/releases/download/0.0.1-v7-amd64/codile_0.0.1_amd64.deb #pre-release
     sudo ln -s /usr/bin/codile /usr/bin/vscode
 	INSTALLED_APP="Codile"
 else
