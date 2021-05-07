@@ -1,7 +1,8 @@
 #! /bin/bash
 # Installscript for anaconda/miniconda.
 
-CONDA_ROOT=/opt/conda
+#CONDA_ROOT=/opt/conda
+CONDA_ROOT=/home/$USER/miniconda3
 CONDA_BIN=$CONDA_ROOT/bin
 # preload functions
 source $(find ~ -name Linux-install-scripts 2>/dev/null)/functions.sh
@@ -19,7 +20,7 @@ else
         echo "NB choose install location $CONDA_ROOT" #7 #8
         cd ~
         wget https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86_64.sh
-        sudo bash Miniconda3-latest-Linux-x86_64.sh
+        bash Miniconda3-latest-Linux-x86_64.sh
         # edit install script with sed to not prompt for values, but my values are pre inputted
         #sed -i s/.../.../g ~/.jupyter/jupyterlab_config.py
         rm Miniconda3-latest-Linux-x86_64.sh
@@ -37,13 +38,14 @@ else
     fi
 fi
 
-sudo chown -R $USER /opt/conda
-mkdir $CONDA_ROOT/envs/
-ls -hal $CONDA_ROOT/envs
-$CONDA_BIN/conda config --add channels conda-forge
-#conda init # add init to .bashrc for user
-$CONDA_BIN/conda init # add init to .bashrc for root
-$CONDA_BIN/conda install -y nodejs">=15"
-$CONDA_BIN/conda update -y --all
-
+if [[ -d $CONDA_ROOT ]]; then
+	sudo chown -R $USER /opt/conda
+	mkdir $CONDA_ROOT/envs/
+	ls -hal $CONDA_ROOT/envs
+	$CONDA_BIN/conda config --add channels conda-forge
+	#conda init # add init to .bashrc for user
+	$CONDA_BIN/conda init # add init to .bashrc for root
+	$CONDA_BIN/conda install -y nodejs">=15"
+	$CONDA_BIN/conda update -y --all
+fi
 echo "Conda is installed"

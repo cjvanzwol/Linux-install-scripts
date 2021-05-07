@@ -10,12 +10,14 @@ subsubtitle ">> INSTALLING DEPENDENCIES"
 install --dep $1 conda java
 subsubtitle ">> INSTALLING JUPYTERLAB"
 
-/opt/conda/bin/conda install -y jupyterlab">=3" jupyterlab-git ipywidgets pandas matplotlib ipympl
-/opt/conda/bin/jupyter lab --generate-config
-/opt/conda/bin/jupyter lab password
+CONDA_ROOT=/home/$USER/miniconda3
+
+$CONDA_ROOT/bin/conda install -y jupyterlab">=3" jupyterlab-git ipywidgets pandas matplotlib ipympl nbconvert
+$CONDA_ROOT/bin/jupyter lab --generate-config
+$CONDA_ROOT/bin/jupyter lab password
 
 cpfile jupyterlab.service /etc/systemd/system
-sudo sed -i s/User=/User=$USER/g /etc/systemd/system/jupyterlab.service
+sudo sed -i s/USER/$USER/g /etc/systemd/system/jupyterlab.service
 sudo systemctl daemon-reload
 
 cpfile cli.sh /usr/share/jupyterlab

@@ -3,9 +3,9 @@
     After=syslog.target network.target
 
 [Service]
-    Environment="PATH=/opt/conda/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"
-    ExecStart=/opt/conda/bin/jupyter lab
-    User=
+    Environment="PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"
+    ExecStart=/home/USER/miniconda3/bin/jupyter-lab
+    User=USER
 
 [Install]
     WantedBy=multi-user.target

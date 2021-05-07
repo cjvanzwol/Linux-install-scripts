@@ -1,6 +1,0 @@
-[Desktop Entry]
-Type=Application
-Name=Jupyterhub
-Exec=systemctl start jupyterhub
-Icon=/opt/jupyterhub/share/jupyterhub/static/images/jupyterhub-80.png
-User=root
