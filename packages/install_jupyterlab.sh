@@ -19,6 +19,7 @@ $CONDA_ROOT/bin/jupyter lab password
 cpfile jupyterlab.service /etc/systemd/system
 sudo sed -i s/USER/$USER/g /etc/systemd/system/jupyterlab.service
 sudo systemctl daemon-reload
+sudo systemctl enable jupyterlab.service
 
 cpfile cli.sh /usr/share/jupyterlab
 cpfile jupyterlab.desktop /usr/share/applications
