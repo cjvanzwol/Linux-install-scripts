@@ -12,7 +12,7 @@ subsubtitle ">> INSTALLING JUPYTERLAB"
 
 CONDA_ROOT=/home/$USER/miniconda3
 
-$CONDA_ROOT/bin/conda install -y jupyterlab">=3" jupyterlab-git ipywidgets pandas matplotlib ipympl nbconvert
+$CONDA_ROOT/bin/conda install -y jupyterlab">=3" jupyterlab-git ipywidgets pandas matplotlib ipympl nbconvert virtualenv
 $CONDA_ROOT/bin/jupyter lab --generate-config
 $CONDA_ROOT/bin/jupyter lab password
 
