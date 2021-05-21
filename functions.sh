@@ -103,8 +103,12 @@ if [[ $functionsSet != True ]]; then
     synology_monaco_ds216play | nas)
         OS="NAS"
         ;;
+    cs-15730755499-default-boost*)
+        OS="GoogleShell"
+        ;;
     *)
         OS="other OS"
+        uname -a
         ;;
     esac
     title "Setting up Linux for $OS"
