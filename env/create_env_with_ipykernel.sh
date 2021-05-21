@@ -15,7 +15,9 @@ else
     read -p "What is the name for the enviroment? " envName
     if [[ $(which conda) != "" ]]; then
         read -p "Are there any other options for conda create? [leave empty for None] " options
-        conda create -n $envName pip ipykernel pandas matplotlib plotly -y -q
+        read -p "What location should the environment be installed? [leave empty for defaul] " envLoc
+        [[ $envLoc != "" ]] && envLoc="-p "$envLoc
+        conda create -n $envName $envLoc pip ipykernel pandas matplotlib plotly -y -q
         source ~/miniconda3/bin/activate $envName
         conda config --add channels conda-forge
         if [[ -f ./requirements.txt ]]; then
@@ -27,8 +29,8 @@ else
         conda deactivate
     else
         echo "DO PIP & virtual env --> still needs to be coded"
-        ~/miniconda3/bin/python -m venv $envName
-        source ./$envName/bin/activate
+        ~/miniconda3/bin/python -m venv venv 
+        source ./venv/bin/activate
         if [[ -f ./requirements.txt ]]; then
             python -m pip install -r requirements.txt
         else
@@ -44,5 +46,5 @@ fi
 if [[ $conda ]]; then
     ~/miniconda3/envs/$envName/bin/python -m ipykernel install --name $envName --display-name $envName
 else
-    ./$envName/bin/python -m ipykernel install --name $envName --display-name $envName
+    ./venv/bin/python -m ipykernel install --name $envName --display-name $envName
 fi
