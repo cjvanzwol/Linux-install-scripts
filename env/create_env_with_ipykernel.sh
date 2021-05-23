@@ -4,7 +4,8 @@ what_packages() {
     read -p "What packages need to be installed on creation? [space seperated list; leave empty for None] " extra_packages
 }
 # set variables
-if [[ $(which conda) != "" ]]; then conda=true; else conda=false; fi
+[[ $(which conda) != "" ]] && conda=true
+[[ $OS == "NAS" ]] && NAS=true
 
 # Installing environmentcd ..
 if [[ -f ./environment.yml ]]; then
@@ -13,7 +14,7 @@ if [[ -f ./environment.yml ]]; then
     conda env create -f ./environment.yml -q
 else
     read -p "What is the name for the enviroment? " envName
-    if [[ $(which conda) != "" ]]; then
+    if [[ $conda ]]; then
         read -p "Are there any other options for conda create? [leave empty for None] " options
         read -p "What location should the environment be installed? [leave empty for defaul] " envLoc
         [[ $envLoc != "" ]] && envLoc="-p "$envLoc
@@ -28,23 +29,26 @@ else
         fi
         conda deactivate
     else
-        echo "DO PIP & virtual env --> still needs to be coded"
-        ~/miniconda3/bin/python -m venv venv 
+        [[ $NAS ]] && nopip=--without-pip
+        python3 -m venv venv $nopip
         source ./venv/bin/activate
+        [[ $NAS ]] && curl -k https://bootstrap.pypa.io/get-pip.py | python
         if [[ -f ./requirements.txt ]]; then
             python -m pip install -r requirements.txt
         else
             what_packages
             python -m pip install $extra_packages
         fi
-        python -m pip install ipykernel
+        [[ $NAS ]] || python -m pip install ipykernel
         deactivate
     fi
 fi
 
-# Installing kernel
-if [[ $conda ]]; then
-    ~/miniconda3/envs/$envName/bin/python -m ipykernel install --name $envName --display-name $envName
-else
-    ./venv/bin/python -m ipykernel install --name $envName --display-name $envName
+# Installing kernel if not NAS
+if [[ $OS != "NAS" ]]; then
+    if [[ $conda ]]; then
+        ~/miniconda3/envs/$envName/bin/python -m ipykernel install --name $envName --display-name $envName
+    else
+        ./venv/bin/python -m ipykernel install --name $envName --display-name $envName
+    fi
 fi
