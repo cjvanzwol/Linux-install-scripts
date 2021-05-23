@@ -46,7 +46,7 @@ else
         elif [[ $OS == "Google Shell" ]]; then
             :
         fi
-    elif $OS == "NAS"; then
+    elif [[ $OS == "NAS" ]]; then
         # For Synology DSM
         echo "no initial setup defined for $OS: nothing to do"
         curl -k https://bootstrap.pypa.io/get-pip.py | python
