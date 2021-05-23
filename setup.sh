@@ -50,7 +50,7 @@ else
         # For Synology DSM
         echo "no initial setup defined for $OS: nothing to do"
         curl -k https://bootstrap.pypa.io/get-pip.py | python
-        python3 -m pip install venv
+        python3 -m pip install vitualenv
     else
         echo "Script not configured for $OS: exitting"
         exit 1
