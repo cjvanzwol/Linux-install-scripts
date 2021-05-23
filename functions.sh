@@ -100,7 +100,7 @@ if [[ $functionsSet != True ]]; then
     osmc)
         OS="OSMC"
         ;;
-    synology* | nas)
+    synology* | nas | Nas)
         OS="NAS"
         ;;
     cs-15730755499-default-boost*)
