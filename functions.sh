@@ -70,8 +70,8 @@ if [[ $functionsSet != True ]]; then
         [[ $RETRY_TAR ]] || tar -xzf $WGET_TEMP/$DL -C $2
         [[ $RETRY_TAR ]] && echo "Retrying with sudo" && sudo tar -xzf $WGET_TEMP/$DL -C $2 && sudo chown root:root -R /opt/Postman && echo "sudo worked, continuing"
     else
-        echo "GET ERROR: filetype could nog be recovered. package is downloaded but not installed."
-        ls $WGET_TEMP
+        echo "GET ERROR: filetype could not be recovered. package is downloaded but not installed."
+        ls -l $WGET_TEMP
         read -p "CONTINUE?"
     fi
     sudo rm -r $WGET_TEMP
