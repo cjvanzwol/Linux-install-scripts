@@ -100,12 +100,18 @@ if [[ $functionsSet != True ]]; then
     osmc)
         OS="OSMC"
         ;;
-    synology_monaco_ds216play | nas)
+    synology* | nas | Nas)
         OS="NAS"
+        ;;
+    cs-15730755499-default-boost*)
+        OS="GoogleShell"
         ;;
     *)
         OS="other OS"
+        uname -a
         ;;
     esac
     title "Setting up Linux for $OS"
+fi
+nux for $OS"
 fi

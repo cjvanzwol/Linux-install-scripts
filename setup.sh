@@ -28,7 +28,6 @@ else
             sudo apt-get upgrade -qq
             sudo apt-get dist-upgrade -y
         fi
-        #sudo apt autoremove --purge -qq
         
         subtitle "Writing list of base-packages to ~/.base-packages"
         sudo apt list --installed > ~/.base-packages
@@ -38,25 +37,23 @@ else
         
         subtitle "Installing base-packages"
         #sudo apt --fix-broken install -y
-        sudo apt-get install -qq nano #git
-        
+        sudo apt-get install -qq nano
+        install --dep git
         if [[ $OS == "ChromeOS" ]]; then
             sudo apt-get -qq install mesa-utils
-
-            install --dep gh
-            # setting up git
-            #ghcli=/home/linuxbrew/.linuxbrew/bin/gh
-            #read -p "Enter Github username: " ghu
-            [[ -z $(git config --get user.email) ]] && read -p "Enter e-mail adres for git [you@example.com]: " gite && git config --global user.email "$gite"
-            [[ -z $(git config --get user.name) ]] && read -p "Enter name for git [John Doe]: " gitn && git config --global user.name "$gitn"
-            #cloneRepo $ghu
-
         elif [[ $OS == "OSMC" ]]; then
-            echo "No specific additional packages specified for $OS packages"
+            :
+        elif [[ $OS == "Google Shell" ]]; then
+            :
         fi
-    elif $OS == "NAS"; then
+    elif [[ $OS == "NAS" ]]; then
         # For Synology DSM
         echo "no initial setup defined for $OS: nothing to do"
+        curl -k https://bootstrap.pypa.io/get-pip.py | python
+        pip install virtualenv
+    else
+        echo "Script not configured for $OS: exitting"
+        exit 1
     fi
 
     # flagging base is done with empty file
@@ -70,19 +67,24 @@ fi
 title "Choose additional packages to install"
 
 case $OS in
-  ChromeOS)
-    install gimp inkscape jupyterlab vscode firefox google-chrome docker adb fastboot
-    ;;
-  OSMC)
-    install pi-hole gmediarender
-    ;;
-  synology_monaco_ds216play | nas)
-    install sickbeard couchpotato headphones
-    ;;
-  *)
-    install nfs-client smb-server
-    ;;
+    ChromeOS)
+        install gimp inkscape jupyterlab vscode firefox google-chrome docker adb fastboot
+        ;;
+    OSMC)
+        install pi-hole gmediarender
+        ;;
+    NAS)
+        install sickbeard couchpotato headphones
+        ;;
+    GoogleShell)
+        install conda
+        ;;
+    *)
+        install vscode nfs-client smb-server
+        ;;
 esac
 
 title "Setup and installs are DONE. Exitting now."
+exit 0
+w."
 exit 0
