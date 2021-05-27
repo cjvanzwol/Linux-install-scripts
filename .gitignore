@@ -1,3 +1,4 @@
 .base_done
 
-*-checkpoint*
+# Jupyter Notebook
+.ipynb_checkpoints

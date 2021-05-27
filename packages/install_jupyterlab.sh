@@ -14,6 +14,7 @@ CONDA_ROOT=/home/$USER/miniconda3
 
 $CONDA_ROOT/bin/conda install -y jupyterlab">=3" jupyterlab-git ipywidgets pandas matplotlib ipympl nbconvert virtualenv
 $CONDA_ROOT/bin/jupyter lab --generate-config
+# edit config or copy config from assets
 $CONDA_ROOT/bin/jupyter lab password
 
 cpfile jupyterlab.service /etc/systemd/system
