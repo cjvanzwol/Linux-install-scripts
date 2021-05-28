@@ -1,4 +1,4 @@
-name: covid
+name: name
 channels:
   - channel
 dependencies:
