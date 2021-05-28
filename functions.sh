@@ -113,5 +113,3 @@ if [[ $functionsSet != True ]]; then
     esac
     title "Setting up Linux for $OS"
 fi
-nux for $OS"
-fi
