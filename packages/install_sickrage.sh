@@ -6,7 +6,6 @@ source $(find ~ -name Linux-install-scripts 2>/dev/null)/functions.sh
 # Installing package
 echo "Installing Sickrage"
 if [[ $OS == "OSMC" ]]; then
-    install --dep git
     #sudo apt-get install -qq git-core python python-cheetah
     sudo apt install git python3-cryptography python3-openssl python3-lxml python3-pip
     git clone https://git.sickrage.ca/SiCKRAGE/sickrage /opt/sickrage
@@ -29,5 +28,8 @@ elif [[ $OS == "NAS" ]]; then
   fi
 fi
 echo "SICKRAGE DONE"
+ne now"
+fi
+RAGE DONE"
 ne now"
 fi
