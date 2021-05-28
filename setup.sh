@@ -71,7 +71,7 @@ case $OS in
         install gimp inkscape jupyterlab vscode firefox google-chrome docker adb fastboot
         ;;
     OSMC)
-        install pi-hole gmediarender
+        install gmediarender spotify sickrage couchpotato pi-hole 
         ;;
     NAS)
         install sickbeard couchpotato headphones
