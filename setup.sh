@@ -74,7 +74,7 @@ case $OS in
         install gmediarender spotify sickrage couchpotato pihole
         ;;
     NAS)
-        install sickbeard couchpotato headphones
+        install docker sickbeard couchpotato headphones
         ;;
     GoogleShell)
         install conda
