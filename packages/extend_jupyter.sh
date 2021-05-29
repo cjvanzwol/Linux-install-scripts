@@ -1,4 +1,4 @@
-#! /bin/sh
+#! /bin/bash
 CONDA_BIN=/opt/conda/bin
 source $(find ~ -name Linux-install-scripts 2>/dev/null)/functions.sh
 

@@ -1,4 +1,4 @@
-#! /bin/sh
+#! /bin/bash
 # define finctions
 what_packages() {
     read -p "What packages need to be installed on creation? [space seperated list; leave empty for None] " extra_packages

@@ -1,4 +1,4 @@
-#! /bin/sh
+#! /bin/bash
 # preload functions
 source $(find ~ -name Linux-install-scripts 2>/dev/null)/functions.sh
 [[ $FASE == "" ]] && FASE=gimp

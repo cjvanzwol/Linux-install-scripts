@@ -1,4 +1,4 @@
-#! /bin/sh
+#! /bin/bash
 #################################################
 # This script should be run after fresh install #
 #################################################
@@ -71,7 +71,7 @@ case $OS in
         install gimp inkscape jupyterlab vscode firefox google-chrome docker adb fastboot
         ;;
     OSMC)
-        install gmediarender spotify sickrage couchpotato pi-hole 
+        install gmediarender spotify sickrage couchpotato pihole
         ;;
     NAS)
         install docker sickbeard couchpotato headphones

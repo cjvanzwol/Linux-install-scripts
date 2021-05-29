@@ -1,4 +1,4 @@
-#! /bin/sh
+#! /bin/bash
 # preload functions
 source $(find ~ -name Linux-install-scripts 2>/dev/null)/functions.sh
 [[ $FASE == "" ]] && FASE=docker
@@ -28,5 +28,11 @@ else
     sudo apt-get update
     sudo apt-get install docker-ce docker-ce-cli containerd.io
 fi
-    sudo docker run hello-world #REMOVE AFTER DEBUG
+sudo docker run hello-world #REMOVE AFTER DEBUG
+echo "DOCKER DONE"
+=====
+sudo apt-get update
+sudo apt-get install docker-ce docker-ce-cli containerd.io
+sudo docker run hello-world #REMOVE AFTER DEBUG
+>>>>>>> branch 'master' of https://github.com/cjvanzwol/Linux-install-scripts.git
 echo "DOCKER DONE"
