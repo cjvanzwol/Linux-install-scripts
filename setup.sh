@@ -71,10 +71,10 @@ case $OS in
         install gimp inkscape jupyterlab vscode firefox google-chrome docker adb fastboot
         ;;
     OSMC)
-        install gmediarender spotify sickrage couchpotato pihole
+        install docker gmediarender spotify sickrage couchpotato pihole
         ;;
     NAS)
-        install docker sickbeard couchpotato headphones
+        install sickbeard couchpotato headphones
         ;;
     GoogleShell)
         install conda
