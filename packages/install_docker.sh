@@ -6,11 +6,22 @@ source $(find ~ -name Linux-install-scripts 2>/dev/null)/functions.sh
 # Installing package
 echo "Installing Docker"
 if [[ $OS == "OSMC" ]]; then
+	sudo apt-get update && sudo apt-get upgrade
+	curl -sSL https://get.docker.com | sh
+	sudo usermod -aG docker ${USER}
+	groups ${USER}
+	sudo apt-get install libffi-dev libssl-dev
+	sudo apt install python3-dev
+	sudo apt-get install -y python3 python3-pip
+	sudo pip3 install docker-compose
+	sudo systemctl enable docker
+<< COMMENT
     curl -fsSL https://get.docker.com -o get-docker.sh
     sudo sh get-docker.sh
     sudo usermod -aG docker osmc
     docker version
     docker info
+COMMENT
 else
     sudo apt-get update -y
     sudo apt-get install -qq \
@@ -29,10 +40,4 @@ else
     sudo apt-get install docker-ce docker-ce-cli containerd.io
 fi
 sudo docker run hello-world #REMOVE AFTER DEBUG
-echo "DOCKER DONE"
-=====
-sudo apt-get update
-sudo apt-get install docker-ce docker-ce-cli containerd.io
-sudo docker run hello-world #REMOVE AFTER DEBUG
->>>>>>> branch 'master' of https://github.com/cjvanzwol/Linux-install-scripts.git
 echo "DOCKER DONE"
