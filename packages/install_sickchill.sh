@@ -7,7 +7,7 @@ source $(find ~ -name Linux-install-scripts 2>/dev/null)/functions.sh
 echo "Installing Sickrage"
 if [[ $OS == "OSMC" ]]; then
     read -p "osmc or pi" d
-    if [[ $d == "osmc" ]; then
+    if [[ $d == "osmc" ]]; then
     #FRom: https://discourse.osmc.tv/t/how-to-install-couchpotato-and-sickchill-on-raspberry-pi/10788
         sudo useradd sickchill
         sudo usermod -a -G osmc sickchill
