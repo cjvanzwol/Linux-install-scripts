@@ -7,7 +7,8 @@ source $(find ~ -name Linux-install-scripts 2>/dev/null)/functions.sh
 echo "Installing Sickrage"
 if [[ $OS == "OSMC" ]]; then
     read -p "osmc or pi" d
-    if [[ $d == "osmc" ]]: then
+    if [[ $d == "osmc" ]; then
+    #FRom: https://discourse.osmc.tv/t/how-to-install-couchpotato-and-sickchill-on-raspberry-pi/10788
         sudo useradd sickchill
         sudo usermod -a -G osmc sickchill
         cd /opt/
@@ -16,7 +17,7 @@ if [[ $OS == "OSMC" ]]; then
         sudo chown -R sickchill:sickchill /opt/sickchill
         #sudo systemctl enable sickchill.service
         sudo systemctl start sickchill.service
-    if [[ $d == "pi" ]]: then
+    if [[ $d == "pi" ]]; then
         appDir=/opt/sickchill
         # Form: https://www.htpcguides.com/install-sickrage-raspberry-pi-usenet-torrent-tv/    
         sudo apt-get update -qq
