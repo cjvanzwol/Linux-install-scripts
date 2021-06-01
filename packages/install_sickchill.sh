@@ -6,25 +6,36 @@ source $(find ~ -name Linux-install-scripts 2>/dev/null)/functions.sh
 # Installing package
 echo "Installing Sickrage"
 if [[ $OS == "OSMC" ]]; then
-	read -p "1=pip, 2=manual : " c
-	if [[ $c == "1" ]]; then
-		echo "pip"
-		echo  "TEMPDIR=/mnt/backup/temp pip3 install -U sickchill"
-		echo "not working"
-	elif [[ $c ]]; then
-		echo "manual"
-		sudo apt-get update
-		sudo apt-get upgrade -y
-		sudo apt-get dist-upgrade -y
-		sudo apt-get install python3-pip python3 python3-dev git libssl-dev libxslt1-dev libxslt1.1 libxml2-dev libxml2 libssl-dev libffi-dev build-essential -y
-		sudo pip3 install pyopenssl
-		read -p "pre compiled unrar"
-		wget http://sourceforge.net/projects/bananapi/files/unrar_5.2.6-1_armhf.deb
-		sudo dpkg -i unrar_5.2.6-1_armhf.deb
-		read
-	else
-		echo "else"
-	fi
+    read -p "osmc or pi" d
+    if [[ $d == "osmc" ]]: then
+        sudo useradd sickchill
+        sudo usermod -a -G osmc sickchill
+        cd /opt/
+        sudo git clone https://github.com/SickChill/SickChill.git sickchill
+        sudo cp sickchill/contrib/runscripts/init.systemd /etc/systemd/system/sickchill.service
+        sudo chown -R sickchill:sickchill /opt/sickchill
+        #sudo systemctl enable sickchill.service
+        sudo systemctl start sickchill.service
+    if [[ $d == "pi" ]]: then
+        appDir=/opt/sickchill
+        # Form: https://www.htpcguides.com/install-sickrage-raspberry-pi-usenet-torrent-tv/    
+        sudo apt-get update -qq
+        sudo apt-get dist-upgrade -y -qq
+        sudo apt-get install python3-pip python3 python3-dev git libssl-dev libxslt1-dev libxslt1.1 libxml2-dev libxml2 libssl-dev libffi-dev build-essential -y -qq
+        sudo pip3 install -q pyopenssl
+        get http://sourceforge.net/projects/bananapi/files/unrar_5.2.6-1_armhf.deb
+        git clone https://github.com/SickRage/SickRage.git $appDir
+        sudo chown -R $USER:$USER $appDir
+        
+        cpfile sickrage /etc/default
+        sudo cp $appDir/runscripts/init.debian /etc/init.d/sickchill
+        sudo chmod +x /etc/init.d/sickchill
+        sudo update-rc.d sickchill defaults
+        if
+    fi
+
+    echo "not working:"
+    echo  "-pip install: TEMPDIR=/mnt/backup/temp pip3 install -U sickchill"
 elif [[ $OS == "NAS" ]]; then
     local dir=/volume1/@appstore/sickbeard-custom
     if [[ -d $dir ]]; then
