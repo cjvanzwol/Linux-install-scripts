@@ -1,0 +1,3 @@
+SR_HOME=~/.sickchill/
+SR_DATA=~/.sickchill/
+SR_USER=$USER
