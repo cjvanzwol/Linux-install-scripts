@@ -29,7 +29,7 @@ py_path=$(python -c "import sys; print(sys.path)" | cut -d " " -f 5 | cut -d "'"
 sudo sed -i s_Icon=_Icon=$py_path\/notebook\/static\/favicon.ico_g /usr/share/applications/jupyterlab.desktop
 sudo mkdir -p /usr/local/share/jupyter/kernels
 sudo chown -R $USER /usr/local/share/jupyter/kernels
-cpfile jupyterlab /usr/bin 
+cpfile jupyterlab /usr/bin
 echo "Jupyterlab is installed"
 # #2
 
