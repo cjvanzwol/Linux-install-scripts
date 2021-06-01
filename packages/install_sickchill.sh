@@ -17,7 +17,7 @@ if [[ $OS == "OSMC" ]]; then
         sudo chown -R sickchill:sickchill /opt/sickchill
         #sudo systemctl enable sickchill.service
         sudo systemctl start sickchill.service
-    if [[ $d == "pi" ]]; then
+    elif [[ $d == "pi" ]]; then
         appDir=/opt/sickchill
         # Form: https://www.htpcguides.com/install-sickrage-raspberry-pi-usenet-torrent-tv/    
         sudo apt-get update -qq
@@ -32,7 +32,6 @@ if [[ $OS == "OSMC" ]]; then
         sudo cp $appDir/runscripts/init.debian /etc/init.d/sickchill
         sudo chmod +x /etc/init.d/sickchill
         sudo update-rc.d sickchill defaults
-        if
     fi
 
     echo "not working:"
