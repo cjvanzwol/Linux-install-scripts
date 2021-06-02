@@ -8,6 +8,7 @@ source $(find ~ -name Linux-install-scripts 2>/dev/null)/functions.sh
 echo "Installing Couchpotato"
 if [[ $OS == "OSMC" ]]
     echo "if you want to install couchpotato op pi, please creat scipt: nothing is done now"
+    echo " follow: https://discourse.osmc.tv/t/how-to-install-couchpotato-and-sickchill-on-raspberry-pi/10788"
 elif [[ $OS == "NAS" ]]; then
     local dir=/volume1/@appstore/couchpotatoserver-custom
     if [[ -d $dir ]]; then

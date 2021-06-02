@@ -1,4 +1,0 @@
-SR_USER=$USER
-SR_HOME=/opt/sickchill
-SR_DATA=/opt/sickchill
-SR_PIDFILE=/home/osmc/.sickchill.pid
