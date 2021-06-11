@@ -29,7 +29,7 @@ PathSettingsNb=~/.jupyter/lab/user-settings/@jupyterlab/notebook-extension/
 mkdir -p $PathSettingsNb
 cp ~/Linux-install-scripts/assets/tracker.jupyterlab-settings $PathSettingsNb
 
-
+$CONDA_BIN/python -m pip install ipywardley
 
 dev $1
 read -p "Install Language server? [y/N]" ls
