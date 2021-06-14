@@ -68,7 +68,7 @@ title "Choose additional packages to install"
 
 case $OS in
     ChromeOS)
-        install jupyterlab vscode gimp inkscape kdenlive firefox google-chrome docker adb fastboot
+        install jupyterlab vscode gimp inkscape kdenlive firefox google-chrome tor docker adb fastboot
         ;;
     OSMC)
         install docker gmediarender spotify sickrage couchpotato pihole
