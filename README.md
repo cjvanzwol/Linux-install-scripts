@@ -1,4 +1,6 @@
-# Scripts for (re)installing personal setup for Linux
+# lis
+## Linux install scripts
+Scripts for (re)installing personal setup for Linux
 
 ## Usage
 After installing new (virtual) machine, run the following:
