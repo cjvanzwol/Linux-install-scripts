@@ -1,5 +1,4 @@
-# lis
-## Linux install scripts
+# lis = Linux install scripts
 Scripts for (re)installing personal setup for Linux
 
 ## Usage
