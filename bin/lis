@@ -1,0 +1,61 @@
+#! /bin/bash
+
+OPTIONS=( "-s" "--setup" "-i" "--install" "-e" "--env" "-r" "--remove" )
+
+function show_usage (){
+  cat ~/lis/bin/help
+}
+
+if [ -z "$1" ]; then
+  echo "No argument supplied"
+  show_usage
+  exit
+fi
+
+echo $0
+echo $@
+
+case "$1" in
+        -h|--help)
+          show_usage
+          ;;
+        -s|--setup)
+          shift
+          [[ ! -z "$@" ]] && echo "Setup does not require aditional arguments. ignoring the other arguments"
+	  echo "RUN SETUP HERE"
+          ;;
+        -i|--install)
+          shift
+	  for package in $@; do
+	    if [ -f ~/lis/packages/install_$package.sh ]; then
+	      echo "RUN INSTALLER FOR $package"
+	    else
+	      echo "$package not recognised"
+	    fi
+	  done
+          ;;
+        -e|--env)
+          shift
+          RPM_NAME="$1"
+          echo "rpm name is $RPM_NAME"
+          [[ $RPM_NAME =~ ^- ]] && echo "$RPM_NAME is not a proper value for -r|--rpm" && show_usage
+          ;;
+        -r|--remove)
+          shift
+          for package in $@; do
+	    # TODO make installer add line to installer-dot-file eand then check if package is installed.
+            if [ -f ~/lis/packages/remove_$package.sh ]; then
+              echo "RUN REMOVER FOR $package"
+            else
+              echo "$package not recognised"
+            fi
+          done
+          ;;
+        *)
+       echo "Incorrect input provided"
+       show_usage
+ esac
+
+
+exit
+

@@ -1,7 +1,8 @@
 #! /bin/bash
 #echo "loading functions"
 if [[ $functionsSet != True ]]; then
-    PREFIX_=$(find ~ -name Linux-install-scripts 2>/dev/null)
+    #PREFIX_=$(find ~ -name lis 2>/dev/null)
+    PREFIX_=~/lis
 
     ######################
     # defining functions #

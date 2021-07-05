@@ -1,0 +1,16 @@
+lis = Linux install scripts
+
+options:
+
+-s|--setup		Run complete setup
+			Updates & upgrades system
+			Installs minimal packages aka base
+			Lets you choose aditinal packages to install
+
+-i|--install [PACKAGE]	Installs a specific package
+
+-e|--env [FUNCTION]	Runs environment functions
+			[create]
+			[delete] 
+
+-r|--remove [PACKAGE]	Removes a specific packages

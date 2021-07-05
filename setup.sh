@@ -5,14 +5,23 @@
 # variables & functions
 source $( cd "$( dirname "$0" )" >/dev/null 2>&1 && pwd )/functions.sh
 
+###############
+# Install bin #
+###############
+BIN_LOC=/usr/local/bin
+[[ ! -f $BIN_LOC ]] && sudo ln -s $PREFIX_/bin/lis $BIN_LOC
+# config > /home/$USER/.config/lis 
+# --> install location
+# --> installed packages / list of created files outside lis directory for remove script
+# --> .base_done
+
+
 ##########################
 # Start installing stuff #
 ##########################
 title "Starting base setup"
 
-if [ -f $PREFIX_/.base_done ]; then
-    echo "Base-install has already been run. (remove .base_done to rerun)"
-else
+if [ ! -f $PREFIX_/.base_done ]; then
     FASE="base"
     if [[ $OS != "NAS" ]]; then
         # For Debian(-like) systems
@@ -59,6 +68,8 @@ else
     # flagging base is done with empty file
     touch $PREFIX_/.base_done
     echo "--- Base setup DONE ---"
+else
+    echo "Base-install has already been run. (remove .base_done to rerun)"
 fi
 
 ###########
