@@ -1,0 +1,9 @@
+echo "Backing up all apps"
+adb backup -f all -all -apk -nosystem
+
+echo "backing up all data"
+for APP in $(adb shell pm list packages -3)
+do
+  APP=$( echo ${APP} | sed "s/^package://")
+  adb backup -f ${APP}.backup ${APP}
+done

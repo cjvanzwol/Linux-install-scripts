@@ -1,0 +1,9 @@
+#! /bin/bash
+
+for APP in $(adb shell pm list packages)
+do
+  APP=$( echo ${APP} | sed "s/^package://")
+  echo "Uninstalling $APP"
+  adb uninstall $APP
+  echo
+done
