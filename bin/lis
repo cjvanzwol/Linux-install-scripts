@@ -3,7 +3,11 @@
 OPTIONS=( "-s" "--setup" "-i" "--install" "-e" "--env" "-r" "--remove" )
 
 function show_usage (){
-  cat ~/lis/bin/help
+  if [ ANDROID ]; then
+    cat ~/lis/android/help
+  else
+    cat ~/lis/bin/help
+  fi
 }
 
 if [ -z "$1" ]; then
@@ -16,15 +20,15 @@ echo $0
 echo $@
 
 case "$1" in
-        -h|--help)
+        -h|help)
           show_usage
           ;;
-        -s|--setup)
+        -s|setup)
           shift
           [[ ! -z "$@" ]] && echo "Setup does not require aditional arguments. ignoring the other arguments"
 	  echo "RUN SETUP HERE"
           ;;
-        -i|--install)
+        -i|install)
           shift
 	  for package in $@; do
 	    if [ -f ~/lis/packages/install_$package.sh ]; then
@@ -34,23 +38,42 @@ case "$1" in
 	    fi
 	  done
           ;;
-        -e|--env)
+        -e|env)
           shift
           RPM_NAME="$1"
           echo "rpm name is $RPM_NAME"
           [[ $RPM_NAME =~ ^- ]] && echo "$RPM_NAME is not a proper value for -r|--rpm" && show_usage
           ;;
-        -r|--remove)
+        -r|remove)
           shift
           for package in $@; do
 	    # TODO make installer add line to installer-dot-file eand then check if package is installed.
             if [ -f ~/lis/packages/remove_$package.sh ]; then
-              echo "RUN REMOVER FOR $package"
+               echo "RUN REMOVER FOR $package"
             else
               echo "$package not recognised"
             fi
           done
           ;;
+	-a|android)
+	  ANDROID=true
+	  adb devices
+	  shift
+	  case "$1" in
+	    -b|backup)
+	      source ~/lis/android/backup
+	    ;;
+	    -r|restore)
+	      source ~/lis/android/restore
+	    ;;
+	    -c|clear)
+	      source ~/lis/android/clean_wipe
+	    ;;
+	    *)
+	      echo "Incorrect input provided"
+	      show_usage android
+	  esac
+	  ;;
         *)
        echo "Incorrect input provided"
        show_usage

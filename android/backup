@@ -1,9 +1,23 @@
-echo "Backing up all apps"
-adb backup -f all -all -apk -nosystem
+#! /bin/bash 
 
-echo "backing up all data"
-for APP in $(adb shell pm list packages -3)
+echo "Pulling all apks"
+mkdir -p apks
+cd apks
+for APP in $(adb shell pm list packages -3 -f)
 do
-  APP=$( echo ${APP} | sed "s/^package://")
-  adb backup -f ${APP}.backup ${APP}
+  adb pull $( echo ${APP} | sed "s/^package://" | sed "s/base.apk=/base.apk /").apk
 done
+cd ..
+
+echo "Backing up all apps"
+mkdir -p data
+cd data
+adb backup -f all -all -apk -nosystem
+cd ..
+
+#echo "backing up all data"
+#for APP in $(adb shell pm list packages -3)
+#do
+#  APP=$( echo ${APP} | sed "s/^package://")
+#  adb backup -f ${APP}.backup ${APP}
+#done

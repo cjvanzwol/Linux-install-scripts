@@ -1,0 +1,12 @@
+lis = Linux install scripts
+ANDROID
+
+options:
+
+-b|backup		Run complete bakcup
+			Copies all user installed apks
+			Copies all data of apps
+
+-r|restore		Restores backup to phone
+
+-c|clear		Remove all removable apps from the phone

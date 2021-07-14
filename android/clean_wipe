@@ -1,5 +1,10 @@
 #! /bin/bash
 
+read -p "Backup befor wipe? [Y/n] " answer
+if [[ $answer == "Y" || $answer == "y" || $answer == "Yes" || $answer == "yes" ]]; then
+  lis android backup
+fi
+
 for APP in $(adb shell pm list packages)
 do
   APP=$( echo ${APP} | sed "s/^package://")
