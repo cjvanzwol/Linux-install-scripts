@@ -24,8 +24,8 @@ mkfs.ext4 ${DRIVE}1
 mount ${DRIVE}1 /mnt/data || SUCCES=false
 if $SUCCES; then
   mkdir -p /mnt/data/umbrel
-  touch /mnt/data/0
-  ls -hal /mnt/data
+  source test.sh
+  source speed.sh $DRIVE
 fi
 SIZE=$(( $SIZE * 10 ))
 }
