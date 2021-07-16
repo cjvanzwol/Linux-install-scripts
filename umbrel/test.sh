@@ -15,7 +15,7 @@ create_file () {
 	n=$(( n + 1 ))
 }
 
-while again
+while $again
 do
   create_file
 done
