@@ -9,14 +9,17 @@ lsblk | grep sd
 read -p "What drive? /dev/sd[last letter] " LETTER
 DRIVE=/dev/sd${LETTER}
 n=1
+again=true
 create_file () {
-	echo $n
-	dd if=/dev/zero of=/mnt/data/test${n}.txt bs=100MB count=1
+	dd if=/dev/zero of=/mnt/data/test${n}.txt bs=100MB count=1 || again=false
 	n=$(( n + 1 ))
 }
 
-while true
+while again
 do
   create_file
 done
+echo ""
+echo ""
+du -sh /mnt/data
 exit 1
