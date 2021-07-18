@@ -21,10 +21,11 @@ parted $DRIVE mklabel gpt
 parted $DRIVE mkpart primary 0GB ${SIZE}GB
 sleep 1
 mkfs.ext4 ${DRIVE}1
+fsck.ext4 -v /dev/sdb1 -y && e2fsck -b 32768 /dev/sdb1 -y
 mount ${DRIVE}1 /mnt/data || SUCCES=false
 if $SUCCES; then
   mkdir -p /mnt/data/umbrel
-  source test.sh
+  #source test.sh
   source speed.sh $DRIVE
 fi
 SIZE=$(( $SIZE * 10 ))
